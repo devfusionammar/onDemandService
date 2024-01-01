@@ -7,6 +7,7 @@ import AddExpensesScreen from '../Screens/addExpensesScreen';
 import Login from '../Screens/login';
 import BottomNavigation from './bottomNavigation';
 import SplashScreen from '../Screens/SplashScreen/SplashScreen';
+import PopularServiceProvider from '../Screens/popularServiceProvider/popularServiceProvider';
 const Stack = createNativeStackNavigator();
 export default function Appnavigation() {
   return (
@@ -19,6 +20,7 @@ export default function Appnavigation() {
         <Stack.Screen options={{headerShown:false}} name="BottomNavigation" component={BottomNavigation} />
         <Stack.Screen options={{headerShown:false}} name="AddExpensesScreen" component={AddExpensesScreen} />
         <Stack.Screen options={{headerShown:false}} name="SplashScreen" component={SplashScreen} />
+        <Stack.Screen options={{headerShown:false}} name="PopularServiceProvider" component={PopularServiceProvider} />
       </Stack.Navigator>
     </NavigationContainer>
   );
