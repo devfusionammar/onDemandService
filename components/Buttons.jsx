@@ -1,24 +1,38 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-
-const Buttons = ({titleback ,titlenext, pressback,pressnext}) => {
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { colors } from '../theme';
+import {
+  responsiveHeight as Rh,
+  responsiveScreenWidth as Rw,
+  responsiveScreenFontSize as fo,
+} from 'react-native-responsive-dimensions';
+const Buttons = ({ titleback, titlenext, pressback, pressnext, backgroundColor1,fontcolor }) => {
   return (
     <View>
-      <View style={{width:"100%"}}>
-         
-         <Text style={{backgroundColor:"#4C79BC", fontSize:20,
-             alignSelf:"center", textAlign:"center", color:"white",
-             marginTop:40, marginBottom:30,padding:12,borderRadius:30,
-             width:"50%", elevation:5
-         }}
-         onPress={pressnext}>
-            {titlenext}</Text>
-           </View>
-
+      <TouchableOpacity
+        style={{ backgroundColor: backgroundColor1, width: Rw(49),height:Rh(5),borderRadius: Rw(20),
+        borderWidth: 1}}
+      >
+        <View >
+          <Text
+            style={{
+             
+              fontSize: fo(2),             
+              textAlign: 'center',
+              color: fontcolor,
+              paddingTop:Rh(1)       
+              
+            }}
+            onPress={pressnext}
+          >
+            {titlenext}
+          </Text>
+        </View>
+      </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
-export default Buttons
+export default Buttons;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

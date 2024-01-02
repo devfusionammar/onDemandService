@@ -9,12 +9,14 @@ import BottomNavigation from './bottomNavigation';
 import SplashScreen from '../Screens/SplashScreen/SplashScreen';
 import Signup from '../Screens/Auth/Signup';
 import Profile from '../Screens/Profile';
+import Changepass from '../Screens/Userinfo/Changepass';
+import UProfile from '../Screens/Userinfo/UProfile';
 const Stack = createNativeStackNavigator();
 export default function Appnavigation() {
   return (
     <NavigationContainer>
 
-      <Stack.Navigator initialRouteName="Profile" screenOptions={{animationEnabled:true}}>
+      <Stack.Navigator initialRouteName="Login" screenOptions={{animationEnabled:true}}>
         <Stack.Screen options={{headerShown:false}} name="Login" component={Login}  />
         <Stack.Screen options={{headerShown:false}} name="Profile" component={Profile}  />
         <Stack.Screen options={{headerShown:false}} name="Signup" component={Signup}  />
@@ -23,6 +25,8 @@ export default function Appnavigation() {
         <Stack.Screen options={{headerShown:false}} name="BottomNavigation" component={BottomNavigation} />
         <Stack.Screen options={{headerShown:false}} name="AddExpensesScreen" component={AddExpensesScreen} />
         <Stack.Screen options={{headerShown:false}} name="SplashScreen" component={SplashScreen} />
+        <Stack.Screen options={{headerShown:false}} name="Changepass" component={Changepass} />
+        <Stack.Screen options={{headerShown:false}} name="UProfile" component={UProfile} />
       </Stack.Navigator>
     </NavigationContainer>
   );
