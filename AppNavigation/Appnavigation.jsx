@@ -7,10 +7,17 @@ import AddExpensesScreen from '../Screens/addExpensesScreen';
 import Login from '../Screens/Auth/Login';
 import BottomNavigation from './bottomNavigation';
 import SplashScreen from '../Screens/SplashScreen/SplashScreen';
+<<<<<<< HEAD
+import PopularServiceProvider from '../Screens/popularServiceProvider/popularServiceProvider';
+=======
 import Signup from '../Screens/Auth/Signup';
 import Profile from '../Screens/Profile';
+<<<<<<< HEAD
 import Changepass from '../Screens/Userinfo/Changepass';
 import UProfile from '../Screens/Userinfo/UProfile';
+=======
+>>>>>>> origin/Team
+>>>>>>> 32fd5b0c1acb19ef60df03d4d509a6135200e057
 const Stack = createNativeStackNavigator();
 export default function Appnavigation() {
   return (
@@ -25,8 +32,12 @@ export default function Appnavigation() {
         <Stack.Screen options={{headerShown:false}} name="BottomNavigation" component={BottomNavigation} />
         <Stack.Screen options={{headerShown:false}} name="AddExpensesScreen" component={AddExpensesScreen} />
         <Stack.Screen options={{headerShown:false}} name="SplashScreen" component={SplashScreen} />
+<<<<<<< HEAD
         <Stack.Screen options={{headerShown:false}} name="Changepass" component={Changepass} />
         <Stack.Screen options={{headerShown:false}} name="UProfile" component={UProfile} />
+=======
+        <Stack.Screen options={{headerShown:false}} name="PopularServiceProvider" component={PopularServiceProvider} />
+>>>>>>> 32fd5b0c1acb19ef60df03d4d509a6135200e057
       </Stack.Navigator>
     </NavigationContainer>
   );

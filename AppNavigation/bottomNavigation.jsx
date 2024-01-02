@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../Screens/HomeScreen';
 import Location from '../Screens/Location';
 import Profile from '../Screens/Profile';
-import Booking from '../Screens/Booking';
+import Booking from '../Screens/Booking/Booking';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
   responsiveHeight as Rh,
