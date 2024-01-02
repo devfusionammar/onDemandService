@@ -1,9 +1,13 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Input from '../../components/Input';
 import Buttons from '../../components/Buttons';
-
-const { width, height } = Dimensions.get('window');
+import {
+  responsiveHeight as Rh,
+  responsiveScreenWidth as Rw,
+  responsiveScreenFontSize as fo,
+} from 'react-native-responsive-dimensions';
+import { colors } from '../../theme';
 
 const Login = ({ navigation }) => {
   const BottomNavigation = () => {
@@ -22,7 +26,7 @@ const Login = ({ navigation }) => {
         <Text style={styles.loginText}>Log In</Text> 
         <Text style={styles.h2}>Login to your account to access all the features in Barber Shop</Text>
 
-      <View style={styles.loginlowercont}>
+      <View style={styles.container}>
         <View style={styles.inputContainer}>
         <Text style={styles.EmailText}>Email/Phone Number</Text>
           <Input placeholder={''} />
@@ -46,46 +50,43 @@ const Login = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity>
-          <Buttons titlenext={'Log In'} pressnext={BottomNavigation} />
+        <TouchableOpacity style={{marginTop:Rw(8), marginLeft:Rw(25)}}>
+          <Buttons titlenext={'Log In'} pressnext={BottomNavigation} backgroundColor1={colors.headerbackground} fontcolor={colors.background}/>
         </TouchableOpacity>
       </View>
       <View style={styles.lowertxtContainer}>
       <View style={styles.line}></View>
-      <Text style={styles.EmailText}>Or Sign in with</Text>
+      <Text style={{fontSize:fo(2), color:colors.heading}}>Or Sign in with</Text>
       <View style={styles.line}></View>
       </View>
       
-      <View style={styles.lowertxtContainer}>
+      <View style={{  flexDirection: 'row', marginLeft:Rw(35), marginTop: Rw(1)}}>
       <View>
       <Image 
               style={{width:40, height:40, 
-              top:"32%", left:"2%", padding:2, }}
+              top:"32%", left:"2%" }}
               source={require("../../assets/facebook.png")}
             />
       </View>
       <View>
       <Image 
               style={{width:40, height:40, 
-              top:"32%", left:"2%", padding:20, }}
+              top:"32%", left:"2%" }}
               source={require("../../assets/apple.png")}
             />
       </View>
       <View>
       <Image 
               style={{width:40, height:40, 
-              top:"32%", left:"2%", padding:2, }}
+              top:"32%", left:"2%" }}
               source={require("../../assets/google.png")}
             />
       </View>
       </View>
-      <View style={styles.lowertxtContainer}>
-      <Text style= {{marginTop:80,  fontSize: width * 0.04,
-   color: 'black',}} >Don't have an Account?</Text>
-      <TouchableOpacity onPress={handleSignUp}>
-            {/* Add your Forgot Password functionality here */}
-            <Text style= {{marginTop:80,  fontSize: width * 0.04,
-   color: '#4C79BC',}}>SIGN UP?</Text>
+      <View style={{flexDirection:'row', marginTop:Rw(30), marginLeft:Rw(25)}}>
+      <Text style={{fontSize:fo(2), color:colors.font1}} >Don't have an Account?</Text>
+      <TouchableOpacity onPress={handleSignUp} >
+            <Text style={{fontSize:fo(2), color:colors.headerbackground}}>SIGN UP?</Text>
           </TouchableOpacity>
           </View>
     </View>
@@ -97,92 +98,66 @@ export default Login;
 const styles = StyleSheet.create({
   container: {
     flex: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 
   loginText: {
-    fontSize: 30,
-    marginTop:40,
+    fontSize: fo(3),
+    marginTop:Rw(8),
     fontWeight: 'bold',   
     textAlign: 'center',
   },
 
   h2: {
-   fontSize: 20,
-   backgroundColor: '#4C79BC',
-   color: 'white',
-   marginTop:40,
-   borderRadius:5,
+   fontSize: fo(2.5),
+   backgroundColor: colors.headerbackground,
+   color: colors.background,
+   marginTop:Rw(1.6),
    padding:40,
    textAlign: 'center',
+  },
+
+  inputContainer: {
+    
+    marginTop: Rw(8),
+  },
+
+  EmailText: {
+    fontSize: fo(1.8),
+    color:colors.font1,
+    fontWeight: 'bold',
+    marginLeft:Rw(10)
   },
 
   forgetsaveContainer: {
    flexDirection: 'row',
    justifyContent: 'space-between',
-   alignItems: 'center',
-   marginTop: width * 0.02,
-   marginHorizontal: width * 0.02,
+   marginTop: Rw(2),
  },
 
  saveMeText: {
-   fontSize: width * 0.04,
-   color: 'black',
+   fontSize: fo(1.8),
+   color: colors.heading,
+   marginLeft:Rw(10)
  },
 
  forgetPasswordText: {
-   fontSize: width * 0.04,
-   color: 'black',
+   fontSize: fo(1.8),
+   color: colors.headerbackground,
+   fontWeight:'bold',
+   marginRight:Rw(10)
  },
 
   lowertxtContainer: {
    flexDirection: 'row',
    alignItems: 'center',
-   marginTop: 20,
+   marginTop: Rw(12),
  },
 
  line: {
    flex: 1,
    height: 1,
    backgroundColor: 'black', 
-   marginHorizontal: width * 0.02, 
+   marginHorizontal: Rw(0.5), 
  },
-  EmailText: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    textAlign: 'left',
-    padding:0
-  },
-  
-  lowertxt: {
-    fontSize: 20,
-    backgroundColor: '#4C79BC',
-    marginTop: 5,
-    borderRadius: 5,
-    borderStyle: "solid",
-    padding: 40,
-    width: '100%',
-    textAlign: 'center',
-  },
 
-  loginlowercont: {
-    borderRadius: width * 0.03,
-    padding: width * 0.02,
-    width: '90%',
-    marginTop: 10,
-  },
-
-  inputContainer: {
-    
-    marginTop: 10,
-  },
-
-  icon: {
-    position: 'absolute',
-    width: width * 0.1,
-    height: width * 0.1,
-    top: '32%',
-    left: '2%',
-  },
 });

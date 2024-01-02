@@ -6,19 +6,18 @@ import {
   responsiveScreenWidth as Rw,
   responsiveScreenFontSize as fo,
 } from 'react-native-responsive-dimensions';
-const Buttons = ({ titleback, titlenext, pressback, pressnext, backgroundColor1 ,fontcolor}) => {
+const Buttons = ({ titleback, titlenext, pressback, pressnext, backgroundColor1,fontcolor }) => {
   return (
     <View>
       <TouchableOpacity
         style={{ backgroundColor: backgroundColor1, width: Rw(49),height:Rh(5),borderRadius: Rw(20),
-        borderWidth: 1, borderColor: "red",}}
+        borderWidth: 1}}
       >
         <View >
           <Text
             style={{
              
-              fontSize: fo(2),
-              
+              fontSize: fo(2),             
               textAlign: 'center',
               color: fontcolor,
               paddingTop:Rh(1)       

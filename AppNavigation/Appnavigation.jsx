@@ -11,8 +11,16 @@ import SplashScreen from '../Screens/SplashScreen/SplashScreen';
 import PopularServiceProvider from '../Screens/popularServiceProvider/popularServiceProvider';
 import Signup from '../Screens/Auth/Signup';
 import Profile from '../Screens/Profile';
+
 import CurrentLocation from '../Screens/Map/CurrentLocation';
 import Location from '../Screens/Location';
+
+
+import Changepass from '../Screens/Userinfo/Changepass';
+import UProfile from '../Screens/Userinfo/UProfile';
+
+
+
 const Stack = createNativeStackNavigator();
 export default function Appnavigation() {
   return (
@@ -27,9 +35,15 @@ export default function Appnavigation() {
         <Stack.Screen options={{headerShown:false}} name="BottomNavigation" component={BottomNavigation} />
         <Stack.Screen options={{headerShown:false}} name="AddExpensesScreen" component={AddExpensesScreen} />
         <Stack.Screen options={{headerShown:false}} name="SplashScreen" component={SplashScreen} />
+
+        <Stack.Screen options={{headerShown:false}} name="Changepass" component={Changepass} />
+        <Stack.Screen options={{headerShown:false}} name="UProfile" component={UProfile} />
+
         <Stack.Screen options={{headerShown:false}} name="PopularServiceProvider" component={PopularServiceProvider} />
+
         <Stack.Screen options={{headerShown:false}} name="Location" component={Location} />
         <Stack.Screen options={{headerShown:false}} name="CurrentLocation" component={CurrentLocation} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
