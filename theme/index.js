@@ -4,7 +4,7 @@ export const colors={
     buttonNonTint:'#909090',
     headerbackground:'#4C79BC',
     headersubGround:"#C2D2F0",
-    font1:"#000000",
+    font1:"black",
     fontSubheadin:"#818187",
-    background:"white"
+    background:"#F5F5F5"
 }

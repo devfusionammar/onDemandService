@@ -7,18 +7,18 @@ import AddExpensesScreen from '../Screens/addExpensesScreen';
 import Login from '../Screens/Auth/Login';
 import BottomNavigation from './bottomNavigation';
 import SplashScreen from '../Screens/SplashScreen/SplashScreen';
-<<<<<<< HEAD
+
 import PopularServiceProvider from '../Screens/popularServiceProvider/popularServiceProvider';
-=======
 import Signup from '../Screens/Auth/Signup';
 import Profile from '../Screens/Profile';
->>>>>>> origin/Team
+import CurrentLocation from '../Screens/Map/CurrentLocation';
+import Location from '../Screens/Location';
 const Stack = createNativeStackNavigator();
 export default function Appnavigation() {
   return (
     <NavigationContainer>
 
-      <Stack.Navigator initialRouteName="Profile" screenOptions={{animationEnabled:true}}>
+      <Stack.Navigator initialRouteName="Login" screenOptions={{animationEnabled:true}}>
         <Stack.Screen options={{headerShown:false}} name="Login" component={Login}  />
         <Stack.Screen options={{headerShown:false}} name="Profile" component={Profile}  />
         <Stack.Screen options={{headerShown:false}} name="Signup" component={Signup}  />
@@ -28,6 +28,8 @@ export default function Appnavigation() {
         <Stack.Screen options={{headerShown:false}} name="AddExpensesScreen" component={AddExpensesScreen} />
         <Stack.Screen options={{headerShown:false}} name="SplashScreen" component={SplashScreen} />
         <Stack.Screen options={{headerShown:false}} name="PopularServiceProvider" component={PopularServiceProvider} />
+        <Stack.Screen options={{headerShown:false}} name="Location" component={Location} />
+        <Stack.Screen options={{headerShown:false}} name="CurrentLocation" component={CurrentLocation} />
       </Stack.Navigator>
     </NavigationContainer>
   );
