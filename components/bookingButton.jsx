@@ -40,4 +40,8 @@ const styles = StyleSheet.create({
   },
 });
 
+<<<<<<< HEAD
 export default BookingButtons;
+=======
+export default BookingButtons;
+>>>>>>> b84e56726a06f0a53ffc036889683f60a0be0e32

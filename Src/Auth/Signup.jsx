@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Input from '../../components/Input';
 import Buttons from '../../components/Buttons';
+import ScreenWrapper from '../../components/ScreenWrapper';
 import {
   responsiveHeight as Rh,
   responsiveScreenWidth as Rw,
@@ -19,6 +20,7 @@ import { colors } from '../../theme';
     };
   
     return (
+      <ScreenWrapper>
       <View style={styles.container}>
         <Text style={styles.loginText}>Register</Text>
         <Text style={styles.h2}>
@@ -87,6 +89,7 @@ import { colors } from '../../theme';
           </TouchableOpacity>
         </View>
       </View>
+      </ScreenWrapper>
     );
   };
   

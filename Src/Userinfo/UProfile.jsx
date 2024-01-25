@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, Button } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import ScreenWrapper from '../../components/ScreenWrapper';
 import { colors } from '../../theme';
 import { useNavigation } from '@react-navigation/native';

@@ -21,6 +21,9 @@ export default function Profile() {
   const updateProfile = () => {
     navigation.navigate('UProfile');
   };
+  const handlelogout = () => {
+    navigation.navigate('Login');
+  };
   const renderListItem = (item, index) => (
     <TouchableOpacity key={index} style={{ flexDirection: 'row', paddingVertical: Rh(1.2), paddingHorizontal: Rw(3.5), marginTop: Rh(1.2) }} onPress={item.onPress}>
       <View style={{ borderRadius: 30, backgroundColor: colors.headerbackground, width: iconSize * 0.6, height: iconSize * 0.6, justifyContent: 'center', alignItems: 'center' }}>
@@ -53,7 +56,7 @@ export default function Profile() {
         { icon: <Image source={require('../assets/Icons/changepassword.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Change Password',icone2:<Icones icon_margine={39} icon_top={1}/> , onPress: updatePass},
         { icon: <Image source={require('../assets/Icons/privacypolicy.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Privacy policy' },
         { icon: <Image source={require('../assets/Icons/aboutus.png')} style={{ width: iconSize, height: iconSize }} />, text: 'About us' },
-        { icon: <Image source={require('../assets/Icons/logout.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Logout' },
+        { icon: <Image source={require('../assets/Icons/logout.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Logout', onPress: handlelogout },
       ].map((item, index) => renderListItem(item, index))}
     </ScreenWrapper>
   );
