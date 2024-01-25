@@ -1,26 +1,43 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { colors } from '../theme';
-const BookingButtons = ({ titleback, titlenext, pressback, pressnext, backgroundColor }) => {
+import {
+  responsiveHeight as Rh,
+  responsiveScreenWidth as Rw,
+  responsiveScreenFontSize as Rf,
+} from 'react-native-responsive-dimensions';
+const BookingButtons = ({ titlenext, pressnext, backgroundColor }) => {
   return (
-    <View>
-      <View style={{ width: '100%' }}>
-        <TouchableOpacity
-          onPress={pressnext}
-          style={{
-            backgroundColor: backgroundColor,
-            fontSize: 20,
-            
-          }}>
-            <Text style={{color:'white'}}>
-          {titlenext}
-          </Text>
-        </TouchableOpacity>
-      </View>
+    <View style={styles.container}>
+      <TouchableOpacity
+        onPress={pressnext}
+        style={[styles.button, { backgroundColor }]}>
+        <Text style={styles.buttonText}>{titlenext}</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-export default BookingButtons;
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    alignItems: 'center',
+    paddingHorizontal: 0, // Adjust padding as needed
+    paddingBottom:0, // Adjust padding as needed
+    
+  },
+  button: {
+    borderRadius: 10, // Adjust the border radius for rounded corners
+    paddingVertical: 15, // Adjust the vertical padding for height
+    paddingHorizontal:Rw(35) , // Adjust the horizontal padding for width
+    
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 20,
+  },
+});
 
-const styles = StyleSheet.create({});
+export default BookingButtons;

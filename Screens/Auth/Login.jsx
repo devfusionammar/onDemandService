@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Input from '../../components/Input';
 import Buttons from '../../components/Buttons';
+import ScreenWrapper from '../../components/ScreenWrapper';
 import {
   responsiveHeight as Rh,
   responsiveScreenWidth as Rw,
@@ -22,6 +23,7 @@ const Login = ({ navigation }) => {
  };
 
   return (
+    <ScreenWrapper>
     <View style={styles.container}>     
         <Text style={styles.loginText}>Log In</Text> 
         <Text style={styles.h2}>Login to your account to access all the features in Barber Shop</Text>
@@ -90,6 +92,7 @@ const Login = ({ navigation }) => {
           </TouchableOpacity>
           </View>
     </View>
+    </ScreenWrapper>
   );
 };
 
