@@ -20,8 +20,8 @@ export default function Location({navigation}) {
         </View>
        
       </View>
-      <View  style={{height:Rh(4),width:Rw(4),marginLeft:Rw(10),marginTop:Rh(10)}}>
-      <Image source={require('../assets/Location/location.png')}/>
+      <View  style={{marginLeft:Rw(12),marginTop:Rh(10)}}>
+      <Image  style={{height:Rh(40),width:Rw(70)}} source={require('../assets/Location/location.png')}/>
       </View>
       <View style={styles.textEnablelocation}>
           <Text style={{color:colors.font1,textAlign:'center',fontSize: fo(2.3)}}>Enable Location Services</Text>
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   textEnablelocation: {
     textAlign: 'center',
     fontSize: fo(2.3),
-    marginTop:Rh(35),
+    marginTop:Rh(3),
     
     color:colors.font1
   },

@@ -21,8 +21,8 @@ export default function CurrentLocation({navigation}) {
         </View>
        
       </View>
-      <View  style={{height:Rh(4),width:Rw(4),marginLeft:Rw(5),marginTop:Rh(5)}}>
-      <Image source={require('../../assets/Location/currentlocation.png')}/>
+      <View  style={{height:Rh(4),width:Rw(4),marginLeft:Rw(9),marginTop:Rh(5)}}>
+      <Image style={{height:Rh(60),width:Rw(80)}} source={require('../../assets/Location/currentlocation.png')}/>
       </View>
      
         <View style={styles.buttoncontainer}>

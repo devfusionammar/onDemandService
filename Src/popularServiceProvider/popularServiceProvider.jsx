@@ -126,7 +126,7 @@ import {
     },
     bannerImage: {
       width: Rw(30),
-      height: Rh(40),
+      height: Rh(13),
       marginLeft:Rw(-2),
       borderTopLeftRadius: Rw(5.2), 
      

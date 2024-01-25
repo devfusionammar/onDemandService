@@ -36,7 +36,7 @@ export default function UProfile() {
         <Input placeholder={'Enter Email'} />
         <Text style={{fontSize: fo(1.9), fontWeight: 'bold', color:colors.font1, paddingHorizontal: Rw(10), marginTop: Rh(2) }}>Phone Number</Text>
         <Input placeholder={'Enter Phone Number'} />  
-        <TouchableOpacity onPress={showbottom} style={{ width: Rh(30),marginLeft:Rw(20), backgroundColor: colors.headerbackground, padding: Rw(4), borderRadius: Rw(4), alignItems: 'center', marginTop: Rh(12) }}>
+        <TouchableOpacity onPress={showbottom} style={{ width: Rh(30),marginLeft:Rw(20), backgroundColor: colors.headerbackground, padding: Rw(4), borderRadius: Rw(4), alignItems: 'center', marginTop: Rh(6) }}>
         <Text style={{ fontSize:fo(2),color: colors.background, fontWeight: 'bold' }}>Update</Text>
         </TouchableOpacity>    
     </ScreenWrapper>

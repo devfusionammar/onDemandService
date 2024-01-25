@@ -7,28 +7,26 @@ import {
   responsiveScreenWidth as Rw,
   responsiveScreenFontSize as fo,
 } from 'react-native-responsive-dimensions';
-export default function BackButton({marginRight1,marginLeft1,onpress}) {
-  const navigate = useNavigation();
+
+export default function BackButton({ marginRight1, marginLeft1, onPress }) {
+  const marginRight = isNaN(marginRight1) ? 0 : Rw(marginRight1);
+  const marginLeft = isNaN(marginLeft1) ? 0 : Rw(marginLeft1);
 
   return (
     <TouchableOpacity
-      
-      style={{backgroundColor: 'black',
-      borderRadius: 50, 
-      height: Rh(3), 
-      width: Rw(6.2), 
-      justifyContent: 'center',
-      alignItems: 'center',
-    marginRight:Rw(marginRight1),
-    marginLeft:Rw(marginLeft1)
-    }}
-    onPress={onpress}
+      style={{
+        backgroundColor: 'black',
+        borderRadius: 50,
+        height: Rh(3),
+        width: Rw(6.2),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight,
+        marginLeft,
+      }}
+      onPress={onPress}
     >
-      
-      <ChevronLeftIcon size={30} color={"white"} />
+      <ChevronLeftIcon name={'caret-back'} size={30} color={'white'} />
     </TouchableOpacity>
   );
 }
-
-
-

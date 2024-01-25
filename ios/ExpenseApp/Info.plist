@@ -4,9 +4,15 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Nunito-Light.ttf</string>
+		<string>Nunito-ExtraLight.tff</string>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Ionicons.tff</string>
 		<string>Entypo.tff</string>
 		<string>Ionicons.ttf</string>
 		<string>Fontisto.ttf</string>
+		<string>FontAwesome.ttf</string>
 	</array>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
