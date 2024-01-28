@@ -16,8 +16,8 @@ import NearbySaloons from './NearbySallons/NearbySaloons';
 import UserInfo from './Userinfo/UserInfo';
 import PopularServiceProvider from './popularServiceProvider/popularServiceProvider';
 
-export default function HomeScreen() {
-  const navigation = useNavigation();
+export default function HomeScreen({navigation}) {
+  
   return (
     // {/*main menu*/}
     <ScreenWrapper>

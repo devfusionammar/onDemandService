@@ -7,10 +7,12 @@ import {
   responsiveHeight as Rh,
   responsiveScreenWidth as Rw,
   responsiveScreenFontSize as fo,
+  responsiveHeight,
 } from 'react-native-responsive-dimensions';
 import { colors } from '../../theme';
-
+import { Platform } from 'react-native';
 const Login = ({ navigation }) => {
+  console.log("this is hieght ",responsiveHeight(2))
   const BottomNavigation = () => {
     navigation.navigate('BottomNavigation');
   };
@@ -52,7 +54,7 @@ const Login = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={{marginTop:Rw(8), marginLeft:Rw(25)}}>
+        <TouchableOpacity style={{marginTop:Rw(8), marginLeft:Rw(0)}}>
           <Buttons titlenext={'Log In'} pressnext={BottomNavigation} backgroundColor1={colors.headerbackground} fontcolor={colors.background}/>
         </TouchableOpacity>
       </View>
@@ -85,7 +87,7 @@ const Login = ({ navigation }) => {
             />
       </View>
       </View>
-      <View style={{flexDirection:'row', marginTop:Rw(30), marginLeft:Rw(25)}}>
+      <View style={{flexDirection:'row', marginTop:Rw(18),marginLeft:Platform.OS==="ios" ?Rw(20):Rw(25)}}>
       <Text style={{fontSize:fo(2), color:colors.font1}} >Don't have an Account?</Text>
       <TouchableOpacity onPress={handleSignUp} >
             <Text style={{fontSize:fo(2), color:colors.headerbackground}}>SIGN UP?</Text>

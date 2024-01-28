@@ -48,7 +48,7 @@ export default function Profile() {
         <Image style={{ width: Rw(30), height: Rw(30) }} source={require('../assets/profile.png')} />
         <Text style={{ fontSize: fo(1.7), fontWeight: 'bold', color: 'white', marginLeft: Rw(10), marginTop: -Rh(1) }}> Viren Radadiya {'\n'} ibnerieadazz@gmail.com </Text>
       </View>
-
+      <View style={{marginTop:Rh(0)}}>
       {[
         { icon: <Ionicons name="person-outline" size={iconSize * 0.4} color={colors.background} />, text: 'My Profile', icone2:<Icones icon_margine={50} icon_top={1}/>, onPress: updateProfile },
         { icon: <Image source={require('../assets/Icons/vector.png')} style={{ width: iconSize * 0.4, height: iconSize * 0.4 }} />, text: 'Favorite Beautician',icone2:<Icones icon_margine={37} icon_top={1}/> },
@@ -57,7 +57,12 @@ export default function Profile() {
         { icon: <Image source={require('../assets/Icons/privacypolicy.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Privacy policy' },
         { icon: <Image source={require('../assets/Icons/aboutus.png')} style={{ width: iconSize, height: iconSize }} />, text: 'About us' },
         { icon: <Image source={require('../assets/Icons/logout.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Logout', onPress: handlelogout },
-      ].map((item, index) => renderListItem(item, index))}
+      ].map((item, index) => (
+        <View key={index} style={{ marginTop: index > 0 ? Rh(-1) : 0 }}>
+          {renderListItem(item, index)}
+        </View>
+      ))}
+      </View>
     </ScreenWrapper>
   );
 }

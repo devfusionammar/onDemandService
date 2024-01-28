@@ -15,7 +15,7 @@ export default function CurrentLocation({navigation}) {
     <ScreenWrapper bgcolor={colors.background} >
       
       <View style={styles.contentContainer}>
-        <BackButton marginRight1={2} marginLeft1={8}  onpress={()=>navigation.navigate('Location') }/>
+        <BackButton marginRight1={2} marginLeft1={8}  onpress={()=>navigation.navigate('BottomNavigation')}/>
         <View style={styles.textContainer}>
           <SearchBar/>
         </View>
@@ -56,11 +56,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: fo(2.3),
     marginTop:Rh(35),
-    
+    fontFamily:colors.fontfaimly_heding,
     color:colors.font1
   },
 buttoncontainer:{
     marginTop:Rh(64),
     marginLeft:Rw(25),
+    marginRight:Rw(25),
+   
 }
 });

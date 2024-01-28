@@ -5,7 +5,7 @@ import RatingIcon from 'react-native-vector-icons/Entypo';
 import FavoriteIcon from '../../components/favoriteicon';
 import BackButton from '../../components/backbutton';
 import ScreenWrapper from '../../components/ScreenWrapper';
-import { serviceProviderInfo } from '../../assets/ServiceProviderInfo/ServiceProvidetInfo';
+import {serviceProviderInfo}  from '../../assets/ServiceProviderInfo/ServiceProvidetInfo.js';
 import { colors } from '../../theme';
 import {
   responsiveHeight as Rh,
@@ -19,7 +19,7 @@ import ServiceProviderAbout from './serviceProviderAbout';
 import ServiceProviderReviews from './ServiceProviderReviews';
 import BookingButtons from '../../components/bookingButton';
 
-const ServiceProviderInfo = ({ navigation }) => {
+const ServiceProvider = ({ navigation }) => {
   const selectedId = 1;
   const selectedSalon = serviceProviderInfo.find(
     (serviceProvider) => serviceProvider.id === selectedId
@@ -52,11 +52,8 @@ const ServiceProviderInfo = ({ navigation }) => {
         {/* Back Button */}
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => {
-            // Handle back button press
-          }}
         >
-          <BackButton />
+          <BackButton onPress={()=> navigation.navigate('BottomNavigation')}/>
         </TouchableOpacity>
 
         {/* Favorite Icon */}
@@ -227,4 +224,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ServiceProviderInfo;
+export default ServiceProvider;

@@ -16,7 +16,9 @@ import {
 } from 'react-native-responsive-dimensions';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {NearbyItems} from '../../assets/NearbySaloons/NearbySaloons';
-export default function NearbySaloons() {
+import { useNavigation } from '@react-navigation/native';
+ const NearbySaloons=()=> {
+  const navigation = useNavigation();
   const [bannerData, setBannerData] = useState([]);
   const scrollX = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -31,7 +33,7 @@ export default function NearbySaloons() {
   return (
     <View clasName="" style={styles.container}>
       <View className="flex-row justify-between items-center">
-        <Text style={styles.buttontext}>Categories</Text>
+        <Text style={styles.buttontext}>Nearby Saloones</Text>
         <TouchableOpacity
           onPress={() => navigation.navigate('AddTrip')}
           className="p-2 bg-white border border-gray-200 rounded-full mb-2 mr-1">
@@ -49,45 +51,36 @@ export default function NearbySaloons() {
           keyExtractor={item => item.id}
           showsHorizontalScrollIndicator={false}
           renderItem={({item}) => (
+            <TouchableOpacity key={item.id} value
+            onPress={()=>navigation.navigate("ServiceProvider")}
+            >
             <View style={styles.bannerContainer} >
               <Image style={styles.bannerImage} source={item.img} />
-
-              <View
-              style={styles.SaloonDistance}>
               
-                  <Text style={styles.saloonName}>{item.saloname}</Text>
-                 
-                  <Text style={styles.aerro}>↔</Text>
-                
-                  <Text style={styles.distance}>{item.distance}</Text>
-               
-              </View>
+              <View
+                style={styles.SaloonItem}>
 
-              <View style={styles.Addres}>
-              <Ionicons 
-              name='navigate-sharp'
-              size={23}
-              color="green"
-            />
-           
-                <Text style={styles.AddressText}>{item.Address}</Text>
+                <Text style={styles.saloonName}>{item.saloname}</Text>
+
+
+                <View style={styles.PhoneContainer} className="flex-row justify-between">
+                  <Image source={require('../../assets/Icons/Callmale.png')} />
+                  <Text style={styles.Phone}>{item.Pjone}</Text>
+                </View>
+                <View style={styles.ratingContainer} className="flex-row justify-between">
+                  <Ionicons
+                    name='star'
+                    size={18}
+                    color='#F4C01E'
+                  />
+
+                  <Text style={{ color: colors.font1 }} className="ml-1">{item.rating}</Text>
+                  <Text style={{ color: colors.fontSubheadin }}>({item.review})</Text>
+
+                </View>
+                </View>
               </View>
-              <View>
-                <Text style={{color: colors.font1}}>{item.distance}</Text>
-              </View>
-              <View>
-                <Text style={{color: colors.font1}}>{item.rating}</Text>
-              </View>
-              <View className="flex-row justify-between items-center">
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AddTrip')}
-                  className="p-2 bg-white border border-gray-200 rounded-full mb-2 mr-1">
-                  <Text style={styles.buttontext} className="font-sans">
-                    View All
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+            </TouchableOpacity>
           )}
           onScroll={Animated.event(
             [{nativeEvent: {contentOffset: {x: scrollX}}}],
@@ -133,29 +126,22 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: Rw(5.2), 
   borderTopRightRadius: Rw(5.2),
   },
-  SaloonDistance: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
-  Addres:{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
-saloonName:{
-    marginLeft:Rw(2),
-    marginTop:Rh(1.2),
-    color:`${colors.font1}`,
-    fontSize:fo(1.9),
-},
-aerro:{
-    color:`${colors.button}`,
-    fontSize:fo(4),
-    marginLeft:Rw(30),
-    marginBottom:Rh(2),
-},
-distance:{
-    color:`${colors.fontSubheadin}`,
-    fontSize:fo(1.6),
-    marginRight:Rw(3),
-},
-AddressText:{
-  color:`${colors.fontSubheadin}`,
-    fontSize:fo(2),
-    marginLeft:Rw(30),
-    marginRight:Rw(15),
-}
+  SaloonItem: { flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-start' ,marginLeft:Rw(2.4)},
+
+  saloonName: {
+    marginLeft: Rw(2),
+    marginTop: Rh(1.2),
+    color: `${colors.font1}`,
+    fontSize: fo(1.9),
+  },
+  Phone: {
+    color: `${colors.fontSubheadin}`,
+    marginLeft: Rw(2),
+    marginTop: Rh(0.7),
+  }
+  ,
+  PhoneContainer: {
+
+  }
 });
+export default NearbySaloons;

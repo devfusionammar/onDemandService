@@ -50,7 +50,7 @@ import { colors } from '../../theme';
             <Input placeholder={''} />
           </View>
   
-          <TouchableOpacity style={{marginTop:Rw(8), marginLeft:Rw(25)}}>
+          <TouchableOpacity  style={{marginTop:Rw(8), marginLeft:Rw(0)}}>
             <Buttons titlenext={'Register'} pressnext={backlogin} backgroundColor1={colors.headerbackground} fontcolor={colors.background} />
           </TouchableOpacity>
         </View>

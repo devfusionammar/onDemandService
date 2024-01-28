@@ -8,7 +8,7 @@ import {
 
 export default function ScreenWrapper({ children ,bgcolor}) {
   const StatusbarHeight = Platform.select({
-    ios: StatusBar.currentHeight || Rh(5.3),
+    ios: StatusBar.currentHeight || Rh(1.2),
     android: 0,
   });
 

@@ -2,9 +2,10 @@ export const NearbyItems = [
     {
       id: 1,
       img:require("./1.png"),
-     saloname: 'Santrey Saloon',
-      Address:'Ali town lahore punjab pakistan international,Language',
-      distance:'2km',
+      saloname: 'Santrey Saloon',
+      saloname: 'Santrey Saloon',
+      Pjone:'657 433 675',
+      review:'27',
       rating:'4.5',
 
     },
