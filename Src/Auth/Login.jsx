@@ -1,5 +1,5 @@
-import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import Input from '../../components/Input';
 import Buttons from '../../components/Buttons';
 import ScreenWrapper from '../../components/ScreenWrapper';
@@ -11,61 +11,114 @@ import {
 } from 'react-native-responsive-dimensions';
 import { colors } from '../../theme';
 import { Platform } from 'react-native';
+import { LoginUser } from '../../services/apiauth';
+
 const Login = ({ navigation }) => {
-  console.log("this is hieght ",responsiveHeight(2))
-  const BottomNavigation = () => {
-    navigation.navigate('BottomNavigation');
+  const [formData, setFormData] = useState({
+    UserName: '',
+    Password: '',
+  });
+
+  const [loading, setLoading] = useState(false); // State variable to manage loading state
+
+  const handlleLogin = () => {
+  
+    setLoading(true); // Start loading when login is initiated
+    console.log("++",formData);
+    LoginUser(formData)
+    .then((response) => {
+      if (response.success) {
+        if (response.Message === 'Email Verification Required') {
+          // Navigate to OTP verification screen
+          navigation.navigate('OtpVerfication');
+        } else {
+          // Navigate to the main app screen
+          navigation.navigate('BottomNavigation');
+        }
+      } else {
+        console.error('Login failed:', response.Message);
+      }
+    })
+    .catch((error) => {
+      console.error('Login error:', error);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+
   };
 
   const handleForgotPassword = () => {
-   navigation.navigate('ForgotPassword');
- };
+    navigation.navigate('ForgotPassword');
+  };
+
   const handleSignUp = () => {
-   navigation.navigate('Signup');
- };
+    navigation.navigate('Signup');
+  };
 
   return (
     <ScreenWrapper>
-    <View style={styles.container}>     
+      <View style={styles.container}>     
         <Text style={styles.loginText}>Log In</Text> 
         <Text style={styles.h2}>Login to your account to access all the features in Barber Shop</Text>
 
-      <View style={styles.container}>
-        <View style={styles.inputContainer}>
-        <Text style={styles.EmailText}>Email/Phone Number</Text>
-          <Input placeholder={''} />
-         
-        </View>
+        <View style={styles.container}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.EmailText}>Email/Phone Number</Text>
+            <Input 
+              placeholder={'Enter Username'} 
+              onChangeText={(text) => setFormData({ ...formData, UserName: text })} 
+            />
+          </View>
 
-        <View style={styles.inputContainer}>
-        <Text style={styles.EmailText}>Password</Text>
-          <Input placeholder={''} is_password={true} />
-        </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.EmailText}>Password</Text>
+            <Input 
+              placeholder={'Enter Password'} 
+              is_password={true} 
+              onChangeText={(text) => setFormData({ ...formData, Password: text })} 
+            />
+          </View>
 
-        <View style={styles.forgetsaveContainer}>
-          <TouchableOpacity>
-            {/* Add your Remember Me functionality here */}
-            <Text style={styles.saveMeText}>Save Me</Text>
+          <View style={styles.forgetsaveContainer}>
+            <TouchableOpacity>
+              {/* Add your Remember Me functionality here */}
+              <Text style={styles.saveMeText}>Save Me</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={handleForgotPassword}>
+              {/* Add your Forgot Password functionality here */}
+              <Text style={styles.forgetPasswordText}>Forget Password?</Text>
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity 
+            style={{marginTop: Rw(8), marginLeft: Rw(0)}} 
+            pressnext={handlleLogin}
+            disabled={loading} // Disable button when loading
+          >
+            {/* Show activity indicator while loading */}
+            {loading ? (
+                <ActivityIndicator size="large" color={colors.headerbackground} />
+            ) : (
+              <Buttons 
+                titlenext={'Log In'}
+                backgroundColor1={colors.headerbackground} 
+                fontcolor={colors.background}
+                pressnext={handlleLogin}
+              />
+            )}
           </TouchableOpacity>
-          
-          <TouchableOpacity onPress={handleForgotPassword}>
-            {/* Add your Forgot Password functionality here */}
-            <Text style={styles.forgetPasswordText}>Forget Password?</Text>
-          </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={{marginTop:Rw(8), marginLeft:Rw(0)}}>
-          <Buttons titlenext={'Log In'} pressnext={BottomNavigation} backgroundColor1={colors.headerbackground} fontcolor={colors.background}/>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.lowertxtContainer}>
-      <View style={styles.line}></View>
-      <Text style={{fontSize:fo(2), color:colors.heading}}>Or Sign in with</Text>
-      <View style={styles.line}></View>
-      </View>
-      
-      <View style={{  flexDirection: 'row', marginLeft:Rw(35), marginTop: Rw(1)}}>
-      <View>
+        <View style={styles.lowertxtContainer}>
+          <View style={styles.line}></View>
+          <Text style={{fontSize: fo(2), color: colors.heading}}>Or Sign in with</Text>
+          <View style={styles.line}></View>
+        </View>
+        
+        <View style={{ flexDirection: 'row', marginLeft: Rw(35), marginTop: Rw(1)}}>
+        <View>
       <Image 
               style={{width:40, height:40, 
               top:"32%", left:"2%" }}
@@ -86,14 +139,15 @@ const Login = ({ navigation }) => {
               source={require("../../assets/google.png")}
             />
       </View>
-      </View>
-      <View style={{flexDirection:'row', marginTop:Rw(18),marginLeft:Platform.OS==="ios" ?Rw(20):Rw(25)}}>
-      <Text style={{fontSize:fo(2), color:colors.font1}} >Don't have an Account?</Text>
-      <TouchableOpacity onPress={handleSignUp} >
-            <Text style={{fontSize:fo(2), color:colors.headerbackground}}>SIGN UP?</Text>
+        </View>
+
+        <View style={{flexDirection:'row', marginTop: Rw(18), marginLeft: Platform.OS==="ios" ? Rw(20) : Rw(25)}}>
+          <Text style={{fontSize: fo(2), color: colors.font1}}>Don't have an Account?</Text>
+          <TouchableOpacity onPress={handleSignUp}>
+            <Text style={{fontSize: fo(2), color: colors.headerbackground}}>SIGN UP?</Text>
           </TouchableOpacity>
-          </View>
-    </View>
+        </View>
+      </View>
     </ScreenWrapper>
   );
 };
@@ -107,62 +161,62 @@ const styles = StyleSheet.create({
 
   loginText: {
     fontSize: fo(3),
-    marginTop:Rw(8),
+    marginTop: Rw(8),
     fontWeight: 'bold',   
     textAlign: 'center',
   },
 
   h2: {
-   fontSize: fo(2.5),
-   backgroundColor: colors.headerbackground,
-   color: colors.background,
-   marginTop:Rw(1.6),
-   padding:40,
-   textAlign: 'center',
+    fontSize: fo(2.5),
+    backgroundColor: colors.headerbackground,
+    color: colors.background,
+    marginTop: Rw(1.6),
+    padding: 40,
+    textAlign: 'center',
   },
 
   inputContainer: {
-    
     marginTop: Rw(8),
   },
 
   EmailText: {
     fontSize: fo(1.8),
-    color:colors.font1,
+    color: colors.font1,
     fontWeight: 'bold',
-    marginLeft:Rw(10)
+    marginLeft: Rw(10)
   },
 
   forgetsaveContainer: {
-   flexDirection: 'row',
-   justifyContent: 'space-between',
-   marginTop: Rw(2),
- },
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: Rw(2),
+  },
 
- saveMeText: {
-   fontSize: fo(1.8),
-   color: colors.heading,
-   marginLeft:Rw(10)
- },
+  saveMeText: {
+    fontSize: fo(1.8),
+    color: colors.heading,
+    marginLeft: Rw(10)
+  },
 
- forgetPasswordText: {
-   fontSize: fo(1.8),
-   color: colors.headerbackground,
-   fontWeight:'bold',
-   marginRight:Rw(10)
- },
+  forgetPasswordText: {
+    fontSize: fo(1.8),
+    color: colors.headerbackground,
+    fontWeight: 'bold',
+    marginRight: Rw(10)
+  },
 
   lowertxtContainer: {
-   flexDirection: 'row',
-   alignItems: 'center',
-   marginTop: Rw(12),
- },
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: Rw(12),
+  },
 
- line: {
-   flex: 1,
-   height: 1,
-   backgroundColor: 'black', 
-   marginHorizontal: Rw(0.5), 
- },
+  line: {
+    flex: 1,
+    height: 1,
+    backgroundColor: 'black', 
+    marginHorizontal: Rw(0.5), 
+  },
 
 });
+

@@ -1,9 +1,26 @@
 import { View, Text,Image,TouchableOpacity, } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import React from 'react';
+import {React,useState,useEffect} from 'react';
 import { colors } from '../../theme';
+import fetchUserData from '../../contexprovider/fetchusetdata';
 import { responsiveHeight,responsiveScreenWidth,responsiveFontSize, } from 'react-native-responsive-dimensions';
 export default function UserInfo() {
+  const [userData, setUserData] = useState(null);
+ 
+  useEffect(() => {
+    
+    const getUserData = async () => {
+      try {
+        const userData = await fetchUserData();
+        setUserData(userData.userData.FirstName);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    getUserData();
+  }, []);
+
   return (
     <View className= {"flex-row justify-left items-center p-0 "} style={{backgroundColor:colors.headerbackground,marginBottom:responsiveHeight(1)}}>
         <Image  
@@ -14,7 +31,7 @@ export default function UserInfo() {
         <View className="flex-1 justify-center m-1">
         <Text className={` text-bold pl-2 pt-0`}
         style={{color:`${colors.font1}`,marginLeft:responsiveScreenWidth(2),marginTop:responsiveHeight(0),fontSize:responsiveFontSize(2.3)}}
-        >Muhammad Fahim</Text>
+        >{userData}</Text>
         <Text className={` text-bold pl-2 pt-0`}
         style={{color:`${colors.fontWhite}`,marginLeft:responsiveScreenWidth(2),marginTop:responsiveHeight(0),fontSize:responsiveFontSize(1.5)}}
         >6km Raiwind Rd, Dubai Town</Text>

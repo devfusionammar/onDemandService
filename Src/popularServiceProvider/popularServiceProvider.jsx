@@ -17,10 +17,26 @@ import {
 import Ionicons from 'react-native-vector-icons/Entypo';
 import { PopularItems } from '../../assets/popularServiceProvider/PopularServiceProvider';
 import { useNavigation  } from '@react-navigation/native';
+import {topBeautaion} from '../../services/beautacions'
 export default function PopularServiceProvider() {
   const navigation = useNavigation();
-  const [bannerData, setBannerData] = useState([]);
+  const [bannerData, setBannerData] = useState({ success: false, data: [] });
+
   const scrollX = useRef(new Animated.Value(0)).current;
+  
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        
+        const data = await topBeautaion();
+        setBannerData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+    fetchData();
+  }, []);
   useEffect(() => {
     Animated.loop(
       Animated.timing(scrollX, {
@@ -30,6 +46,8 @@ export default function PopularServiceProvider() {
       }),
     ).start();
   }, []);
+
+
   return (
     <View clasName="" style={styles.container}>
       <View className="flex-row justify-between items-center">
@@ -45,10 +63,10 @@ export default function PopularServiceProvider() {
       {/* Popular Saloons  */}
       <View >
         <FlatList
-          data={PopularItems}
+          data={bannerData.data}
           horizontal={true}
           pagingEnabled
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.beauticianId.toString()}
           showsHorizontalScrollIndicator={false}
           
           renderItem={({ item }) => (
@@ -56,17 +74,28 @@ export default function PopularServiceProvider() {
             onPress={() => navigation.navigate('ServiceProvider')}
             >
             <View style={styles.bannerContainer} >
-              <Image style={styles.bannerImage} source={item.img} />
+            {item.profilePhoto ? (
+              <Image
+                style={styles.bannerImage}
+                source={{ uri: `data:image/png;base64,${item.profilePhoto}` }}
+              />
+            ) : (
+              <Image
+                style={styles.bannerImage}
+                source={require('../../assets/popularServiceProvider/popular.png')} 
+                
+              />
+            )}
 
               <View
                 style={styles.SaloonItem}>
 
-                <Text style={styles.saloonName}>{item.saloname}</Text>
+                <Text style={styles.saloonName}>{item.firstName} {item.lastName}</Text>
 
 
                 <View style={styles.PhoneContainer} className="flex-row justify-between">
                   <Image source={require('../../assets/Icons/Callmale.png')} />
-                  <Text style={styles.Phone}>{item.Pjone}</Text>
+                  <Text style={styles.Phone}>{item.Phone?item.Phone :920000000}</Text>
                 </View>
                 <View style={styles.ratingContainer} className="flex-row justify-between">
                   <Ionicons
@@ -75,8 +104,8 @@ export default function PopularServiceProvider() {
                     color='#F4C01E'
                   />
 
-                  <Text style={{ color: colors.font1 }} className="ml-1">{item.rating}</Text>
-                  <Text style={{ color: colors.fontSubheadin }}>({item.review})</Text>
+                  <Text style={{ color: colors.font1 }} className="ml-1">{item.totalReviews}</Text>
+                  <Text style={{ color: colors.fontSubheadin }}>({item.averageRating})</Text>
 
                 </View>
               </View>
@@ -121,6 +150,14 @@ const styles = StyleSheet.create({
 
   },
   bannerImage: {
+    width: Rw(30),
+    height: Rh(13),
+    marginLeft: Rw(-2),
+    borderTopLeftRadius: Rw(5.2),
+
+    borderBottomLeftRadius: Rw(5.2),
+  },
+  avatarImage: {
     width: Rw(30),
     height: Rh(13),
     marginLeft: Rw(-2),

@@ -1,13 +1,7 @@
-import {
-  View,
-   StyleSheet,
-  ScrollView,
-} from 'react-native';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, ScrollView, Alert } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import ScreenWrapper from '../components/ScreenWrapper';
-
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-
 import { colors } from '../theme';
 import SearchBar from './searchBar';
 import OfferBanner from './bannerCarsol/offerbanner';
@@ -15,32 +9,48 @@ import Catgorey from './Catgories/Catgorey';
 import NearbySaloons from './NearbySallons/NearbySaloons';
 import UserInfo from './Userinfo/UserInfo';
 import PopularServiceProvider from './popularServiceProvider/popularServiceProvider';
+import { getUser } from '../services/getuserdetails';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+export default function HomeScreen({ navigation }) {
+  const [userData, setUserData] = useState("");
 
-export default function HomeScreen({navigation}) {
-  
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const user = await getUser();
+        setUserData(user);
+        await AsyncStorage.setItem('userData', JSON.stringify(user));
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        Alert.alert('Error', 'Failed to fetch user data. Please try again.');
+      }
+    };
+
+    if (isFocused && !userData) {
+      fetchUserData();
+    }
+  }, [isFocused]);
+
   return (
-    // {/*main menu*/}
     <ScreenWrapper>
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} userdata={userData}>
         <UserInfo style={styles.userInfo} />
-        <View> 
+        <View>
           <SearchBar />
         </View>
-         {/* Banners Section */}
         <View>
           <OfferBanner />
         </View>
-         {/* categoreies section  */}
         <View>
           <Catgorey />
         </View>
         <View>
           <NearbySaloons />
-        </View> 
-        <View>
-          <PopularServiceProvider/>
         </View>
-
+        <View>
+          <PopularServiceProvider />
+        </View>
       </ScrollView>
     </ScreenWrapper>
   );
@@ -48,38 +58,12 @@ export default function HomeScreen({navigation}) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: `${colors.background}`,
+    backgroundColor: colors.background,
   },
   userInfo: {
     position: 'sticky',
     top: 0,
     zIndex: 1,
-    backgroundColor: `${colors.background}`,
+    backgroundColor: colors.background,
   },
 });
-
-
-
-  {/* <View style={{height: 600}}>
-          <FlatList className="mx-1 "
-            data={items}
-            ListEmptyComponent={<EmptyList meddage={"You haven't recorded any trips yet"}/>}
-            columnWrapperStyle={{
-              justifyContent:"space-between"
-            }}
-            keyExtractor={item=>item.id}
-            numColumns={2}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => {
-              return (
-                <TouchableOpacity onPress={()=>navigation.navigate('AddExpensesScreen')} className="bg-white p-3  rounded-xl  mb-3 shadow-sm">
-                  <View>
-                    <Image source={randomImage()} className="h-36 w-36  mb-2"/>
-                    <Text className={`${colors.heading} font-bold`}>{item.place}</Text>
-                    <Text className={`${colors.heading} text-xs`}>{item.country}</Text>
-                  </View>
-                </TouchableOpacity>
-              );
-            }}
-          />
-        </View> */}

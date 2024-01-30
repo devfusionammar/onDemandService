@@ -18,6 +18,8 @@ import ServiceProvider from '../Src/ServiceProviderInfo/Index';
 import Booking from '../Src/Booking/Index';
 import RecptPending from '../Src/Receipt/ReceiptPending';
 import RecptComplete from '../Src/Receipt/ReceiptComplete';
+import OtpVerfication from '../Src/OTP';
+import Schedule from '../Src/Booking/schdule';
 
 
 
@@ -27,7 +29,7 @@ export default function Appnavigation() {
   return (
     <NavigationContainer>
 
-      <Stack.Navigator initialRouteName="Login" screenOptions={{animationEnabled:true}}>
+      <Stack.Navigator initialRouteName="BottomNavigation" screenOptions={{animationEnabled:true}}>
         <Stack.Screen options={{headerShown:false}} name="Login" component={Login}  />
         <Stack.Screen options={{headerShown:false}} name="Profile" component={Profile}  />
         <Stack.Screen options={{headerShown:false}} name="Signup" component={Signup}  />
@@ -47,6 +49,8 @@ export default function Appnavigation() {
         <Stack.Screen options={{headerShown:false}} name="CurrentLocation" component={CurrentLocation} />
         <Stack.Screen options={{headerShown:false}} name="ServiceProvider" component={ServiceProvider} />
         <Stack.Screen options={{headerShown:false}} name="Booking" component={Booking} />
+        <Stack.Screen options={{headerShown:false}} name="OtpVerfication" component={OtpVerfication} />
+        <Stack.Screen options={{headerShown:false}} name="Schedule" component={Schedule} />
       </Stack.Navigator>
     </NavigationContainer>
   );
