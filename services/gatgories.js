@@ -20,5 +20,7 @@ const allCategories=async ()=>{
  console.error('Error Feting Beautaion in:', error);
  }
 }
+//beautation with category
 
+   
 export {allCategories};

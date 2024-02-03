@@ -6,6 +6,8 @@ import {
     TouchableOpacity,
     FlatList,
     Animated,
+    ActivityIndicator,
+    Platform
 } from 'react-native';
 import React, { useRef, useEffect, useState } from 'react';
 import { colors } from '../../theme';
@@ -16,9 +18,27 @@ import {
 } from 'react-native-responsive-dimensions';
 import Ionicons from 'react-native-vector-icons/Entypo';
 import { PopularItems } from '../../assets/popularServiceProvider/PopularServiceProvider';
+import { getAllBooking } from '../../services/bookingconfrm';
 export default function AllBooking() {
     const [bannerData, setBannerData] = useState([]);
+    const [loading, setLoading] = useState(true);
+   console.log(bannerData)
     const scrollX = useRef(new Animated.Value(0)).current;
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await getAllBooking();
+                console.log('Fetched data:', data);
+                setBannerData(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
     useEffect(() => {
         Animated.loop(
             Animated.timing(scrollX, {
@@ -28,62 +48,67 @@ export default function AllBooking() {
             }),
         ).start();
     }, []);
+    if (loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color={colors.headerbackground} />
+            </View>
+        );
+    }
     return (
         <View clasName="" style={styles.container}>
          
             
             {/* Popular Saloons  */}
             <View >
-                <FlatList
-                    data={PopularItems}
-                    horizontal={false}
-                    pagingEnabled
-                    keyExtractor={item => item.id}
-                    showsHorizontalScrollIndicator={false}
-                    renderItem={({ item }) => (
-                        <View style={styles.bannerContainer} >
-                            <Image style={styles.bannerImage} source={item.img} />
-
-                            <View
-                                style={styles.SaloonItem}>
-
-                                <Text style={styles.saloonName}>{item.saloname}</Text>
-
-
-                                <View style={styles.PhoneContainer} className="flex-row justify-between">
-                                    <Image source={require('../../assets/Icons/Callmale.png')} />
-                                    <Text style={styles.Phone}>{item.Pjone}</Text>
-                                </View>
-                                <View style={styles.ratingContainer} className="flex-row justify-between">
-                                    <Ionicons
-                                        name='star'
-                                        size={18}
-                                        color='#F4C01E'
-                                    />
-
-                                    <Text style={{ color: colors.font1 }} className="ml-1">{item.rating}</Text>
-                                    <Text style={{ color: colors.fontSubheadin }}>({item.review})</Text>
-
-                                </View>
-                            </View>
-
-
-                            <View className="flex-row justify-between items-center">
-                                <TouchableOpacity
-                                    onPress={() => navigation.navigate('AddTrip')}
-                                    className="p-2 bg-white border border-gray-200 rounded-full mb-2 mr-1">
-                                    <Text style={styles.buttontext} className="font-sans">
-                                        View All
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    )}
-                    onScroll={Animated.event(
-                        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                        { useNativeDriver: false },
-                    )}
+            <FlatList
+    data={bannerData?.bookings}
+    horizontal={false}
+    pagingEnabled
+    keyExtractor={item => item._id} // Use a unique identifier like _id
+    showsHorizontalScrollIndicator={false}
+    renderItem={({ item }) => (
+        <View style={styles.bannerContainer} >
+            {item?.Beautician?.ProfiePhoto ? (
+                <Image
+                    style={styles.bannerImage}
+                    source={{ uri: `data:image/png;base64,${item.Beautician?.ProfiePhoto}` }}
                 />
+            ) : (
+                <Image
+                    style={styles.bannerImage}
+                    source={require('../../assets/popularServiceProvider/popular.png')}
+                />
+            )}
+
+            <View style={styles.SaloonItem}>
+                <Text style={styles.saloonName}>{item.Beautician.FirstName} {item.Beautician.LastName}</Text>
+
+                <View style={styles.PhoneContainer}>
+                    <Image source={require('../../assets/Icons/Callmale.png')} />
+                    <Text style={styles.Phone}>{item.Beautician.PhoneNo}</Text>
+                </View>
+               
+                <View style={styles.ratingContainer}>
+                   
+                    <Text style={{ color: colors.fontSubheadin,textAlign:'center',fontSize:fo(2) }}>{item.Status}</Text>
+                </View>
+            </View>
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',margin:'1%' }}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('AddTrip')}
+                    style={{ padding: 8, backgroundColor: 'white', borderWidth: 1, borderColor: 'gray', borderRadius: 100, marginBottom: 2, marginRight: 1 }}>
+                    <Text style={styles.buttontext}>View</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    )}
+    onScroll={Animated.event(
+        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+        { useNativeDriver: false },
+    )}
+/>
             </View>
         </View>
     );
@@ -96,6 +121,11 @@ const styles = StyleSheet.create({
        
 
     },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     FlatListContainer: {
         height: Rh(100),
     },
@@ -104,23 +134,23 @@ const styles = StyleSheet.create({
         color: `${colors.font1}`,
     },
     bannerContainer: {
-        width: "100%",
-        height: Rw(20),
+        width: "97%",
+        height: Rw(30),
         flexDirection: 'row',
         marginTop: Rh(2),
         alignItems: 'center',
         justifyContent: 'space-between',
         alignItems: 'between',
-        marginRight: Rw(5),
+        marginRight: Rw(10),
+        marginLeft:Rw(2.4),
         borderRadius: Rw(3),
         borderWidth: 1,
         borderColor: 'rgba(128, 128, 128, 0.2)',
         backgroundColor: `${colors.background}`,
-
     },
     bannerImage: {
-        width: Rw(30),
-        height: Rh(9.8),
+        width: Rw(35),
+        height: Rh(13.5),
         marginLeft: Rw(-2),
         borderTopLeftRadius: Rw(5.2),
 
@@ -141,8 +171,14 @@ const styles = StyleSheet.create({
     }
     ,
     PhoneContainer: {
-
+flexDirection: 'row',
+justifyContent: "flex-start",
+    },
+    ratingContainer:{
+      backgroundColor:colors.headersubGround,
+      borderRadius:10,
+      width: Rw(23),
+      height: Rh(3),
+      marginBottom:Platform.OS=='android' ? Rh(2):0,
     }
-
-
 });

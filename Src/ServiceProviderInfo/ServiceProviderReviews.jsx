@@ -1,38 +1,53 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
-import React from 'react';
+import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { colors } from '../../theme';
+import { useRoute } from '@react-navigation/native';
+import { beautaionReview } from '../../services/beautationData';
 
 const ServiceProviderReviews = () => {
-  // Dummy data for reviews
-  const reviews = [
-    {
-      id: '1',
-      name: 'John Doe',
-      rating: 4,
-      time: '1 day ago',
-      review: 'Great service! I loved the experience.',
-    },
-    {
-      id: '2',
-      name: 'Jane Smith',
-      rating: 5,
-      time: '2 days ago',
-      review: 'Excellent service and friendly staff.',
-    },
-    // Add more reviews as needed
-  ];
+  const [reviewData, setReviewData] = useState(null);
+  const route = useRoute();
+  const { beauticianId } = route.params;
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await beautaionReview(beauticianId);
+        setReviewData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (!reviewData) {
+    return <ActivityIndicator size="large" color={colors.primary} />;
+  }
+
+  const calculateTimeAgo = (reviewDate) => {
+    const now = new Date();
+    const reviewDateTime = new Date(reviewDate);
+    const diffTime = Math.abs(now - reviewDateTime);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays === 1 ? '1 day ago' : `${diffDays} days ago`;
+  };
+
+  const reviews = reviewData.Reviews.map(review => ({
+    id: review._id,
+    name: `${review.UserFirstName} ${review.UserLastName}`,
+    rating: parseFloat(review.Rating),
+    time: calculateTimeAgo(review.Date),
+    review: review.Description,
+  }));
 
   return (
     <View style={styles.container}>
-      {reviews.map((review) => (
+      {reviews.map(review => (
         <View key={review.id} style={styles.reviewContainer}>
-          {/* Left side image */}
           <Image source={require('../../assets/profile.png')} style={styles.image} />
-
-          {/* Center content (name, stars, review) */}
           <View style={styles.contentContainer}>
             <Text style={styles.name}>{review.name}</Text>
-            {/* Display stars based on the rating */}
             <View style={styles.starContainer}>
               {Array.from({ length: review.rating }, (_, index) => (
                 <Text key={index} style={styles.star}>
@@ -42,8 +57,6 @@ const ServiceProviderReviews = () => {
             </View>
             <Text style={styles.reviewText}>{review.review}</Text>
           </View>
-
-          {/* Right side time */}
           <Text style={styles.time}>{review.time}</Text>
         </View>
       ))}

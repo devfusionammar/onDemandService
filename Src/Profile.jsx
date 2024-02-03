@@ -24,6 +24,9 @@ export default function Profile() {
   const handlelogout = () => {
     navigation.navigate('Login');
   };
+  const aboutus = () => {
+    navigation.navigate('AboutUs');
+  };
   const renderListItem = (item, index) => (
     <TouchableOpacity key={index} style={{ flexDirection: 'row', paddingVertical: Rh(1.2), paddingHorizontal: Rw(3.5), marginTop: Rh(1.2) }} onPress={item.onPress}>
       <View style={{ borderRadius: 30, backgroundColor: colors.headerbackground, width: iconSize * 0.6, height: iconSize * 0.6, justifyContent: 'center', alignItems: 'center' }}>
@@ -55,7 +58,7 @@ export default function Profile() {
         { icon: <Image source={require('../assets/Icons/Paymentmethod.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Payment Method',icone2:<Icones icon_margine={40} icon_top={1}/> },
         { icon: <Image source={require('../assets/Icons/changepassword.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Change Password',icone2:<Icones icon_margine={39} icon_top={1}/> , onPress: updatePass},
         { icon: <Image source={require('../assets/Icons/privacypolicy.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Privacy policy' },
-        { icon: <Image source={require('../assets/Icons/aboutus.png')} style={{ width: iconSize, height: iconSize }} />, text: 'About us' },
+        { icon: <Image source={require('../assets/Icons/aboutus.png')} style={{ width: iconSize, height: iconSize }} />, text: 'About us',onPress: aboutus },
         { icon: <Image source={require('../assets/Icons/logout.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Logout', onPress: handlelogout },
       ].map((item, index) => (
         <View key={index} style={{ marginTop: index > 0 ? Rh(-1) : 0 }}>

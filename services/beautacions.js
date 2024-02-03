@@ -43,4 +43,26 @@ const allBeautaion=async ()=>{
  console.error('Error Feting Beautaion in:', error);
  }
 }
-export  {allBeautaion,topBeautaion}
+///beautation with Categories
+
+const beautationCategories=async (categoryId)=>{
+   
+  try{
+     const response = await fetch(`${baseUrl}/api/userAuth/CtgBeautician/${categoryId}`, {
+       method: 'GET',
+       headers: {
+         'Content-Type': 'application/json',
+       },
+     });
+ 
+     if (!response.ok) {
+       throw new Error('Failed to log in');
+     }
+ 
+     const data = await response.json();
+     return data;
+   } catch (error) {
+  console.error('Error Feting Beautaion in:', error);
+  }
+ }
+export  {allBeautaion,topBeautaion,beautationCategories}

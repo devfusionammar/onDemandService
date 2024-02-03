@@ -1,49 +1,74 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState,useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet,ActivityIndicator } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '../../theme';
-
+import { beautaionAbout } from '../../services/beautationData';
+import { useRoute } from '@react-navigation/native';
 const ServiceProviderAbout = () => {
   const [activeSection, setActiveSection] = useState('');
+  const [serviceData, setServiceData] = useState(null);
+  console.log("+++==",serviceData?.about?.Timings);
+  const [indicater, setIndicater] = useState(false);
+  const route = useRoute();
+  const { beauticianId } = route.params;
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await beautaionAbout(beauticianId); // Assuming beauticianId is defined somewhere
+       
+        setServiceData(data);
+        
+        setIndicater(true);
+      } catch (error) {
+        setIndicater(false);
+        console.error('Error fetching data:', error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (!indicater) {
+    return <ActivityIndicator size="large" color={colors.primary} />;
+  }
   const renderContent = () => {
     switch (activeSection) {
       case 'About Us':
         return (
-          <Text style={styles.contentText}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt
-            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-            ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </Text>
-        );
-      case 'Our Staff':
-        return (
-          <Text style={styles.contentText}>
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-            dolore eu fugiat nulla pariatur.
-          </Text>
+          <View>
+            <Text style={styles.contentText}>
+              Lorem ipsum dolor sit amet, consectetur 
+            </Text>
+            {serviceData && serviceData.about && serviceData.about.Contact && (
+              <Text style={styles.contentText}>
+                Address: {serviceData.about.Contact.Address}
+              </Text>
+            )}
+          </View>
         );
       case 'Open-Closed':
         return (
-          <Text style={styles.contentText}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-            ut labore et dolore magna aliqua. 
-          </Text>
+          <View>
+            <Text style={styles.contentText}>
+              {serviceData && serviceData.about && serviceData.about.Timings ? (
+                serviceData.about.Timings.map(day => (
+                  <View key={day._id} style={styles.timingRow}>
+                    <Text style={styles.dayText}>{day.day}</Text>
+                    <Text style={styles.timingText}>
+                      {day.isOpen ? `${day.openTime} - ${day.closeTime}` : 'Closed'}
+                    </Text>
+                  </View>
+                ))
+              ) : (
+                <Text style={styles.contentText}>Timing is not available</Text>
+              )}
+            </Text>
+          </View>
         );
-      case 'Contact Us':
-        return (
-          <Text style={styles.contentText}>
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-            deserunt mollit anim id est laborum.
-          </Text>
-        );
+        
       default:
         return null;
     }
   };
-  
-
   return (
     <View style={styles.container}>
       <View style={styles.sectionContainer}>
@@ -145,6 +170,7 @@ const styles = StyleSheet.create({
     fontFamily:colors.fontfaimly_text
 
   },
+  
 });
 
 export default ServiceProviderAbout;

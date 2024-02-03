@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Alert } from 'react-native';
 import Input from '../../components/Input';
 import Buttons from '../../components/Buttons';
 import ScreenWrapper from '../../components/ScreenWrapper';
@@ -27,6 +27,7 @@ const Login = ({ navigation }) => {
     console.log("++",formData);
     LoginUser(formData)
     .then((response) => {
+      console.log("response", response)
       if (response.success) {
         if (response.Message === 'Email Verification Required') {
           // Navigate to OTP verification screen
@@ -36,11 +37,15 @@ const Login = ({ navigation }) => {
           navigation.navigate('BottomNavigation');
         }
       } else {
+        setLoading(false);
         console.error('Login failed:', response.Message);
+        
       }
     })
     .catch((error) => {
+      setLoading(false);
       console.error('Login error:', error);
+      Alert.alert('Enter Correct Username & Password');
     })
     .finally(() => {
       setLoading(false);
@@ -49,7 +54,7 @@ const Login = ({ navigation }) => {
   };
 
   const handleForgotPassword = () => {
-    navigation.navigate('ForgotPassword');
+    navigation.navigate('ForgetPassword');
   };
 
   const handleSignUp = () => {
@@ -136,7 +141,7 @@ const Login = ({ navigation }) => {
       <Image 
               style={{width:40, height:40, 
               top:"32%", left:"2%" }}
-              source={require("../../assets/google.png")}
+              source={require("../../assets/googleIcon.png")}
             />
       </View>
         </View>
@@ -164,6 +169,7 @@ const styles = StyleSheet.create({
     marginTop: Rw(8),
     fontWeight: 'bold',   
     textAlign: 'center',
+    color: 'black',
   },
 
   h2: {

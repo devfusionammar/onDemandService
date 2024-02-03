@@ -20,7 +20,7 @@ import { useNavigation  } from '@react-navigation/native';
 import {topBeautaion} from '../../services/beautacions'
 export default function PopularServiceProvider() {
   const navigation = useNavigation();
-  const [bannerData, setBannerData] = useState({ success: false, data: [] });
+  const [bannerData, setBannerData] = useState([ ]);
 
   const scrollX = useRef(new Animated.Value(0)).current;
   
@@ -46,7 +46,10 @@ export default function PopularServiceProvider() {
       }),
     ).start();
   }, []);
-
+const handlePress=(reviewid)=> {
+console.log('Press id is ' + reviewid);
+navigation.navigate('ServiceProvider', { beauticianId: reviewid });
+};
 
   return (
     <View clasName="" style={styles.container}>
@@ -63,39 +66,31 @@ export default function PopularServiceProvider() {
       {/* Popular Saloons  */}
       <View >
         <FlatList
-          data={bannerData.data}
+          data={bannerData?.data}
           horizontal={true}
           pagingEnabled
-          keyExtractor={(item) => item.beauticianId.toString()}
+          keyExtractor={(item) => item?.beauticianId?.toString()}
           showsHorizontalScrollIndicator={false}
           
           renderItem={({ item }) => (
-            <TouchableOpacity key={item.id} value
-            onPress={() => navigation.navigate('ServiceProvider')}
-            >
-            <View style={styles.bannerContainer} >
-            {item.profilePhoto ? (
-              <Image
-                style={styles.bannerImage}
-                source={{ uri: `data:image/png;base64,${item.profilePhoto}` }}
-              />
-            ) : (
-              <Image
-                style={styles.bannerImage}
-                source={require('../../assets/popularServiceProvider/popular.png')} 
-                
-              />
-            )}
-
-              <View
-                style={styles.SaloonItem}>
-
+            <TouchableOpacity onPress={() => handlePress(item.beauticianId)}>
+            <View style={styles.bannerContainer}>
+              {item.profilePhoto ? (
+                <Image
+                  style={styles.bannerImage}
+                  source={{ uri: `data:image/png;base64,${item.profilePhoto}` }}
+                />
+              ) : (
+                <Image
+                  style={styles.bannerImage}
+                  source={require('../../assets/popularServiceProvider/popular.png')}
+                />
+              )}
+              <View style={styles.SaloonItem}>
                 <Text style={styles.saloonName}>{item.firstName} {item.lastName}</Text>
-
-
                 <View style={styles.PhoneContainer} className="flex-row justify-between">
                   <Image source={require('../../assets/Icons/Callmale.png')} />
-                  <Text style={styles.Phone}>{item.Phone?item.Phone :920000000}</Text>
+                  <Text style={styles.Phone}>{item.Phone ? item.Phone : '920000000'}</Text>
                 </View>
                 <View style={styles.ratingContainer} className="flex-row justify-between">
                   <Ionicons
@@ -103,17 +98,12 @@ export default function PopularServiceProvider() {
                     size={18}
                     color='#F4C01E'
                   />
-
                   <Text style={{ color: colors.font1 }} className="ml-1">{item.totalReviews}</Text>
                   <Text style={{ color: colors.fontSubheadin }}>({item.averageRating})</Text>
-
                 </View>
               </View>
-
-
-              
             </View>
-            </TouchableOpacity>
+          </TouchableOpacity>
           )}
          
         />

@@ -15,21 +15,22 @@ import Location from '../Src/Location';
 import Changepass from '../Src/Userinfo/Changepass';
 import UProfile from '../Src/Userinfo/UProfile';
 import ServiceProvider from '../Src/ServiceProviderInfo/Index';
-import Booking from '../Src/Booking/Index';
+import ServiceListShow from '../Src/Booking/Index';
 import RecptPending from '../Src/Receipt/ReceiptPending';
 import RecptComplete from '../Src/Receipt/ReceiptComplete';
 import OtpVerfication from '../Src/OTP';
 import Schedule from '../Src/Booking/schdule';
-
-
-
-
+import CategoreySaloon from '../Src/Catgories/categoreySaloons';
+import RecptBooking from '../Src/Receipt/ReceiptBookig';
+import Booking from '../Src/BookingDetails/Booking';
+import ForgetPassword from '../Src/Auth/ForgetPassword';
+import AboutUs from '../Src/AboutUs&PrivicyPolicy/AboutUs';
 const Stack = createNativeStackNavigator();
 export default function Appnavigation() {
   return (
     <NavigationContainer>
 
-      <Stack.Navigator initialRouteName="BottomNavigation" screenOptions={{animationEnabled:true}}>
+      <Stack.Navigator initialRouteName="Login" screenOptions={{animationEnabled:true}}>
         <Stack.Screen options={{headerShown:false}} name="Login" component={Login}  />
         <Stack.Screen options={{headerShown:false}} name="Profile" component={Profile}  />
         <Stack.Screen options={{headerShown:false}} name="Signup" component={Signup}  />
@@ -42,15 +43,18 @@ export default function Appnavigation() {
         <Stack.Screen options={{headerShown:false}} name="UProfile" component={UProfile} />
         <Stack.Screen options={{headerShown:false}} name="RecptPending" component={RecptPending} />
         <Stack.Screen options={{headerShown:false}} name="RecptComplete" component={RecptComplete} />
-
         <Stack.Screen options={{headerShown:false}} name="PopularServiceProvider" component={PopularServiceProvider} />
-
         <Stack.Screen options={{headerShown:false}} name="Location" component={Location} />
         <Stack.Screen options={{headerShown:false}} name="CurrentLocation" component={CurrentLocation} />
         <Stack.Screen options={{headerShown:false}} name="ServiceProvider" component={ServiceProvider} />
-        <Stack.Screen options={{headerShown:false}} name="Booking" component={Booking} />
+        <Stack.Screen options={{headerShown:false}} name="ServiceListShow" component={ServiceListShow} />
         <Stack.Screen options={{headerShown:false}} name="OtpVerfication" component={OtpVerfication} />
         <Stack.Screen options={{headerShown:false}} name="Schedule" component={Schedule} />
+        <Stack.Screen options={{headerShown:false}} name="CategoreySaloon" component={CategoreySaloon} />
+        <Stack.Screen options={{headerShown:false}} name="RecptBooking" component={RecptBooking} />
+        <Stack.Screen options={{headerShown:false}} name="Booking" component={Booking} />
+        <Stack.Screen options={{headerShown:false}} name="ForgetPassword" component={ForgetPassword} />
+        <Stack.Screen options={{headerShown:false}} name="AboutUs" component={AboutUs} />
       </Stack.Navigator>
     </NavigationContainer>
   );

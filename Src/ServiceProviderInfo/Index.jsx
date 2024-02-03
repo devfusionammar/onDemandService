@@ -18,8 +18,11 @@ import ServiceList from './ServicesList';
 import ServiceProviderAbout from './serviceProviderAbout';
 import ServiceProviderReviews from './ServiceProviderReviews';
 import BookingButtons from '../../components/bookingButton';
-
+import { useRoute } from '@react-navigation/native';
 const ServiceProvider = ({ navigation }) => {
+  const route = useRoute();
+  const {beauticianId} = route.params;
+  console.log(`Review ++`, beauticianId);
   const selectedId = 1;
   const selectedSalon = serviceProviderInfo.find(
     (serviceProvider) => serviceProvider.id === selectedId
@@ -45,7 +48,10 @@ const ServiceProvider = ({ navigation }) => {
       </ScreenWrapper>
     );
   }
-
+const handlePress=()=>{
+console.log('Press');
+  navigation.navigate('ServiceListShow',{beauticianId:beauticianId});
+}
   return (
     <ScreenWrapper>
       <ScrollView contentContainerStyle={styles.container}>
@@ -130,6 +136,7 @@ const ServiceProvider = ({ navigation }) => {
               <ServiceProviderButton
                 buttonName="Review"
                 onPressButtonClick={() => toggleContent('Review')}
+               
               />
             </View>
           </View>
@@ -143,7 +150,7 @@ const ServiceProvider = ({ navigation }) => {
 
       {/* Bottom Button Container */}
       <View style={styles.bottomButtonContainer}>
-        <BookingButtons backgroundColor={colors.ServiceProvider_buttonBackground} titlenext={'Book Now'} pressnext={()=>navigation.navigate("Booking")} />
+        <BookingButtons backgroundColor={colors.ServiceProvider_buttonBackground} titlenext={'Book Now'} pressnext={()=>handlePress()} />
       </View>
     </ScreenWrapper>
   );

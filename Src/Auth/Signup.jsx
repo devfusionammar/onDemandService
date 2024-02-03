@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, ScrollView } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, ScrollView, Alert } from 'react-native';
 import Input from '../../components/Input';
 import Buttons from '../../components/Buttons';
 import ScreenWrapper from '../../components/ScreenWrapper';
@@ -12,7 +12,7 @@ import { colors } from '../../theme';
 import { createUser } from '../../services/apiauth';
 
 const Signup = ({ navigation }) => {
-  const [isLoding, setisLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     FirstName: '',
     LastName: '',
@@ -22,20 +22,28 @@ const Signup = ({ navigation }) => {
     Username: '',
   });
 
-  const [errors, setErrors] = useState({});
-
-  const backlogin = () => {
-    navigation.navigate('Login');
-  };
-
   const handleSignUp = () => {
-    const validationErrors = validateFormData(formData);
-    console.log("form data is", formData)
-    // if (Object.keys(validationErrors).length > 0) {
-    //   setErrors(validationErrors);
-    //   return;
-    // }
-    setisLoading(true)
+    // Simple validation checks
+    console.log('+++');
+    if (!formData.FirstName || !formData.LastName || !formData.Email || !formData.Password || !formData.Username) {
+      Alert.alert('Error', 'Please fill in all the fields.');
+      return;
+    }
+
+    // Email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(formData.Email)) {
+      Alert.alert('Error', 'Please enter a valid email address.');
+      return;
+    }
+
+    // Password validation
+    if (formData.Password.length < 6) {
+      Alert.alert('Error', 'Password must be at least 6 characters long.');
+      return;
+    }
+
+    setIsLoading(true);
     createUser(formData)
       .then((data) => {
         console.log('Signup successful:', data);
@@ -43,49 +51,21 @@ const Signup = ({ navigation }) => {
       })
       .catch((error) => {
         console.error('Signup error:', error);
-        alert('Signup failed: ' + error.message);
+        Alert.alert('Error', 'Signup failed: ' + error.message);
       })
       .finally(() => {
-        setisLoading(false);
+        setIsLoading(false);
       });
-
-  };
-
-  const validateFormData = (data) => {
-    const errors = {};
-
-    if (!data.FirstName.trim()) {
-      errors.FirstName = 'Full Name is required';
-    }
-
-    if (!data.Email.trim()) {
-      errors.Email = 'Email is required';
-    } else if (!isValidEmail(data.Email.trim())) {
-      errors.Email = 'Invalid email format';
-    }
-
-    if (!data.Password.trim()) {
-      errors.Password = 'Password is required';
-    } else if (data.Password.trim().length < 6) {
-      errors.Password = 'Password must be at least 6 characters long';
-    }
-
-    return errors;
-  };
-
-  const isValidEmail = (email) => {
-    return /\S+@\S+\.\S+/.test(email);
   };
 
   return (
-
     <ScreenWrapper>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
           <Text style={styles.loginText}>Register</Text>
           <Text style={styles.h2}>
             Register to your account to access all the features in Barber Shop
-        </Text>
+          </Text>
 
           <View style={styles.loginlowercont}>
             <View style={styles.inputContainer}>
@@ -94,27 +74,20 @@ const Signup = ({ navigation }) => {
                 placeholder={'Enter your First Name'}
                 onChangeText={(text) => setFormData({ ...formData, FirstName: text })}
               />
-              {errors.fullName && <Text style={styles.errorText}>{errors.FirstName}</Text>}
             </View>
-          </View>
-          <View style={styles.loginlowercont}>
             <View style={styles.inputContainer}>
               <Text style={styles.EmailText}>Last Name</Text>
               <Input
                 placeholder={'Enter your Last name'}
                 onChangeText={(text) => setFormData({ ...formData, LastName: text })}
               />
-              {errors.fullName && <Text style={styles.errorText}>{errors.FirstName}</Text>}
             </View>
-          </View>
-          <View style={styles.loginlowercont}>
             <View style={styles.inputContainer}>
               <Text style={styles.EmailText}>Email</Text>
               <Input
                 placeholder={'Enter Your Email'}
                 onChangeText={(text) => setFormData({ ...formData, Email: text })}
               />
-              {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.EmailText}>UserName</Text>
@@ -122,7 +95,6 @@ const Signup = ({ navigation }) => {
                 placeholder={'Enter Usename'}
                 onChangeText={(text) => setFormData({ ...formData, Username: text })}
               />
-              {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.EmailText}>Password</Text>
@@ -131,20 +103,20 @@ const Signup = ({ navigation }) => {
                 is_password={true}
                 onChangeText={(text) => setFormData({ ...formData, Password: text })}
               />
-              {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
             </View>
-
             <View style={styles.inputContainer}>
               <Text style={styles.EmailText}>Phone</Text>
               <Input
                 placeholder={'Enter phone number'}
                 onChangeText={(text) => setFormData({ ...formData, PhoneNo: text })}
               />
-
             </View>
+          </View>
 
-            {isLoding ? (<ActivityIndicator size="large" color={colors.headerbackground} />) : (
-              <TouchableOpacity style={{ marginTop: Rw(8), marginLeft: Rw(0) }} >
+          {isLoading ? (
+            <ActivityIndicator size="large" color={colors.headerbackground} />
+          ) : (
+            <TouchableOpacity style={{ marginTop: Rw(8), marginLeft: Rw(0) }} >
                 <Buttons
                   pressnext={handleSignUp}
                   titlenext={'Register'}
@@ -152,8 +124,7 @@ const Signup = ({ navigation }) => {
                   fontcolor={colors.background}
                 />
               </TouchableOpacity>
-            )}
-          </View>
+          )}
         </View>
       </ScrollView>
     </ScreenWrapper>
@@ -169,14 +140,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 0,
   },
-
   loginText: {
     fontSize: fo(3),
     marginTop: Rw(8),
     fontWeight: 'bold',
     textAlign: 'center',
   },
-
   h2: {
     fontSize: fo(2.5),
     backgroundColor: colors.headerbackground,
@@ -185,49 +154,13 @@ const styles = StyleSheet.create({
     padding: 40,
     textAlign: 'center',
   },
-
   inputContainer: {
-
     marginTop: Rw(3),
   },
-
   EmailText: {
     fontSize: fo(1.8),
     color: colors.font1,
     fontWeight: 'bold',
     marginLeft: Rw(10)
   },
-
-  forgetsaveContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: Rw(2),
-  },
-
-  saveMeText: {
-    fontSize: fo(1.8),
-    color: colors.heading,
-    marginLeft: Rw(10)
-  },
-
-  forgetPasswordText: {
-    fontSize: fo(1.8),
-    color: colors.headerbackground,
-    fontWeight: 'bold',
-    marginRight: Rw(10)
-  },
-
-  lowertxtContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: Rw(4),
-  },
-
-  line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: 'black',
-    marginHorizontal: Rw(0.5),
-  },
-
 });

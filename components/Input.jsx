@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     opacity: 0.3,
     width: Rw(80),
     padding: Rh(1.7),
-
+    color: colors.font1,
   }
 })
 

@@ -20,7 +20,11 @@ export default function HomeScreen({ navigation }) {
       try {
         const user = await getUser();
         setUserData(user);
-        await AsyncStorage.setItem('userData', JSON.stringify(user));
+        console.log(user);
+        const userDataString = await AsyncStorage.getItem('userData');
+
+    // Parse the JSON string back to an object
+    const userData = JSON.parse(userDataString);
       } catch (error) {
         console.error('Error fetching user data:', error);
         Alert.alert('Error', 'Failed to fetch user data. Please try again.');

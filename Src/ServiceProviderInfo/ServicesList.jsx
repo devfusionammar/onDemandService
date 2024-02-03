@@ -1,94 +1,76 @@
-import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, ActivityIndicator, Button, Alert } from 'react-native';
 import SelectBox from 'react-native-multi-selectbox';
 import { xorBy } from 'lodash';
-
-// Service provider and sub-services data
-const SERVICE_PROVIDERS = [
-  {
-    item: 'Haircut',
-    id: 'hairCut',
-    subServices: [
-      { item: 'Men\'s Haircut', id: 'menHaircut' },
-      { item: 'Women\'s Haircut', id: 'womenHaircut' },
-      // Add more sub-services as needed
-    ],
-  },
-  {
-    item: 'Manicure',
-    id: 'manicure',
-    subServices: [
-      { item: 'Basic Manicure', id: 'basicManicure' },
-      { item: 'Pedicure Combo', id: 'pedicureCombo' },
-      // Add more sub-services as needed
-    ],
-  },
-  // Add more service providers as needed
-  {
-    item: 'Haircut',
-    id: 'hairCut',
-    subServices: [
-      { item: 'Men\'s Haircut', id: 'menHaircut' },
-      { item: 'Women\'s Haircut', id: 'womenHaircut' },
-      // Add more sub-services as needed
-    ],
-  },
-  {
-    item: 'Manicure',
-    id: 'manicure',
-    subServices: [
-      { item: 'Basic Manicure', id: 'basicManicure' },
-      { item: 'Pedicure Combo', id: 'pedicureCombo' },
-      // Add more sub-services as needed
-    ],
-  },
-  {
-    item: 'Haircut',
-    id: 'hairCut',
-    subServices: [
-      { item: 'Men\'s Haircut', id: 'menHaircut' },
-      { item: 'Women\'s Haircut', id: 'womenHaircut' },
-      // Add more sub-services as needed
-    ],
-  },
-  {
-    item: 'Manicure',
-    id: 'manicure',
-    subServices: [
-      { item: 'Basic Manicure', id: 'basicManicure' },
-      { item: 'Pedicure Combo', id: 'pedicureCombo' },
-      // Add more sub-services as needed
-    ],
-  },
-  {
-    item: 'Haircut',
-    id: 'hairCut',
-    subServices: [
-      { item: 'Men\'s Haircut', id: 'menHaircut' },
-      { item: 'Women\'s Haircut', id: 'womenHaircut' },
-      // Add more sub-services as needed
-    ],
-  },
-  {
-    item: 'Manicure',
-    id: 'manicure',
-    subServices: [
-      { item: 'Basic Manicure', id: 'basicManicure' },
-      { item: 'Pedicure Combo', id: 'pedicureCombo' },
-      // Add more sub-services as needed
-    ],
-  },
-];
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { serviceProviderList } from '../../services/beautationData';
+import { colors } from '../../theme';
+import { useRoute } from '@react-navigation/native';
+import { Platform } from 'react-native';
+import {
+  responsiveHeight as Rh,
+  responsiveScreenWidth as Rw,
+  responsiveScreenFontSize as fo,
+} from 'react-native-responsive-dimensions';
 const ServiceList = () => {
   const [selectedServiceProvider, setSelectedServiceProvider] = useState({});
   const [selectedSubServices, setSelectedSubServices] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [serviceData, setServiceData] = useState([]);
+  const route = useRoute();
+  const { beauticianId } = route.params;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const data = await serviceProviderList(beauticianId);
+        console.log('Fetched data:', data);
+        setServiceData(data.services);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <ActivityIndicator size="large" color={colors.primary} />;
+  }
+
+  // Transform fetched data into the format expected by SelectBox
+  const options = serviceData?.map(service => ({
+    item: service.categoryName,
+    id: service._id,
+    subServices: service.Types.map(type => ({
+      item: `${type.Name} - ${type.Price}`,
+      id: type._id
+    })),
+  }));
+
+  const saveBookingData = async () => {
+    try {
+      const bookingData = {
+        service: selectedServiceProvider.id,
+        Type: selectedSubServices.map(subService => ({ TypeID: subService.id })),
+        TotalAmount: '2500' // Assuming total amount is constant or derived from selected services
+      };
+      await AsyncStorage.setItem('bookingData', JSON.stringify(bookingData));
+      Alert.alert('Booking Data Saved', 'Booking data has been saved successfully!');
+    } catch (error) {
+      console.error('Error saving booking data:', error);
+      Alert.alert('Error', 'Failed to save booking data. Please try again.');
+    }
+  };
 
   return (
-    <View style={{ margin: 30 }}>
+    <View style={{ marginTop: Platform.OS === 'ios' ? Rh(3) : Rh(3) }}>
       <SelectBox
-        label="Hair Cut"
-        options={SERVICE_PROVIDERS}
+        label="Select Service"
+        options={options}
         value={selectedServiceProvider}
         onChange={onChange()}
         hideInputFilter={false}
@@ -102,6 +84,8 @@ const ServiceList = () => {
         onTapClose={onMultiChange()}
         isMulti
       />
+    
+      
     </View>
   );
 

@@ -17,9 +17,38 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {NearbyItems} from '../../assets/NearbySaloons/NearbySaloons';
 import { useNavigation } from '@react-navigation/native';
+import {topBeautaion} from '../../services/beautacions'
  const NearbySaloons=()=> {
+  
   const navigation = useNavigation();
-  const [bannerData, setBannerData] = useState([]);
+  const [bannerData, setBannerData] = useState([ ]);
+ 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        
+        const data = await topBeautaion();
+        setBannerData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+    fetchData();
+  }, []);
+  useEffect(() => {
+    Animated.loop(
+      Animated.timing(scrollX, {
+        toValue: 1,
+        duration: 3000,
+        useNativeDriver: false,
+      }),
+    ).start();
+  }, []);
+const handlePress=(reviewid)=> {
+console.log('Press id is ' + reviewid);
+navigation.navigate('ServiceProvider', { beauticianId: reviewid });
+};
+
   const scrollX = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     Animated.loop(
@@ -34,38 +63,41 @@ import { useNavigation } from '@react-navigation/native';
     <View clasName="" style={styles.container}>
       <View className="flex-row justify-between items-center">
         <Text style={styles.buttontext}>Nearby Saloones</Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('AddTrip')}
-          className="p-2 bg-white border border-gray-200 rounded-full mb-2 mr-1">
-          <Text style={styles.buttontext} className="font-sans">
-            View All
-          </Text>
-        </TouchableOpacity>
+       
+       
       </View>
       {/* Neaby Saloons  */}
       <View >
         <FlatList
-          data={NearbyItems}
+          data={bannerData?.data}
           horizontal={true}
           pagingEnabled
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.beauticianId.toString()}
           showsHorizontalScrollIndicator={false}
           renderItem={({item}) => (
-            <TouchableOpacity key={item.id} value
-            onPress={()=>navigation.navigate("ServiceProvider")}
-            >
+            <TouchableOpacity onPress={() => handlePress(item.beauticianId)}>
             <View style={styles.bannerContainer} >
-              <Image style={styles.bannerImage} source={item.img} />
+            {item.profilePhoto ? (
+                <Image
+                  style={styles.bannerImage}
+                  source={{ uri: `data:image/png;base64,${item.profilePhoto}` }}
+                />
+              ) : (
+                <Image
+                  style={styles.bannerImage}
+                  source={require('../../assets/popularServiceProvider/popular.png')}
+                />
+              )}
               
               <View
                 style={styles.SaloonItem}>
 
-                <Text style={styles.saloonName}>{item.saloname}</Text>
+                <Text style={styles.saloonName}>{item.firstName} {item.lastName}</Text>
 
 
                 <View style={styles.PhoneContainer} className="flex-row justify-between">
                   <Image source={require('../../assets/Icons/Callmale.png')} />
-                  <Text style={styles.Phone}>{item.Pjone}</Text>
+                  <Text style={styles.Phone}>{item.Phone ? item.Phone : '920000000'}</Text>
                 </View>
                 <View style={styles.ratingContainer} className="flex-row justify-between">
                   <Ionicons
@@ -74,8 +106,8 @@ import { useNavigation } from '@react-navigation/native';
                     color='#F4C01E'
                   />
 
-                  <Text style={{ color: colors.font1 }} className="ml-1">{item.rating}</Text>
-                  <Text style={{ color: colors.fontSubheadin }}>({item.review})</Text>
+                  <Text style={{ color: colors.font1 }} className="ml-1">{item.totalReviews}</Text>
+                  <Text style={{ color: colors.fontSubheadin }}>({item.averageRating})</Text>
 
                 </View>
                 </View>
@@ -120,11 +152,11 @@ const styles = StyleSheet.create({
     
   },
   bannerImage: {
-    width: Rw(82.5),
+    width: Rw(80.5),
     height: Rh(19),
     marginLeft:Rw(-2),
     borderTopLeftRadius: Rw(5.2), 
-  borderTopRightRadius: Rw(5.2),
+  borderTopRightRadius: Rw(2),
   },
   SaloonItem: { flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-start' ,marginLeft:Rw(2.4)},
 

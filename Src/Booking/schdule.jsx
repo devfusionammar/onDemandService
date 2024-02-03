@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
+import { useNavigation } from '@react-navigation/native';
+import BookingButtons from '../../components/bookingButton';
+import {
+  responsiveHeight as Rh,
+  responsiveScreenWidth as Rw,
+  responsiveScreenFontSize as Rf,
+} from 'react-native-responsive-dimensions';
 import { colors } from '../../theme';
+import { useRoute } from '@react-navigation/native';
+
 export default function Schedule() {
   const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
   const [selectedYear, setSelectedYear] = useState(moment().year());
   const [selectedMonth, setSelectedMonth] = useState(moment().month() + 1);
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { saloonId } = route.params;
 
   const onDayPress = (day) => {
     setSelectedDate(day.dateString);
@@ -14,19 +26,33 @@ export default function Schedule() {
 
   const onMonthChange = (month) => {
     setSelectedYear(month.year);
-    setSelectedMonth(month.month);
+    setSelectedMonth(month.month + 1);
   };
 
-  const daysInMonth = Array.from(Array(moment(`${selectedYear}-${selectedMonth}`, 'YYYY-MM').daysInMonth()).keys());
+  // Function to handle button press and navigate
+  const handleButtonPress = (selectedTime) => {
+    // Navigate to the next screen and pass selected date and time as params
+    navigation.navigate('RecptBooking', {
+      saloonId: saloonId,
+      selectedDate: selectedDate,
+      selectedTime: selectedTime.format(),
+    });
+  };
 
   // Generate buttons for each hour of the day
   const generateTimeButtons = () => {
     const buttons = [];
     for (let i = 0; i < 24; i++) {
       buttons.push(
-        <View key={i} style={styles.timeButtonContainer}>
-          <Button title={moment().startOf('day').add(i, 'hours').format('h A')} onPress={() => console.log('Pressed')} />
-        </View>
+        <TouchableOpacity
+          key={i}
+          style={styles.timeButtonContainer}
+          onPress={() => handleButtonPress(moment().startOf('day').add(i, 'hours'))}
+        >
+          <Text style={styles.timeButtonText}>
+            {moment().startOf('day').add(i, 'hours').format('h A')}
+          </Text>
+        </TouchableOpacity>
       );
     }
     return buttons;
@@ -48,20 +74,13 @@ export default function Schedule() {
         onPressArrowLeft={(subtractMonth) => subtractMonth()}
         onPressArrowRight={(addMonth) => addMonth()}
       />
-      <FlatList
-        data={daysInMonth}
-        keyExtractor={(item) => item.toString()}
-        horizontal={true}
-        contentContainerStyle={styles.dateList}
-        renderItem={({ item }) => (
-          <View style={styles.dayContainer}>
-            <Text>{moment(`${selectedYear}-${selectedMonth}-${item + 1}`, 'YYYY-MM-DD').format('ddd, D')}</Text>
-          </View>
-        )}
-      />
+
       {/* Table of time buttons */}
-      <View style={styles.timeButtonTable}>
-        {generateTimeButtons()}
+      <View style={styles.timeButtonTable}>{generateTimeButtons()}</View>
+
+      {/* Booking button */}
+      <View style={styles.bookingButtonContainer}>
+        <BookingButtons backgroundColor={colors.ServiceProvider_buttonBackground} titlenext={'Book Now'} />
       </View>
     </View>
   );
@@ -72,30 +91,27 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 50,
   },
-  dateList: {
-    justifyContent: 'center',
-  },
-  dayContainer: {
-    width: 70,
-    height: 70,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 5,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    borderRadius: 35,
-  },
   timeButtonTable: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginTop: 20,
-    paddingHorizontal: 30,
-    
+    marginTop: 10,
+    paddingHorizontal: Rw(10),
   },
   timeButtonContainer: {
-    width: '23%',
-    marginVertical: 21,
-    borderRadius: 20,
-    overflow: 'hidden',
+    width: '30%', // Adjust the width as needed
+    marginVertical: 18,
+    backgroundColor: colors.ServiceProvider_buttonBackground,
+    borderRadius: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  timeButtonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  bookingButtonContainer: {
+    alignItems: 'center',
+    marginTop: Rh(7),
   },
 });

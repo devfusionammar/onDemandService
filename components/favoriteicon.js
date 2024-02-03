@@ -29,6 +29,7 @@ const FavoriteIcon = () => {
           <HeartIcon name="heart-o" size={20} color="black" />
         ) : (
           <HeartIcon name="heart" size={20} color="red" />
+          
         )}
       </View>
     </TouchableOpacity>

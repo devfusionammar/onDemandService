@@ -53,7 +53,7 @@ export async function LoginUser({ UserName, Password }) {
         Password: Password,
       }),
     });
-
+    console.log(response)
     if (!response.ok) {
       throw new Error('Failed to log in');
     }
@@ -70,4 +70,34 @@ console.log(data.AuthToken)
     throw error;
   }
 }
+  ///Forget password Secrtion
+  export async function forgetPassword({ OTPReq, NewPassword }) {
+    console.log("+++++++++++++++++",OTPReq,NewPassword)
+    const authToken = await AsyncStorage.getItem('AuthToken');
+    
+    try {
+      const response = await fetch(`${baseUrl}/api/userAuth/forgetPassword`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': `${authToken}`
+        },
+        body: JSON.stringify({
+          OTPReq: OTPReq,
+          NewPassword: NewPassword,
+        }),
+      });
+      console.log(response)
+      if (!response.ok) {
+        throw new Error('Failed to log in');
+      }
   
+      const data = await response.json();
+      console.log(data)       
+  console.log(data.AuthToken)
+      return data;
+    } catch (error) {
+      console.error('Error logging in:', error);
+      throw error;
+    }
+  }
