@@ -22,16 +22,16 @@ const styles = StyleSheet.create({
   
   button: {
    
-    height: Rh(5),
-    width: Rw(22),
-    margin:Rw(1)
+    height: Rh(4),
+    width: Rw(20),
+    margin:Rw(2.3)
     
   },
   buttonText: {
-    marginTop:3,
+    marginTop:Rh(1.3),
     textAlign: 'center',
     color: 'white',
-    fontSize: Rf(2),
+    fontSize: Rf(1.6),
   },
 });
 export default BookingDetails;

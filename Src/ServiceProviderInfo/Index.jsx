@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, ScrollView, StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import RatingIcon from 'react-native-vector-icons/Entypo';
@@ -19,9 +19,22 @@ import ServiceProviderAbout from './serviceProviderAbout';
 import ServiceProviderReviews from './ServiceProviderReviews';
 import BookingButtons from '../../components/bookingButton';
 import { useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const ServiceProvider = ({ navigation }) => {
   const route = useRoute();
-  const {beauticianId} = route.params;
+  const beauticianId = route?.params ? route.params.beauticianId : '658c2efdc040b459a3082002';
+  useEffect(() => {
+    const setBeauticianId = async () => {
+      try {
+        await AsyncStorage.setItem('beauticianId', beauticianId);
+        console.log('Beautician ID set successfully.');
+      } catch (error) {
+        console.error('Error setting Beautician ID:', error);
+      }
+    };
+
+    setBeauticianId();
+  }, [beauticianId]);
   console.log(`Review ++`, beauticianId);
   const selectedId = 1;
   const selectedSalon = serviceProviderInfo.find(
@@ -69,7 +82,7 @@ console.log('Press');
             // Handle favorite icon press
           }}
         >
-          <FavoriteIcon />
+          <FavoriteIcon saloonId={beauticianId} />
         </TouchableOpacity>
 
         {/* Available Button */}
@@ -121,7 +134,7 @@ console.log('Press');
           {/* Gallrey Details*/}
           <View
             className=" justify-around h-20 mt-4"
-            style={{ backgroundColor: colors.headerbackground }}
+            style={{ backgroundColor: colors.topbackground }}
           >
             <View style={{ marginTop: 10 }} className="flex-row justify-around p-2">
               <ServiceProviderButton
@@ -135,6 +148,11 @@ console.log('Press');
 
               <ServiceProviderButton
                 buttonName="Review"
+                onPressButtonClick={() => toggleContent('Review')}
+               
+              />
+              <ServiceProviderButton
+                buttonName="Gallrey"
                 onPressButtonClick={() => toggleContent('Review')}
                
               />
@@ -166,12 +184,16 @@ const styles = StyleSheet.create({
     top: 10,
     left: 10,
     zIndex: 1,
+    marginTop:Rh(1.4),
+    marginLeft:Rw(5)
   },
   favoriteButton: {
     position: 'absolute',
-    top: 10,
+    top: 9,
     right: 10,
     zIndex: 1,
+    marginTop:Rh(2),
+    marginRight:Rw(5)
   },
   availableButton: {
     position: 'absolute',
@@ -226,7 +248,7 @@ const styles = StyleSheet.create({
   },
   bottomButtonContainer: {
     position: 'absolute',
-    bottom: 20,
+    bottom:Rh(4),
     width: '100%',
   },
 });

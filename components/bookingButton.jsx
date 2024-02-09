@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     
   },
   button: {
-    borderRadius: 10, // Adjust the border radius for rounded corners
+    borderRadius: Rw(5), // Adjust the border radius for rounded corners
     paddingVertical: 15, // Adjust the vertical padding for height
     paddingHorizontal:Rw(35) , // Adjust the horizontal padding for width
     

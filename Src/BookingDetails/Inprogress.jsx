@@ -3,8 +3,9 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, Animated, Ac
 import { colors } from '../../theme';
 import { responsiveHeight as Rh, responsiveScreenWidth as Rw, responsiveScreenFontSize as fo } from 'react-native-responsive-dimensions';
 import { getAllBooking } from '../../services/bookingconfrm';
-
+import { useNavigation } from '@react-navigation/native';
 export default function Inprogress() {
+    const navigation=useNavigation();
     const [bannerData, setBannerData] = useState([]);
     const [loading, setLoading] = useState(true);
     const scrollX = useRef(new Animated.Value(0)).current;
@@ -48,6 +49,9 @@ export default function Inprogress() {
                     keyExtractor={item => item._id}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item }) => (
+                        <TouchableOpacity
+                        onPress={() => navigation.navigate('RecptComplete')}
+                        >
                         <View style={styles.bannerContainer}>
                             {item?.Beautician?.ProfiePhoto ? (
                                 <Image
@@ -82,6 +86,7 @@ export default function Inprogress() {
                                 </TouchableOpacity>
                             </View>
                         </View>
+                        </TouchableOpacity>
                     )}
                     onScroll={Animated.event(
                         [{ nativeEvent: { contentOffset: { x: scrollX } } }],

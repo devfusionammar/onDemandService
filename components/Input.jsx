@@ -1,40 +1,60 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { colors } from '../theme';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {
   responsiveHeight as Rh,
   responsiveScreenWidth as Rw,
   responsiveScreenFontSize as fo,
 } from 'react-native-responsive-dimensions';
-import { colors } from '../theme';
-import { Image } from 'react-native-animatable'
+const Input = ({ imgsrc, placeholder, is_password, onChangeText,right }) => {
+  const [showPassword, setShowPassword] = useState(false);
 
-const Input = ({ imgsrc, placeholder, is_password, onChangeText }) => {
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
-    <View>
+    <View style={styles.container} >
       <TextInput
         style={styles.logininput}
         placeholder={placeholder}
         placeholderTextColor={colors.font1}
-        secureTextEntry={is_password}
-        onChangeText={onChangeText} // Pass the onChangeText prop to the TextInput component
+        secureTextEntry={!showPassword && is_password}
+        onChangeText={onChangeText}
+        disableFullscreenUI={false}
       />
+      {is_password && (
+        <TouchableOpacity style={{ top: Rh(1.4), position: 'absolute',right:right,}} onPress={togglePasswordVisibility}>
+          <Icon name={showPassword ? 'eye-off' : 'eye'} size={25} color={'black'} />
+        </TouchableOpacity>
+      )}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-
+  container: {
+    position: 'relative',
+  },
   logininput: {
-    fontSize: 14,
+    fontSize: fo(1.8),
     marginLeft: Rh(5),
     borderWidth: Rw(0.2),
-    borderColor: "black",
+    borderColor: 'black',
     borderRadius: 10,
     opacity: 0.3,
     width: Rw(80),
     padding: Rh(1.7),
-    color: colors.font1,
-  }
-})
+    color: '#050008',
+    fontWeight:'bold',
+    
+  },
+  iconContainer: {
+    position: 'absolute',
+    right: Rw(10),
+    top: Rh(1.4),
+  },
+});
 
-export default Input
+export default Input;

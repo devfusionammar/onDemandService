@@ -6,13 +6,14 @@ import fetchUserData from '../../contexprovider/fetchusetdata';
 import { responsiveHeight,responsiveScreenWidth,responsiveFontSize, } from 'react-native-responsive-dimensions';
 export default function UserInfo() {
   const [userData, setUserData] = useState(null);
- 
+  const username=userData?.userData?.FirstName
+  console.log("===============+",username)
   useEffect(() => {
     
     const getUserData = async () => {
       try {
         const userData = await fetchUserData();
-        setUserData(userData.userData.FirstName);
+        setUserData(userData);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -22,7 +23,7 @@ export default function UserInfo() {
   }, []);
 
   return (
-    <View className= {"flex-row justify-left items-center p-0 "} style={{backgroundColor:colors.headerbackground,marginBottom:responsiveHeight(1)}}>
+    <View className= {"flex-row justify-left items-center p-0 "} style={{backgroundColor:colors.topbackground,marginBottom:responsiveHeight(0)}}>
         <Image  
         style={{height:responsiveHeight(6),width:responsiveScreenWidth(6),resizeMode:"cover",marginTop:responsiveHeight(1),marginLeft:responsiveScreenWidth(3.9)}}
         className={`p-6`} 
@@ -31,7 +32,8 @@ export default function UserInfo() {
         <View className="flex-1 justify-center m-1">
         <Text className={` text-bold pl-2 pt-0`}
         style={{color:`${colors.font1}`,marginLeft:responsiveScreenWidth(2),marginTop:responsiveHeight(0),fontSize:responsiveFontSize(2.3)}}
-        >{userData}</Text>
+        >{username}</Text>
+        
         <Text className={` text-bold pl-2 pt-0`}
         style={{color:`${colors.fontWhite}`,marginLeft:responsiveScreenWidth(2),marginTop:responsiveHeight(0),fontSize:responsiveFontSize(1.5)}}
         >6km Raiwind Rd, Dubai Town</Text>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, StyleSheet, ScrollView, Alert, Platform } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import ScreenWrapper from '../components/ScreenWrapper';
 import { colors } from '../theme';
@@ -11,6 +11,11 @@ import UserInfo from './Userinfo/UserInfo';
 import PopularServiceProvider from './popularServiceProvider/popularServiceProvider';
 import { getUser } from '../services/getuserdetails';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  responsiveHeight as Rh,
+  responsiveScreenWidth as Rw,
+  responsiveScreenFontSize as fo,
+} from 'react-native-responsive-dimensions';
 export default function HomeScreen({ navigation }) {
   const [userData, setUserData] = useState("");
 
@@ -63,6 +68,7 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.background,
+    marginTop:Platform.OS=='android'?  Rh(0): Rh(1.2)
   },
   userInfo: {
     position: 'sticky',

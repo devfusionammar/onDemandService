@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Alert } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Alert,TextInput } from 'react-native';
 import Input from '../../components/Input';
 import Buttons from '../../components/Buttons';
 import ScreenWrapper from '../../components/ScreenWrapper';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {
   responsiveHeight as Rh,
   responsiveScreenWidth as Rw,
@@ -20,9 +21,9 @@ const Login = ({ navigation }) => {
   });
 
   const [loading, setLoading] = useState(false); // State variable to manage loading state
+  const [showPassword, setShowPassword] = useState(false); // State variable to manage password visibility
 
   const handlleLogin = () => {
-  
     setLoading(true); // Start loading when login is initiated
     console.log("++",formData);
     LoginUser(formData)
@@ -39,7 +40,6 @@ const Login = ({ navigation }) => {
       } else {
         setLoading(false);
         console.error('Login failed:', response.Message);
-        
       }
     })
     .catch((error) => {
@@ -50,7 +50,6 @@ const Login = ({ navigation }) => {
     .finally(() => {
       setLoading(false);
     });
-
   };
 
   const handleForgotPassword = () => {
@@ -63,13 +62,15 @@ const Login = ({ navigation }) => {
 
   return (
     <ScreenWrapper>
-      <View style={styles.container}>     
+      <View style={styles.container}>  
+       <View style={{backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Rh(1.3)}}>
         <Text style={styles.loginText}>Log In</Text> 
+        </View>
         <Text style={styles.h2}>Login to your account to access all the features in Barber Shop</Text>
 
         <View style={styles.container}>
           <View style={styles.inputContainer}>
-            <Text style={styles.EmailText}>Email/Phone Number</Text>
+            <Text style={styles.EmailText}>Username</Text>
             <Input 
               placeholder={'Enter Username'} 
               onChangeText={(text) => setFormData({ ...formData, UserName: text })} 
@@ -78,19 +79,20 @@ const Login = ({ navigation }) => {
 
           <View style={styles.inputContainer}>
             <Text style={styles.EmailText}>Password</Text>
-            <Input 
-              placeholder={'Enter Password'} 
-              is_password={true} 
-              onChangeText={(text) => setFormData({ ...formData, Password: text })} 
-            />
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Input 
+                placeholder={'Enter Password'} 
+                is_password={!showPassword} 
+                onChangeText={(text) => setFormData({ ...formData, Password: text })} 
+                right={Rw(1.3)}
+              />
+            
+            </View>
           </View>
 
           <View style={styles.forgetsaveContainer}>
             <TouchableOpacity>
-              {/* Add your Remember Me functionality here */}
-              <Text style={styles.saveMeText}>Save Me</Text>
             </TouchableOpacity>
-            
             <TouchableOpacity onPress={handleForgotPassword}>
               {/* Add your Forgot Password functionality here */}
               <Text style={styles.forgetPasswordText}>Forget Password?</Text>
@@ -123,31 +125,28 @@ const Login = ({ navigation }) => {
         </View>
         
         <View style={{ flexDirection: 'row', marginLeft: Rw(35), marginTop: Rw(1)}}>
-        <View>
-      <Image 
-              style={{width:40, height:40, 
-              top:"32%", left:"2%" }}
+          <View>
+            <Image 
+              style={{width:35, height:35, top:"32%", left:"2%" }}
               source={require("../../assets/facebook.png")}
             />
-      </View>
-      <View>
-      <Image 
-              style={{width:40, height:40, 
-              top:"32%", left:"2%" }}
+          </View>
+          <View>
+            <Image 
+              style={{width:45, height:45, top:"18%", left:"2%" }}
               source={require("../../assets/apple.png")}
             />
-      </View>
-      <View>
-      <Image 
-              style={{width:40, height:40, 
-              top:"32%", left:"2%" }}
+          </View>
+          <View>
+            <Image 
+              style={{width:35, height:35, top:"32%", left:"2%" }}
               source={require("../../assets/googleIcon.png")}
             />
-      </View>
+          </View>
         </View>
 
         <View style={{flexDirection:'row', marginTop: Rw(18), marginLeft: Platform.OS==="ios" ? Rw(20) : Rw(25)}}>
-          <Text style={{fontSize: fo(2), color: colors.font1}}>Don't have an Account?</Text>
+          <Text style={{fontSize: fo(2), color: colors.font1}}>Don't have an Account? </Text>
           <TouchableOpacity onPress={handleSignUp}>
             <Text style={{fontSize: fo(2), color: colors.headerbackground}}>SIGN UP?</Text>
           </TouchableOpacity>
@@ -166,19 +165,21 @@ const styles = StyleSheet.create({
 
   loginText: {
     fontSize: fo(3),
-    marginTop: Rw(8),
+    marginTop: Rw(5),
     fontWeight: 'bold',   
     textAlign: 'center',
-    color: 'black',
+    color: 'white',
   },
 
   h2: {
-    fontSize: fo(2.5),
+    fontSize: fo(2.2),
     backgroundColor: colors.headerbackground,
     color: colors.background,
-    marginTop: Rw(1.6),
+    marginTop: Rw(0),
     padding: 40,
     textAlign: 'center',
+    color:'black',
+    height:Rh(14)
   },
 
   inputContainer: {
@@ -186,10 +187,11 @@ const styles = StyleSheet.create({
   },
 
   EmailText: {
-    fontSize: fo(1.8),
+    fontSize: fo(1.3),
     color: colors.font1,
     fontWeight: 'bold',
-    marginLeft: Rw(10)
+    marginLeft: Rw(10),
+    marginBottom:Rh(1)
   },
 
   forgetsaveContainer: {
@@ -223,6 +225,4 @@ const styles = StyleSheet.create({
     backgroundColor: 'black', 
     marginHorizontal: Rw(0.5), 
   },
-
 });
-

@@ -33,11 +33,13 @@ console.log(otp);
       sendOTP()
         .then(response => {
           // Handle success response if needed
+          Alert.alert('Otp Sent Successfully on Your Email Address');
           console.log('OTP sent successfully:', response);
           resolve(response);
         })
         .catch(error => {
           // Handle error response
+          Alert.alert('Network Eroor');
           console.error('Error sending OTP:', error);
           reject(error);
         });
@@ -97,6 +99,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 15,
     marginBottom: 20,
+    color:colors.font1,
   },
   button: {
     width: '100%',
@@ -111,6 +114,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+    
   },
   secondaryButton: {
     backgroundColor: '#28a745',

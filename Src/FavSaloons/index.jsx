@@ -16,23 +16,24 @@ import {
     responsiveScreenFontSize as fo,
 } from 'react-native-responsive-dimensions';
 import Ionicons from 'react-native-vector-icons/Entypo';
-import { PopularItems } from '../../assets/popularServiceProvider/PopularServiceProvider';
 import { useNavigation } from '@react-navigation/native';
-import { beautationCategories } from '../../services/beautacions'
 import ScreenWrapper from '../../components/ScreenWrapper';
 import { useRoute } from '@react-navigation/native';
-export default function CategoreySaloon() {
+import { favSaloonsList } from '../../services/favorutSaloon';
+import BackButton from '../../components/backbutton';
+export default function FavSaloons() {
     const route = useRoute();
     const navigation = useNavigation();
-    const { categoryId } = route.params;
-    console.log("this is id at salloon side", categoryId);
+    
     const [bannerData, setBannerData] = useState('');
+    console.log(bannerData)
     const scrollX = useRef(new Animated.Value(0)).current;
 
-    useEffect(() => {
+    useEffect(() => {console.log('chllla')
+
         async function fetchData() {
             try {
-                const data = await beautationCategories(categoryId);
+                const data = await favSaloonsList();
                 console.log('Fetched data:', data);
                 setBannerData(data);
             } catch (error) {
@@ -40,7 +41,7 @@ export default function CategoreySaloon() {
             }
         }
         fetchData();
-    }, [categoryId]);
+    }, [1]);
 
     useEffect(() => {
         Animated.loop(
@@ -62,12 +63,14 @@ export default function CategoreySaloon() {
     }
  return (
         <ScreenWrapper>
-              <View  style={{height:Rh(11),width:Rw(100),marginTop:-12 ,backgroundColor:colors.headerbackground}}>
-                <View style={{marginTop:Rh(5.4),marginLeft:Rw(6)}}>
-               <Text style={{fontSize:fo(2.4),fontFamily:colors.fontfaimly_heding}}>Hair Cut</Text>
-                <Text style={{fontSize:fo(2),fontFamily:colors.fontfaimly_text,color:colors.fontSubheadin}}>Our 4 Salons</Text>
-                </View>
-               </View>
+              <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'? 0: Rh(1.3)}}>
+      <TouchableOpacity
+          style={styles.backButton}
+        >
+          <BackButton onPress={()=> navigation.navigate('Profile')}/>
+        </TouchableOpacity>
+        <Text style={styles.loginText}>Favourite Saloons</Text> 
+        </View>
         <View clasName="" style={styles.container}>
           
             
@@ -199,6 +202,20 @@ const styles = StyleSheet.create({
     ,
     ratingContainer: {
         marginLeft: Rw(0.1),
-    }
-
+    },
+    loginText: {
+        fontSize: fo(3),
+        marginTop: Rw(0),
+        fontWeight: 'bold',   
+        textAlign: 'center',
+        color: 'white',
+      },
+      backButton: {
+        position: 'absolute',
+        top: 10,
+        left: 10,
+        zIndex: 1,
+        marginTop:Rh(1.3),
+        marginRight:Rw(2)
+      },
 });

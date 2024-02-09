@@ -62,7 +62,9 @@ const Signup = ({ navigation }) => {
     <ScreenWrapper>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
-          <Text style={styles.loginText}>Register</Text>
+        <View style={{backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Rh(1.3)}}>
+        <Text style={styles.loginText}>Register</Text> 
+        </View>
           <Text style={styles.h2}>
             Register to your account to access all the features in Barber Shop
           </Text>
@@ -102,14 +104,17 @@ const Signup = ({ navigation }) => {
                 placeholder={'Enter Password'}
                 is_password={true}
                 onChangeText={(text) => setFormData({ ...formData, Password: text })}
+                right={Rw(10.2)}
               />
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.EmailText}>Phone</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Input
                 placeholder={'Enter phone number'}
                 onChangeText={(text) => setFormData({ ...formData, PhoneNo: text })}
               />
+              </View>
             </View>
           </View>
 
@@ -142,25 +147,28 @@ const styles = StyleSheet.create({
   },
   loginText: {
     fontSize: fo(3),
-    marginTop: Rw(8),
+    marginTop: Rw(5),
     fontWeight: 'bold',
     textAlign: 'center',
   },
   h2: {
-    fontSize: fo(2.5),
+    fontSize: fo(2.2),
     backgroundColor: colors.headerbackground,
     color: colors.background,
-    marginTop: Rw(1.6),
+    marginTop: Rw(0),
     padding: 40,
     textAlign: 'center',
+    color:'black',
+    height:Rh(14)
   },
   inputContainer: {
     marginTop: Rw(3),
   },
   EmailText: {
-    fontSize: fo(1.8),
+    fontSize: fo(1.3),
     color: colors.font1,
     fontWeight: 'bold',
-    marginLeft: Rw(10)
+    marginLeft: Rw(10),
+    marginBottom:Rh(1)
   },
 });

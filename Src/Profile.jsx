@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image,StyleSheet, Platform } from 'react-native';
 import ScreenWrapper from '../components/ScreenWrapper';
 import { colors } from '../theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -27,13 +27,16 @@ export default function Profile() {
   const aboutus = () => {
     navigation.navigate('AboutUs');
   };
+  const favSaloon = () => {
+    navigation.navigate('FavSaloons');
+  };
   const renderListItem = (item, index) => (
-    <TouchableOpacity key={index} style={{ flexDirection: 'row', paddingVertical: Rh(1.2), paddingHorizontal: Rw(3.5), marginTop: Rh(1.2) }} onPress={item.onPress}>
+    <TouchableOpacity key={index} style={{ flexDirection: 'row', paddingVertical: Rh(1.8), paddingHorizontal: Rw(3.5), marginTop: Rh(1.2) }} onPress={item.onPress}>
       <View style={{ borderRadius: 30, backgroundColor: colors.headerbackground, width: iconSize * 0.6, height: iconSize * 0.6, justifyContent: 'center', alignItems: 'center' }}>
         {item.icon}
       </View>
-      <Text style={{ marginLeft: Rw(7), fontSize: fo(2), color: 'black', margin: Rh(1.3) }}>{item.text}</Text>
-      {['My Profile', 'Favorite Beautician', 'Payment Method', 'Change Password'].includes(item.text) && (
+      <Text style={{ marginLeft: Rw(7), fontSize: fo(2), color: 'black', marginTop:Platform.OS=='android'?Rh(0): Rh(1),margin:Rh(1),textAlign:'center' }}>{item.text}</Text>
+      {['My Profile', 'Favorite Beautician', 'Payment Method', 'Change Password','Privacy policy','About us','Logout'].includes(item.text) && (
         <View style={{   justifyContent: 'Center', alignItems: 'Center' }}>
          {item.icone2}
         </View>
@@ -43,29 +46,49 @@ export default function Profile() {
 
   return (
     <ScreenWrapper style={{ flex: 1, textLG: { fontSize: fo(1.5), fontWeight: '600', color: 'black' } }}>
-      <View>
-        <Text style={{ textAlign: 'center', fontSize: fo(3), fontWeight: 'bold', color: colors.heading, marginTop: Rh(4) }}>Profile</Text>
-      </View>
+      <View style={{backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'? 0: Rh(1.3)}}>
+        <Text style={styles.loginText}>Profile</Text> 
+        </View>
 
-      <View style={{ marginTop: Rh(1), paddingVertical: Rh(2), backgroundColor: colors.headerbackground, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ marginTop: Rh(0), paddingVertical: Rh(2), backgroundColor: colors.headerbackground, justifyContent: 'center', alignItems: 'center' }}>
         <Image style={{ width: Rw(30), height: Rw(30) }} source={require('../assets/profile.png')} />
         <Text style={{ fontSize: fo(1.7), fontWeight: 'bold', color: 'white', marginLeft: Rw(10), marginTop: -Rh(1) }}> Viren Radadiya {'\n'} ibnerieadazz@gmail.com </Text>
       </View>
       <View style={{marginTop:Rh(0)}}>
       {[
-        { icon: <Ionicons name="person-outline" size={iconSize * 0.4} color={colors.background} />, text: 'My Profile', icone2:<Icones icon_margine={50} icon_top={1}/>, onPress: updateProfile },
-        { icon: <Image source={require('../assets/Icons/vector.png')} style={{ width: iconSize * 0.4, height: iconSize * 0.4 }} />, text: 'Favorite Beautician',icone2:<Icones icon_margine={37} icon_top={1}/> },
-        { icon: <Image source={require('../assets/Icons/Paymentmethod.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Payment Method',icone2:<Icones icon_margine={40} icon_top={1}/> },
-        { icon: <Image source={require('../assets/Icons/changepassword.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Change Password',icone2:<Icones icon_margine={39} icon_top={1}/> , onPress: updatePass},
-        { icon: <Image source={require('../assets/Icons/privacypolicy.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Privacy policy' },
-        { icon: <Image source={require('../assets/Icons/aboutus.png')} style={{ width: iconSize, height: iconSize }} />, text: 'About us',onPress: aboutus },
-        { icon: <Image source={require('../assets/Icons/logout.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Logout', onPress: handlelogout },
+        { icon: <Ionicons name="person-outline" size={iconSize * 0.4} color={colors.background} />, text: 'My Profile', icone2:<Icones icon_margine={Platform.OS=='android'?Rw(12.2):Rw(12)} icon_top={1}/>, onPress: updateProfile },
+        { icon: <Image source={require('../assets/Icons/vector.png')} style={{ width: iconSize * 0.4, height: iconSize * 0.4 }} />, text: 'Favorite Beautician',icone2:<Icones icon_margine={Platform.OS=='android'?Rw(9): Rw(8.3)} icon_top={1}/>,onPress:favSaloon },
+        { icon: <Image source={require('../assets/Icons/Paymentmethod.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Payment Method',icone2:<Icones icon_margine={Platform.OS=='android'?Rw(10):Rw(9)} icon_top={1}/> },
+        { icon: <Image source={require('../assets/Icons/changepassword.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Change Password',icone2:<Icones icon_margine={Platform.OS=='android'?Rw(9.6):Rw(8.7)} icon_top={1}/> , onPress: updatePass},
+        { icon: <Image source={require('../assets/Icons/privacypolicy.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Privacy policy',icone2:<Icones icon_margine={Platform.OS=='android'?Rw(10.8):Rw(10.3)} icon_top={1}/> },
+        { icon: <Image source={require('../assets/Icons/aboutus.png')} style={{ width: iconSize, height: iconSize }} />, text: 'About us',icone2:<Icones icon_margine={Platform.OS=='android'?Rw(12.3):Rw(12.4)} icon_top={1}/>,onPress: aboutus },
+        { icon: <Image source={require('../assets/Icons/logout.png')} style={{ width: iconSize, height: iconSize }} />, text: 'Logout',icone2:<Icones icon_margine={Platform.OS=='android'?Rw(12.8):Rw(13.1)} icon_top={1}/> ,onPress: handlelogout },
       ].map((item, index) => (
         <View key={index} style={{ marginTop: index > 0 ? Rh(-1) : 0 }}>
           {renderListItem(item, index)}
+          
         </View>
       ))}
       </View>
     </ScreenWrapper>
   );
 }
+const styles = StyleSheet.create({
+
+  loginText: {
+    fontSize: fo(3),
+    marginTop: Rw(5),
+    fontWeight: 'bold',   
+    textAlign: 'center',
+    color: 'white',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    zIndex: 1,
+    marginTop:Rh(2),
+    marginRight:Rw(2)
+  },
+ 
+});

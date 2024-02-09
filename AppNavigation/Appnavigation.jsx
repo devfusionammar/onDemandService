@@ -25,12 +25,13 @@ import RecptBooking from '../Src/Receipt/ReceiptBookig';
 import Booking from '../Src/BookingDetails/Booking';
 import ForgetPassword from '../Src/Auth/ForgetPassword';
 import AboutUs from '../Src/AboutUs&PrivicyPolicy/AboutUs';
+import FavSaloons from '../Src/FavSaloons';
+import PaymentPage from '../Src/PaymentMethod';
 const Stack = createNativeStackNavigator();
 export default function Appnavigation() {
   return (
     <NavigationContainer>
-
-      <Stack.Navigator initialRouteName="Login" screenOptions={{animationEnabled:true}}>
+      <Stack.Navigator initialRouteName="BottomNavigation" screenOptions={{animationEnabled:true}}>
         <Stack.Screen options={{headerShown:false}} name="Login" component={Login}  />
         <Stack.Screen options={{headerShown:false}} name="Profile" component={Profile}  />
         <Stack.Screen options={{headerShown:false}} name="Signup" component={Signup}  />
@@ -55,6 +56,8 @@ export default function Appnavigation() {
         <Stack.Screen options={{headerShown:false}} name="Booking" component={Booking} />
         <Stack.Screen options={{headerShown:false}} name="ForgetPassword" component={ForgetPassword} />
         <Stack.Screen options={{headerShown:false}} name="AboutUs" component={AboutUs} />
+        <Stack.Screen options={{headerShown:false}} name="FavSaloons" component={FavSaloons} />
+        <Stack.Screen options={{headerShown:false}} name="PaymentPage" component={PaymentPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

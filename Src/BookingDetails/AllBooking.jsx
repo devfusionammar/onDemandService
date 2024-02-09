@@ -19,7 +19,9 @@ import {
 import Ionicons from 'react-native-vector-icons/Entypo';
 import { PopularItems } from '../../assets/popularServiceProvider/PopularServiceProvider';
 import { getAllBooking } from '../../services/bookingconfrm';
+import { useNavigation } from '@react-navigation/native';
 export default function AllBooking() {
+    const navigation=useNavigation();
     const [bannerData, setBannerData] = useState([]);
     const [loading, setLoading] = useState(true);
    console.log(bannerData)
@@ -68,6 +70,9 @@ export default function AllBooking() {
     keyExtractor={item => item._id} // Use a unique identifier like _id
     showsHorizontalScrollIndicator={false}
     renderItem={({ item }) => (
+        <TouchableOpacity
+                        onPress={() => navigation.navigate('RecptComplete')}
+                        >
         <View style={styles.bannerContainer} >
             {item?.Beautician?.ProfiePhoto ? (
                 <Image
@@ -103,6 +108,7 @@ export default function AllBooking() {
                 </TouchableOpacity>
             </View>
         </View>
+        </TouchableOpacity>
     )}
     onScroll={Animated.event(
         [{ nativeEvent: { contentOffset: { x: scrollX } } }],

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, Platform ,TextInput ,TouchableOpacity,ActivityIndicator} from 'react-native';
+import { View, Text, Image, Platform ,TextInput ,TouchableOpacity,ActivityIndicator, Alert,StyleSheet,ScrollView} from 'react-native';
 import ScreenWrapper from '../../components/ScreenWrapper';
 import { colors } from '../../theme';
 import { responsiveHeight as Rh, responsiveScreenWidth as Rw, responsiveScreenFontSize as fo } from 'react-native-responsive-dimensions';
@@ -8,7 +8,7 @@ import { useProductContext } from '../../contexprovider/ProduxtContext'; // Impo
 import { useRoute } from '@react-navigation/native';
 import BookingButtons from '../../components/bookingButton';
 import { bookingConfirm } from '../../services/bookingconfrm';
-
+import BackButton from '../../components/backbutton';
 import moment from 'moment';
 const RecptBooking = () => {
     const route = useRoute();
@@ -28,7 +28,7 @@ const RecptBooking = () => {
       } catch (error) {
         console.error('Error confirming booking:', error);
       }finally{
-       
+       Alert.alert("Booking Confirmed")
       }
     }
   
@@ -99,15 +99,21 @@ const RecptBooking = () => {
     // Add your style calculations here if needed
   }
 
-  const styles = useStyles();
+ 
 
   return (
     <ScreenWrapper>
-      <View>
-        <Text style={{ fontFamily: colors.fontfaimly_heding, textAlign: 'center', fontSize: fo(3), fontWeight: 'bold', color: colors.heading, marginTop: Rh(4) }}>Receipt</Text>
-      </View>
+      
+      <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'? 0: Rh(1.3)}}>
+      <TouchableOpacity
+          style={styles.backButton}
+        >
+          <BackButton onPress={()=> navigation.navigate('Schedule')}/>
+        </TouchableOpacity>
+        <Text style={styles.loginText}>Receipt</Text> 
+        </View>
       {/* ServiceProvider Section */}
-      <View style={{ flexDirection: 'row' }}>
+      <View style={{ flexDirection: 'row',marginTop:Platform.OS=='ios'?Rh(-2):0 }}>
         {[{ image: require('../../assets/popularServiceProvider/Bacground.png') },
         { image: require('../../assets/Icons/Vector1.png') },
         { image: require('../../assets/popularServiceProvider/ayeshawomen.png') },
@@ -136,10 +142,12 @@ const RecptBooking = () => {
       ))}
 
       {/* Pricing Section */}
-      <View style={{ marginTop: Rh(2), marginLeft: Rw(7), width: Rw(85), height: Rh(37), borderWidth: Rw(2), borderColor: colors.background }}>
-        <View style={{ backgroundColor: colors.headerbackground, height: Rh(5), width: Rh(38) }}>
-          <Text style={{ fontSize: fo(2), marginTop: Rw(2.5), color: colors.background, marginLeft: Rw(6) }}>Pricing</Text>
+      <View style={{ marginTop: Rh(1), marginLeft: Rw(7), width: Rw(85), height: Rh(37), borderWidth: Rw(2), borderColor: colors.background }}>
+        <View style={{ backgroundColor: colors.headerbackground, height: Rh(5), width:Platform.OS=='android'?Rw(79.2): Rh(37.4),flexDirection:'row' }}>
+        <Text style={{ fontSize: fo(2.3), marginTop: Rw(2.5), color: colors.font1, marginLeft: Rw(6) }}>Name</Text>
+          <Text style={{ fontSize: fo(2.3), marginTop: Rw(2.5), color: colors.font1, marginLeft: Rw(43) }}>Pricing</Text>
         </View>
+        <ScrollView scrollIndicatorInsets={false}>
         <Text>
           {products?.map((item, index) => (
             <React.Fragment key={index}>
@@ -153,6 +161,7 @@ const RecptBooking = () => {
             </React.Fragment>
           ))}
         </Text>
+        </ScrollView>
       </View>
 
       {/* Total Time, Subtotal, Coupon Discount, and Total Section */}
@@ -188,11 +197,29 @@ const RecptBooking = () => {
       <Text style={{ fontSize: fo(2), marginTop: Rw(2), color: colors.font1, marginLeft: Rw(6) }}>Total Amount: PKR {totalAmount} </Text>
       </View>
       {/* Confirm Button */}
-      <View style={{ marginTop: Rh(8), fontFamily: colors.fontfaimly_heding }}>
+      <View style={{ marginTop:Platform.OS=='ios'?Rh(6.3): Rh(8), fontFamily: colors.fontfaimly_heding }}>
         <BookingButtons backgroundColor={colors.ServiceProvider_buttonBackground} titlenext={'Book Now' } pressnext={()=>handleBooking()} />
       </View>
+      
     </ScreenWrapper>
   );
 };
+const styles = StyleSheet.create({
 
+  EmailText: {
+    fontSize: fo(1.3),
+    color: colors.font1,
+    fontWeight: 'bold',
+    marginLeft: Rw(1),
+    marginBottom:Rh(1)
+  },
+  backButton: {
+    position: 'absolute',
+    top: Rh(0.5),
+    left: Rw(0.2),
+    zIndex: 1,
+    marginTop:Rh(2),
+    marginLeft:Rw(4)
+  },
+});
 export default RecptBooking;

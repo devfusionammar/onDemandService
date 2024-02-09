@@ -60,7 +60,9 @@ const beautationCategories=async (categoryId)=>{
      }
  
      const data = await response.json();
+     console.log(data)
      return data;
+     
    } catch (error) {
   console.error('Error Feting Beautaion in:', error);
   }

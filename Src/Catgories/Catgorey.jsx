@@ -35,9 +35,7 @@ export default function Catgorey() {
       <View style={styles.container2}>
         <View className="flex-row justify-between items-center">
           <Text style={styles.buttontext}>Categories</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('AddTrip')} style={styles.viewAllButton}>
-            <Text style={styles.buttontext}>View All</Text>
-          </TouchableOpacity>
+          
         </View>
       </View>
       <View style={styles.FlatList_container}>

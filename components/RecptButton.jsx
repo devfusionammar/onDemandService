@@ -21,7 +21,7 @@ const RecptButton = ({ titleback, titlenext, pressback, pressnext, backgroundCol
               fontWeight:'bold',             
               textAlign: 'center',
               color: fontcolor,
-              paddingTop:Rh(0.1)       
+              paddingTop:Rh(1)       
               
             }}
             onPress={pressnext}
@@ -42,7 +42,7 @@ const RecptButton = ({ titleback, titlenext, pressback, pressnext, backgroundCol
               textAlign: 'center',
               fontWeight:'bold', 
               color: fontcolor1,
-              paddingTop:Rh(0.1)       
+              paddingTop:Rh(1)       
               
             }}
             onPress={pressback}

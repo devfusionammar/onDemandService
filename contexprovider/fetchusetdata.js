@@ -5,6 +5,7 @@ const fetchUserData = async () => {
   try {
 
     const userDataJson = await AsyncStorage.getItem('userData');
+    
     if (userDataJson) {
       const userData = JSON.parse(userDataJson);
       return userData;

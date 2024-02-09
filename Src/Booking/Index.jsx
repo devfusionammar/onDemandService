@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ActivityIndicator, Alert, StyleSheet, ScrollView, Text } from 'react-native';
+import { View, ActivityIndicator, Alert, StyleSheet, ScrollView, Text,TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { useProductContext } from '../../contexprovider/ProduxtContext';
@@ -10,12 +10,15 @@ import { xorBy } from 'lodash';
 import { colors } from '../../theme';
 import { serviceProviderList } from '../../services/beautationData';
 import {
-  responsiveHeight as Rh,
-  responsiveScreenWidth as Rw,
-  responsiveScreenFontSize as Rf,
+  responsiveScreenFontSize as Rf, responsiveWidth,
 } from 'react-native-responsive-dimensions';
 import { Platform } from 'react-native';
-
+import {
+  responsiveHeight as Rh,
+  responsiveScreenWidth as Rw,
+  responsiveScreenFontSize as fo,
+} from 'react-native-responsive-dimensions';
+import BackButton from '../../components/backbutton';
 const ServiceListShow = () => {
   const { addProduct } = useProductContext();
   const [selectedServiceProvider, setSelectedServiceProvider] = useState({});
@@ -41,7 +44,10 @@ const ServiceListShow = () => {
 
     fetchData();
   }, []);
-
+  useEffect(() => {
+    console.log('chllaa')
+    setSelectedSubServices([]);
+  }, []);
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -77,15 +83,19 @@ const ServiceListShow = () => {
     
     };
     addProduct(bookingData);
-    Alert.alert('Booking Data Saved', 'Booking data has been saved successfully!');
     navigation.navigate('Schedule',{saloonId:beauticianId});
   };
   
   return (
    
       <ScreenWrapper style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>Select Service</Text>
+         <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'? 0: Rh(1.3)}}>
+      <TouchableOpacity
+          style={styles.backButton}
+        >
+          <BackButton onPress={()=> navigation.navigate('Profile')}/>
+        </TouchableOpacity>
+        <Text style={styles.loginText}>Select Service</Text> 
         </View>
         <View style={styles.content}>
           <SelectBox
@@ -94,15 +104,22 @@ const ServiceListShow = () => {
             value={selectedServiceProvider}
             onChange={onChange()}
             hideInputFilter={false}
+            toggleIconColor={colors.ServiceProvider_buttonBackground}
+            arrowIconColor={colors.ServiceProvider_buttonBackground}
+            width={Rw(85)}
           />
           <View style={{ height: 40 }} />
           <SelectBox
-            label="Select multiple"
+            label="Select Sub Service"
             options={selectedServiceProvider.subServices || []}
             selectedValues={selectedSubServices}
             onMultiSelect={onMultiChange()}
             onTapClose={onMultiChange()}
             isMulti
+            toggleIconColor={colors.ServiceProvider_buttonBackground}
+            arrowIconColor={colors.ServiceProvider_buttonBackground}
+            width={Rw(85)}
+            labelStyle={{ color: 'black' }} 
           />
          
         </View>
@@ -131,7 +148,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerContainer: {
-    marginTop: Platform.OS === 'ios' ? Rh(4) : Rh(2),
+    marginTop: Platform.OS === 'ios' ? Rh(1) : Rh(2),
     alignItems: 'center',
     marginBottom: Rh(2),
   },
@@ -141,13 +158,29 @@ const styles = StyleSheet.create({
     color: colors.font1,
   },
   content: {
-    margin: Rh(2),
+    marginLeft: Rw(8),
+    marginTop:Rh(2.6)
   },
   bottomButtonContainer: {
-    marginTop: Rh(60),
+    marginTop:Platform.OS=='android'?Rh(60): Rh(58),
     bottom: 10,
     width: '100%',
     height: 50, // Fixed height
+  },
+  loginText: {
+    fontSize: fo(3),
+    marginTop: Rw(0),
+    fontWeight: 'bold',   
+    textAlign: 'center',
+    color: 'white',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    zIndex: 1,
+    marginTop:Rh(1.3),
+    marginRight:Rw(2)
   },
 });
 

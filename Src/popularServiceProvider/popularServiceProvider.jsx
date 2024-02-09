@@ -55,13 +55,7 @@ navigation.navigate('ServiceProvider', { beauticianId: reviewid });
     <View clasName="" style={styles.container}>
       <View className="flex-row justify-between items-center">
         <Text style={styles.buttontext}>Popular Service Providers</Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('AddTrip')}
-          className="p-2 bg-white border border-gray-200 rounded-full mb-2 mr-1">
-          <Text style={styles.buttontext} className="font-sans">
-            View All
-          </Text>
-        </TouchableOpacity>
+       
       </View>
       {/* Popular Saloons  */}
       <View >

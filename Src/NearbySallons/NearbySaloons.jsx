@@ -132,17 +132,14 @@ const styles = StyleSheet.create({
     
   },
   FlatListContainer:{
-    height:Rh(100),
+    height:Rh(30),
    
 
   },
-  buttontext: {
-    fontSize: fo(1.4),
-    color: `${colors.font1}`,
-  },
+  
   bannerContainer: {
-    width: Rw(79), // Responsive width
-    height: Rw(64), // Responsive height
+    width: Rw(50), // Responsive width
+    height: Rw(45), // Responsive height
     alignItems: 'between',
     marginRight: Rw(5),
     
@@ -152,10 +149,10 @@ const styles = StyleSheet.create({
     
   },
   bannerImage: {
-    width: Rw(80.5),
-    height: Rh(19),
-    marginLeft:Rw(-2),
-    borderTopLeftRadius: Rw(5.2), 
+    width: Rw(50),
+    height: Rh(10),
+    marginLeft:Rw(0),
+    borderTopLeftRadius: Rw(3), 
   borderTopRightRadius: Rw(2),
   },
   SaloonItem: { flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-start' ,marginLeft:Rw(2.4)},

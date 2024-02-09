@@ -3,8 +3,9 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, Animated, Ac
 import { colors } from '../../theme';
 import { responsiveHeight as Rh, responsiveScreenWidth as Rw, responsiveScreenFontSize as fo } from 'react-native-responsive-dimensions';
 import { getAllBooking } from '../../services/bookingconfrm';
-
+import { useNavigation } from '@react-navigation/native';
 export default function Completed() {
+    const navigation=useNavigation();
     const [bannerData, setBannerData] = useState([]);
     const [loading, setLoading] = useState(true);
     const scrollX = useRef(new Animated.Value(0)).current;
@@ -51,6 +52,10 @@ export default function Completed() {
                     keyExtractor={item => item._id}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item }) => (
+                        <TouchableOpacity
+                        onPress={() => navigation.navigate('RecptComplete')}
+                        >
+                            
                         <View style={styles.bannerContainer}>
                             {item?.Beautician?.ProfiePhoto ? (
                                 <Image
@@ -69,6 +74,7 @@ export default function Completed() {
 
                                 <View style={styles.PhoneContainer}>
                                     <Image source={require('../../assets/Icons/Callmale.png')} />
+                                    <Text style={styles.Phone}>{item.Beautician.PhoneNo}</Text>
                                 </View>
 
                                 <View style={styles.ratingContainer}>
@@ -84,6 +90,7 @@ export default function Completed() {
                                 </TouchableOpacity>
                             </View>
                         </View>
+                        </TouchableOpacity>
                     )}
                     onScroll={Animated.event(
                         [{ nativeEvent: { contentOffset: { x: scrollX } } }],
@@ -145,6 +152,11 @@ const styles = StyleSheet.create({
     PhoneContainer: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
+    },
+    Phone: {
+        color: `${colors.fontSubheadin}`,
+        marginLeft: Rw(2),
+        marginTop: Rh(0.7),
     },
     ratingContainer: {
         backgroundColor: colors.headersubGround,
