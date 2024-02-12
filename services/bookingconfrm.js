@@ -102,3 +102,87 @@ export async function getAllBooking() {
         throw error;
     }
 }
+//get Completed Booking data from the server
+export async function CompletedBooking() {
+  try {
+      // Fetch user data from AsyncStorage
+      
+      const authToken = await AsyncStorage.getItem('AuthToken');
+    
+      // Send the booking payload to the server
+      const response = await fetch(`${baseUrl}/api/userAuth/CompletedBooking`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              'auth-token': `${authToken}`
+          },
+      });
+
+      if (!response.ok) {
+          throw new Error('Failed to create booking');
+      }
+
+      const data = await response.json();
+
+      return data;
+  } catch (error) {
+      console.error('Error creating booking:', error);
+      throw error;
+  }
+}
+//get Upcomming Booking data from the server
+export async function upcomingBooking() {
+  try {
+      // Fetch user data from AsyncStorage
+      
+      const authToken = await AsyncStorage.getItem('AuthToken');
+    
+      // Send the booking payload to the server
+      const response = await fetch(`${baseUrl}/api/userAuth/UpcomingBooking`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              'auth-token': `${authToken}`
+          },
+      });
+
+      if (!response.ok) {
+          throw new Error('Failed to create booking');
+      }
+
+      const data = await response.json();
+
+      return data;
+  } catch (error) {
+      console.error('Error creating booking:', error);
+      throw error;
+  }
+}
+//get Upcomming Booking data from the server
+export async function bookingReciptDetails(bookingid) {
+  try {
+      // Fetch user data from AsyncStorage
+      
+      const authToken = await AsyncStorage.getItem('AuthToken');
+    
+      // Send the booking payload to the server
+      const response = await fetch(`${baseUrl}/api/userAuth/BookingDetail/${bookingid}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              'auth-token': `${authToken}`
+          },
+      });
+
+      if (!response.ok) {
+          throw new Error('Failed to get booking');
+      }
+
+      const data = await response.json();
+
+      return data;
+  } catch (error) {
+      console.error('Error geting booking:', error);
+      throw error;
+  }
+}

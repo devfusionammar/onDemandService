@@ -1,11 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import { colors } from '../../theme';
+import {
+  responsiveHeight as Rh,
+  responsiveScreenWidth as Rw,
+  responsiveScreenFontSize as Rf,
+} from 'react-native-responsive-dimensions';
 const AboutUs = () => {
   return (
     <View style={styles.container}>
+      <View style={{backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'? 0: Rh(6)}}>
+        <Text style={styles.loginText}>About Us</Text> 
+        </View>
       <ImageBackground
-        source={require('../../assets/background.jpg')}
+        source={require('../../assets/serviceproviderabout/aboutbackground.jpg')}
         style={styles.backgroundImage}
       >
         <View style={styles.overlay}>
@@ -72,16 +80,23 @@ const styles = StyleSheet.create({
     
   },
   sectionTitle: {
-    fontSize: 24,
+    fontSize: Rf(2.3),
     fontWeight: 'bold',
     marginBottom: 10,
     color:colors.font1,
   },
   sectionText: {
-    fontSize: 16,
+    fontSize: Rf(1.6),
     marginBottom: 20,
     lineHeight: 24,
     color:colors.fontSubheadin,
+  },
+  loginText: {
+    fontSize: Rf(3),
+    marginTop: Rw(5),
+    fontWeight: 'bold',   
+    textAlign: 'center',
+    color: 'white',
   },
 });
 

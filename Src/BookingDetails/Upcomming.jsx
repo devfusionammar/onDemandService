@@ -2,8 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, Animated, ActivityIndicator } from 'react-native';
 import { colors } from '../../theme';
 import { responsiveHeight as Rh, responsiveScreenWidth as Rw, responsiveScreenFontSize as fo } from 'react-native-responsive-dimensions';
-import { getAllBooking } from '../../services/bookingconfrm';
-
+import { upcomingBooking } from '../../services/bookingconfrm';
 export default function UpComming() {
     const [bannerData, setBannerData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -12,7 +11,7 @@ export default function UpComming() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const data = await getAllBooking();
+                const data = await upcomingBooking();
                 console.log('Fetched data:', data);
                 setBannerData(data);
                 setLoading(false);

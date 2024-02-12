@@ -24,7 +24,7 @@ export default function UProfile() {
         >
           <BackButton onPress={()=> navigation.navigate('Profile')}/>
         </TouchableOpacity>
-        <Text style={styles.loginText}>Profile</Text> 
+        <Text style={styles.loginText}>Update Profile</Text> 
         </View>
 
       <View style={[{ marginTop: Rh(0), paddingVertical: Rh(2), backgroundColor: colors.headerbackground, justifyContent: 'center', alignItems: 'center' }]}>

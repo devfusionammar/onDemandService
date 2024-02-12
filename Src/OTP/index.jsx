@@ -6,28 +6,6 @@ import { verifyOTP } from '../../services/OtpService';
 
 const OtpVerification = () => {
   const [otp, setOtp] = useState('');
-console.log(otp);
-  // Function to send OTP
-  const handleSendOTP = () => {
-    // Call sendOTP function with the phone number
-    sendOTP()
-      .then(response => {
-        // Handle success response if needed
-        Alert.alert('Otp Sent Successfully on Your Email Address');
-        console.log('OTP sent successfully:', response);
-      })
-      .catch(error => {
-        // Handle error response
-        console.error('Error sending OTP:', error);
-        Alert.alert('Error', 'Failed to send OTP. Please try again.');
-      });
-  };
-
-  useEffect(() => {
-    // Send OTP when the component loads
-    // handleSendOTP();
-  }, []);
-
   const handleResendOTP = () => {
    return new Promise((resolve, reject) => {
       sendOTP()

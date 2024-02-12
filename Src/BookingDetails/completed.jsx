@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, Animated, ActivityIndicator } from 'react-native';
 import { colors } from '../../theme';
 import { responsiveHeight as Rh, responsiveScreenWidth as Rw, responsiveScreenFontSize as fo } from 'react-native-responsive-dimensions';
-import { getAllBooking } from '../../services/bookingconfrm';
+import { CompletedBooking } from '../../services/bookingconfrm';
 import { useNavigation } from '@react-navigation/native';
 export default function Completed() {
     const navigation=useNavigation();
@@ -13,7 +13,7 @@ export default function Completed() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const data = await getAllBooking();
+                const data = await CompletedBooking();
                 console.log('Fetched data:', data);
                 setBannerData(data);
                 setLoading(false);

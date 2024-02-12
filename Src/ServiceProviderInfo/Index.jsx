@@ -20,6 +20,7 @@ import ServiceProviderReviews from './ServiceProviderReviews';
 import BookingButtons from '../../components/bookingButton';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import PhotosGallrey from './Gallrey';
 const ServiceProvider = ({ navigation }) => {
   const route = useRoute();
   const beauticianId = route?.params ? route.params.beauticianId : '658c2efdc040b459a3082002';
@@ -50,6 +51,7 @@ const ServiceProvider = ({ navigation }) => {
     setShowAbout(content === 'About');
     setShowServices(content === 'Services');
     setShowReview(content === 'Review');
+    setShowGallery(content === 'Gallery');
   };
 
   if (!selectedSalon) {
@@ -152,8 +154,8 @@ console.log('Press');
                
               />
               <ServiceProviderButton
-                buttonName="Gallrey"
-                onPressButtonClick={() => toggleContent('Review')}
+                buttonName="Gallery"
+                onPressButtonClick={() => toggleContent('Gallery')}
                
               />
             </View>
@@ -163,6 +165,7 @@ console.log('Press');
           {showAbout && <ServiceProviderAbout />}
           {showServices && <ServiceList />}
           {showReview && <ServiceProviderReviews />}
+          {showGallery && <PhotosGallrey />}
         </View>
       </ScrollView>
 

@@ -200,11 +200,6 @@ const styles = StyleSheet.create({
     marginTop: Rw(2),
   },
 
-  saveMeText: {
-    fontSize: fo(1.8),
-    color: colors.heading,
-    marginLeft: Rw(10)
-  },
 
   forgetPasswordText: {
     fontSize: fo(1.8),

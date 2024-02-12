@@ -9,6 +9,7 @@ import {
   responsiveScreenFontSize as fo,
   responsiveHeight,
 } from 'react-native-responsive-dimensions';
+import BackButton from '../../components/backbutton';
 import { colors } from '../../theme';
 import { Platform } from 'react-native';
 import { forgetPassword } from '../../services/apiauth';
@@ -82,7 +83,14 @@ const ForgetPassword = ({ navigation }) => {
   return (
     <ScreenWrapper>
       <View style={styles.container}>     
-        <Text style={styles.loginText}>Log In</Text> 
+      <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'? 0: Rh(1.3)}}>
+      <TouchableOpacity
+          style={styles.backButton}
+        >
+          <BackButton onPress={()=> navigation.navigate('Login')}/>
+        </TouchableOpacity>
+        <Text style={styles.loginText}>Forget Password</Text> 
+        </View>
         <Text style={styles.h2}>Change The Password to Book Beautation</Text>
 
         <View style={styles.container}>
@@ -99,6 +107,7 @@ const ForgetPassword = ({ navigation }) => {
             <Input 
               placeholder={'Enter New Password'} 
               is_password={true} 
+              right={Rw(10)}
               onChangeText={(text) => setFormData({ ...formData, NewPassword: text })} 
             />
           </View>
@@ -108,17 +117,10 @@ const ForgetPassword = ({ navigation }) => {
               placeholder={'Enter Confrm Password'} 
               is_password={true} 
               onChangeText={(text) => setFormData({ ...formData, Password: text })} 
+              right={Rw(10)}
             />
           </View>
-          <View style={styles.forgetsaveContainer}>
-            <TouchableOpacity>
-              {/* Add your Remember Me functionality here */}
-              <Text style={styles.saveMeText}>Save Me</Text>
-            </TouchableOpacity>
-            
           
-          </View>
-
           <TouchableOpacity 
             style={{marginTop: Rw(8), marginLeft: Rw(0)}} 
             pressnext={handlleLogin}
@@ -189,7 +191,7 @@ const styles = StyleSheet.create({
     fontSize: fo(2.5),
     backgroundColor: colors.headerbackground,
     color: colors.background,
-    marginTop: Rw(1.6),
+    marginTop: Rw(0),
     padding: 40,
     textAlign: 'center',
   },
@@ -199,10 +201,11 @@ const styles = StyleSheet.create({
   },
 
   EmailText: {
-    fontSize: fo(1.8),
+    fontSize: fo(1.3),
     color: colors.font1,
     fontWeight: 'bold',
-    marginLeft: Rw(10)
+    marginLeft: Rw(10),
+    marginBottom:Rh(1)
   },
 
   forgetsaveContainer: {
@@ -236,6 +239,22 @@ const styles = StyleSheet.create({
     backgroundColor: 'black', 
     marginHorizontal: Rw(0.5), 
   },
+  loginText: {
+    fontSize: fo(3),
+    marginTop: Rw(0),
+    fontWeight: 'bold',   
+    textAlign: 'center',
+    color: 'white',
+  },
 
+  
+  backButton: {
+    position: 'absolute',
+    top: Rh(0.5),
+    left: Rw(0.2),
+    zIndex: 1,
+    marginTop:Rh(2),
+    marginLeft:Rw(4)
+  },
 });
 

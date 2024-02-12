@@ -1,11 +1,30 @@
 import React from 'react';
+import { useState,useEffect } from 'react';
 import { View, Text, Image, Platform, TouchableOpacity } from 'react-native';
 import ScreenWrapper from '../../components/ScreenWrapper';
 import { colors } from '../../theme';
 import { responsiveHeight as Rh, responsiveScreenWidth as Rw, responsiveScreenFontSize as fo } from 'react-native-responsive-dimensions';
 import RecptButton from '../../components/RecptButton';
-
+import { bookingReciptDetails } from '../../services/bookingconfrm';
 const RecptPending = () => {
+  const [reciptBooking,setReciptBooking]=useState(null)
+  const [loading,setLoading]=useState(false)
+  useEffect(() => {
+    async function fetchData() {
+        try {
+            const data = await bookingReciptDetails('65c3b531bc603a62db454a69');
+            console.log('Fetched data:', data);
+            setReciptBooking(data);
+            console.log(data)
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            setLoading(false);
+        }
+    }
+    
+    fetchData();
+}, []);
   const renderServiceItem = (title, price) => (
     <View style={{ backgroundColor: colors.ServiceProvider_buttonBackground, height: Rh(5), width: Rh(38),marginTop:Rh(0.1)}}>
       <Text style={{ fontSize: fo(2), marginTop: Rw(2.5), color: colors.background, marginLeft: Rw(6) }}>{title}</Text>
