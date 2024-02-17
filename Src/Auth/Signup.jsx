@@ -26,7 +26,7 @@ const Signup = ({ navigation }) => {
     // Simple validation checks
     console.log('+++');
     if (!formData.FirstName || !formData.LastName || !formData.Email || !formData.Password || !formData.Username) {
-      Alert.alert('Error', 'Please fill in all the fields.');
+      Alert.alert('Please fill in all the fields.');
       return;
     }
 
@@ -62,7 +62,7 @@ const Signup = ({ navigation }) => {
     <ScreenWrapper>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
-        <View style={{backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Rh(1.3)}}>
+        <View style={{backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'?Rh(0) : Rh(1.3)}}>
         <Text style={styles.loginText}>Register</Text> 
         </View>
           <Text style={styles.h2}>
@@ -92,7 +92,7 @@ const Signup = ({ navigation }) => {
               />
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.EmailText}>UserName</Text>
+              <Text style={styles.EmailText}>User Name</Text>
               <Input
                 placeholder={'Enter Usename'}
                 onChangeText={(text) => setFormData({ ...formData, Username: text })}
@@ -104,7 +104,7 @@ const Signup = ({ navigation }) => {
                 placeholder={'Enter Password'}
                 is_password={true}
                 onChangeText={(text) => setFormData({ ...formData, Password: text })}
-                right={Rw(10.2)}
+                right={Rw(11)}
               />
             </View>
             <View style={styles.inputContainer}>
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   h2: {
-    fontSize: fo(2.2),
+    fontSize:Platform.OS=='android'?fo(2) : fo(2.2),
     backgroundColor: colors.headerbackground,
     color: colors.background,
     marginTop: Rw(0),

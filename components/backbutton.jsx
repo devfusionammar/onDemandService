@@ -1,7 +1,5 @@
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { ChevronLeftIcon } from 'react-native-heroicons/outline';
-import { colors } from '../theme';
-import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {
   responsiveHeight as Rh,
   responsiveScreenWidth as Rw,
@@ -26,7 +24,7 @@ export default function BackButton({ marginRight1, marginLeft1, onPress }) {
       }}
       onPress={onPress}
     >
-      <ChevronLeftIcon name={'caret-back'} size={30} color={'white'} />
+      <Icon name={'arrow-back'} size={29} color={'white'} />
     </TouchableOpacity>
   );
 }

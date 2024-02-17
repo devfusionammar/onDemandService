@@ -24,7 +24,7 @@ export default function Changepass() {
         >
           <BackButton onPress={()=> navigation.navigate('Profile')}/>
         </TouchableOpacity>
-        <Text style={styles.loginText}>Update Profile</Text> 
+        <Text style={styles.loginText}>Update Password</Text> 
         </View>
       <View style={{ marginTop: Rh(0), paddingVertical: Rh(2), backgroundColor: colors.headerbackground, justifyContent: 'center', alignItems: 'center' }}>
         <Image style={{ width: Rw(30), height: Rw(30) }} source={require('../../assets/profile.png')} />
@@ -32,14 +32,17 @@ export default function Changepass() {
       </View>
  
       
-        <Text style={{fontSize: fo(1.9), fontWeight: 'bold', color:colors.font1, paddingHorizontal: Rw(10), marginTop: Rh(6) }}>Email</Text>
+        <Text style={{fontSize: fo(1.9), fontWeight: 'bold', color:colors.font1, paddingHorizontal: Rw(10), marginTop: Rh(6), marginLeft: Rw(1),
+    marginBottom:Rh(1) }}>Email</Text>
         <Input placeholder={'Enter Email'}/>
-        <Text style={{fontSize: fo(1.9), fontWeight: 'bold', color:colors.font1, paddingHorizontal: Rw(10), marginTop: Rh(2) }}>Old Password</Text>
-        <Input placeholder={'Enter Old Password'} is_password={true}  right={Rw(10)}/>
-        <Text style={{fontSize: fo(1.9), fontWeight: 'bold', color:colors.font1, paddingHorizontal: Rw(10), marginTop: Rh(2) }}>New Password</Text>
-        <Input placeholder={'Enter New Password'} is_password={true} right={Rw(10)}/>  
-        <TouchableOpacity onPress={showbottom} style={{ width: Rh(30),marginLeft:Rw(20), backgroundColor: colors.headerbackground, padding: Rw(4), borderRadius: Rw(4), alignItems: 'center', marginTop: Rh(22) }}>
-        <Text style={{ fontSize:fo(2),color: colors.background, fontWeight: 'bold' }}>Update</Text>
+        <Text style={{fontSize: fo(1.9), fontWeight: 'bold', color:colors.font1, paddingHorizontal: Rw(10), marginTop: Rh(2), marginLeft: Rw(1),
+    marginBottom:Rh(1) }}>Old Password</Text>
+        <Input placeholder={'Enter Old Password'} is_password={true}  right={Rw(11)}/>
+        <Text style={{fontSize: fo(1.9), fontWeight: 'bold', color:colors.font1, paddingHorizontal: Rw(10), marginTop: Rh(2), marginLeft: Rw(1),
+    marginBottom:Rh(1) }}>New Password</Text>
+        <Input placeholder={'Enter New Password'} is_password={true} right={Rw(11)}/>  
+        <TouchableOpacity onPress={showbottom} style={{ width: Rh(30),marginLeft:Rw(20), backgroundColor: colors.headerbackground, padding: Rw(4), borderRadius: Rw(4), alignItems: 'center', marginTop: Rh(19) }}>
+        <Text style={{ fontSize:fo(2),color: colors.background, fontWeight: 'bold', }}>Update</Text>
         </TouchableOpacity>    
     </ScreenWrapper>
   );

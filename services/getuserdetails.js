@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { baseUrl } from "./supabase.js"
 
 export async function getUser() {
+  console.log("Loading")
   try {
 
     const token = await AsyncStorage.getItem('AuthToken');

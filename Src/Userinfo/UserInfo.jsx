@@ -5,15 +5,18 @@ import { colors } from '../../theme';
 import fetchUserData from '../../contexprovider/fetchusetdata';
 import { responsiveHeight,responsiveScreenWidth,responsiveFontSize, } from 'react-native-responsive-dimensions';
 export default function UserInfo() {
-  const [userData, setUserData] = useState(null);
-  const username=userData?.userData?.FirstName
-  console.log("===============+",username)
+  const [userData, setUserData] = useState({});
+  const username = `${userData?.FirstName ?? ''} ${userData?.LastName ?? ''}`;
+console.log('=======++', username);
+
   useEffect(() => {
     
     const getUserData = async () => {
       try {
+        console.log('chlla')
         const userData = await fetchUserData();
         setUserData(userData);
+        
       } catch (error) {
         console.error('Error fetching user data:', error);
       }

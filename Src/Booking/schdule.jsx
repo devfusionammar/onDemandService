@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
@@ -89,7 +89,7 @@ export default function Schedule() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop:Platform.OS=='android'?Rh(0): Rh(6.3) ,
   },
   timeButtonTable: {
     flexDirection: 'row',

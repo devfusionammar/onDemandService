@@ -35,6 +35,7 @@ export async function createUser({ FirstName,LastName, Email, Username, PhoneNO,
         }
     } catch (error) {
         console.error('Error creating user:', error);
+        console.log(error);
         throw error;
     }
 }

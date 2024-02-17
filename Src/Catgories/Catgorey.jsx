@@ -4,6 +4,7 @@ import { colors } from '../../theme';
 import { responsiveHeight as Rh, responsiveScreenWidth as Rw, responsiveScreenFontSize as fo } from 'react-native-responsive-dimensions';
 import { allCategories } from '../../services/gatgories';
 import { useNavigation } from '@react-navigation/native';
+import { baseUrl } from '../../services/supabase';
 
 export default function Catgorey() {
   const navigation = useNavigation();
@@ -48,7 +49,7 @@ export default function Catgorey() {
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.bannerContainer} onPress={() => handleCategoryPress(item._id)}>
               {item.Logo ? (
-                <Image style={styles.bannerImage} source={{ uri: `data:image/png;base64,${item.Logo}` }} />
+                <Image style={styles.bannerImage} source={{ uri:  `${baseUrl}/${item.Logo.replace(/\\/g, '/')}` }} />
               ) : (
                 <Image style={styles.bannerImage} source={require('../../assets/popularServiceProvider/popular.png')} />
               )}
@@ -75,6 +76,7 @@ const styles = StyleSheet.create({
   buttontext: {
     fontSize: fo(1.4),
     color: colors.font1,
+    marginBottom:Rh(1.3)
   },
   bannerContainer: {
     width: Rw(20),
@@ -86,10 +88,14 @@ const styles = StyleSheet.create({
     width: Rw(15),
     height: Rh(7),
     borderRadius: Rw(10),
+    resizeMode: 'cover',
   },
   catgoreisText: {
     color: colors.font1,
-    fontSize: fo(1.4),
+    fontSize: fo(1.2),
     fontFamily: colors.fontfaimly_heding,
+    marginTop:Rh(1),
+    textAlign: 'center',
+    marginRight:Rw(4)
   },
 });

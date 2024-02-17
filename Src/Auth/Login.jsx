@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Alert,TextInput } from 'react-native';
+import React, { useState,useEffect } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Input from '../../components/Input';
 import Buttons from '../../components/Buttons';
 import ScreenWrapper from '../../components/ScreenWrapper';
@@ -8,7 +9,7 @@ import {
   responsiveHeight as Rh,
   responsiveScreenWidth as Rw,
   responsiveScreenFontSize as fo,
-  responsiveHeight,
+ 
 } from 'react-native-responsive-dimensions';
 import { colors } from '../../theme';
 import { Platform } from 'react-native';
@@ -20,11 +21,46 @@ const Login = ({ navigation }) => {
     Password: '',
   });
 
-  const [loading, setLoading] = useState(false); // State variable to manage loading state
+  const [loading, setLoading] = useState(true); // Initially set to true
+  const [loading2, setLoading2] = useState(false); 
   const [showPassword, setShowPassword] = useState(false); // State variable to manage password visibility
 
+  useEffect(() => {
+    checkAuthToken();
+  }, []);
+
+  const checkAuthToken = async () => {
+    try {
+      const authToken = await AsyncStorage.getItem('AuthToken');
+      if (authToken) {
+        navigation.replace('BottomNavigation'); // Use replace instead of navigate to avoid stacking screens
+      } else {
+        setLoading(false); // Set loading to false when the check is completed
+      }
+    } catch (error) {
+      console.error('Error checking AuthToken:', error);
+      setLoading(false); // Set loading to false even in case of errors
+    }
+  };
+
+  if (loading) {
+    // Render a loading indicator while the check is in progress
+    return (
+      <View style={{flex:1, alignItems:'center',justifyContent:'center'}}>
+        <ActivityIndicator size="large" color={colors.headerbackground} />
+      </View>
+    );
+  }
   const handlleLogin = () => {
-    setLoading(true); // Start loading when login is initiated
+    if (formData.UserName.length < 1) {
+      Alert.alert('Please Enter your username');
+      return;
+    }
+    if (formData.Password.length < 6) {
+      Alert.alert('Password must be at least 6 characters long.');
+      return;
+    }
+    setLoading2(true); // Start loading when login is initiated
     console.log("++",formData);
     LoginUser(formData)
     .then((response) => {
@@ -38,17 +74,17 @@ const Login = ({ navigation }) => {
           navigation.navigate('BottomNavigation');
         }
       } else {
-        setLoading(false);
+        setLoading2(false);
         console.error('Login failed:', response.Message);
       }
     })
     .catch((error) => {
-      setLoading(false);
+      setLoading2(false);
       console.error('Login error:', error);
       Alert.alert('Enter Correct Username & Password');
     })
     .finally(() => {
-      setLoading(false);
+      setLoading2(false);
     });
   };
 
@@ -63,14 +99,14 @@ const Login = ({ navigation }) => {
   return (
     <ScreenWrapper>
       <View style={styles.container}>  
-       <View style={{backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Rh(1.3)}}>
+       <View style={{backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'?Rh(0) : Rh(1.3)}}>
         <Text style={styles.loginText}>Log In</Text> 
         </View>
         <Text style={styles.h2}>Login to your account to access all the features in Barber Shop</Text>
 
         <View style={styles.container}>
           <View style={styles.inputContainer}>
-            <Text style={styles.EmailText}>Username</Text>
+            <Text style={styles.EmailText}>User Name</Text>
             <Input 
               placeholder={'Enter Username'} 
               onChangeText={(text) => setFormData({ ...formData, UserName: text })} 
@@ -105,7 +141,7 @@ const Login = ({ navigation }) => {
             disabled={loading} // Disable button when loading
           >
             {/* Show activity indicator while loading */}
-            {loading ? (
+            {loading2 ? (
                 <ActivityIndicator size="large" color={colors.headerbackground} />
             ) : (
               <Buttons 
@@ -164,7 +200,7 @@ const styles = StyleSheet.create({
   },
 
   loginText: {
-    fontSize: fo(3),
+    fontSize:fo(3),
     marginTop: Rw(5),
     fontWeight: 'bold',   
     textAlign: 'center',
@@ -172,7 +208,7 @@ const styles = StyleSheet.create({
   },
 
   h2: {
-    fontSize: fo(2.2),
+    fontSize:Platform.OS=='android'?fo(2) : fo(2.2),
     backgroundColor: colors.headerbackground,
     color: colors.background,
     marginTop: Rw(0),

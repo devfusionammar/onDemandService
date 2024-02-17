@@ -12,8 +12,8 @@ import {
   responsiveScreenWidth as Rw,
   responsiveScreenFontSize as fo,
 } from 'react-native-responsive-dimensions';
-import BackButton from '../../components/backbutton';
 export default function Booking() {
+
   const [selectedTab, setSelectedTab] = useState('All');
   const handleTabPress = (tab) => {
     console.log(tab);
@@ -34,11 +34,7 @@ export default function Booking() {
   return (
     <ScreenWrapper>
       <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'? 0: Rh(1.3)}}>
-      <TouchableOpacity
-          style={styles.backButton}
-        >
-          <BackButton onPress={()=> navigation.navigate('Profile')}/>
-        </TouchableOpacity>
+      
         <Text style={styles.loginText}>Bookings</Text> 
         </View>
       <View style={styles.buttonContainer}>
@@ -51,7 +47,7 @@ export default function Booking() {
         />
         <BookingDetails
          backgroundColor={colors.ServiceProvider_buttonBackground}
-         title={"UpComming"}
+         title={"Upcomming"}
          pressnext={() => handleTabPress('Upcomming')}
          
        />

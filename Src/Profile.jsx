@@ -10,6 +10,7 @@ import {
   responsiveScreenFontSize as fo,
 } from 'react-native-responsive-dimensions';
 import Icones from '../components/icones';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const iconSize = Math.min(Rw(60), 60);
 
@@ -21,8 +22,16 @@ export default function Profile() {
   const updateProfile = () => {
     navigation.navigate('UProfile');
   };
-  const handlelogout = () => {
-    navigation.navigate('Login');
+  const handlelogout = async () => {
+    try {
+      // Clear AsyncStorage
+      await AsyncStorage.clear();
+      // Navigate to the 'Login' screen
+      navigation.navigate('Login');
+    } catch (error) {
+      // Handle AsyncStorage clear error
+      console.error('Error clearing AsyncStorage:', error);
+    }
   };
   const aboutus = () => {
     navigation.navigate('AboutUs');
@@ -46,7 +55,7 @@ export default function Profile() {
 
   return (
     <ScreenWrapper style={{ flex: 1, textLG: { fontSize: fo(1.5), fontWeight: '600', color: 'black' } }}>
-      <View style={{backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'? 0: Rh(1.3)}}>
+      <View style={{backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'? -1: Rh(1.3)}}>
         <Text style={styles.loginText}>Profile</Text> 
         </View>
 

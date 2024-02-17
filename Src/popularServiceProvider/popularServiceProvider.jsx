@@ -18,10 +18,11 @@ import Ionicons from 'react-native-vector-icons/Entypo';
 import { PopularItems } from '../../assets/popularServiceProvider/PopularServiceProvider';
 import { useNavigation  } from '@react-navigation/native';
 import {topBeautaion} from '../../services/beautacions'
+import { baseUrl } from '../../services/supabase';
 export default function PopularServiceProvider() {
   const navigation = useNavigation();
   const [bannerData, setBannerData] = useState([ ]);
-
+    console.log(bannerData)
   const scrollX = useRef(new Animated.Value(0)).current;
   
 
@@ -72,7 +73,7 @@ navigation.navigate('ServiceProvider', { beauticianId: reviewid });
               {item.profilePhoto ? (
                 <Image
                   style={styles.bannerImage}
-                  source={{ uri: `data:image/png;base64,${item.profilePhoto}` }}
+                  source={{ uri: `${baseUrl}/${item.profilePhoto.replace(/\\/g, '/')}` }}
                 />
               ) : (
                 <Image
@@ -92,8 +93,8 @@ navigation.navigate('ServiceProvider', { beauticianId: reviewid });
                     size={18}
                     color='#F4C01E'
                   />
-                  <Text style={{ color: colors.font1 }} className="ml-1">{item.totalReviews}</Text>
-                  <Text style={{ color: colors.fontSubheadin }}>({item.averageRating})</Text>
+                  <Text style={{ color: colors.font1, fontSize:fo(1.3) }} className="ml-1">{item.totalReviews}</Text>
+                  <Text style={{ color: colors.fontSubheadin, fontSize:fo(1.3) }}>({item.averageRating})</Text>
                 </View>
               </View>
             </View>
@@ -119,6 +120,7 @@ const styles = StyleSheet.create({
   buttontext: {
     fontSize: fo(1.4),
     color: `${colors.font1}`,
+    marginBottom:Rh(1.3)
   },
   bannerContainer: {
     width: Rw(79),
@@ -161,6 +163,7 @@ const styles = StyleSheet.create({
     color: `${colors.fontSubheadin}`,
     marginLeft: Rw(2),
     marginTop: Rh(0.7),
+    fontSize:fo(1.3)
   }
   ,
   PhoneContainer: {

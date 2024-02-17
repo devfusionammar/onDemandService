@@ -9,6 +9,7 @@ import { useRoute } from '@react-navigation/native';
 import BookingButtons from '../../components/bookingButton';
 import { bookingConfirm } from '../../services/bookingconfrm';
 import BackButton from '../../components/backbutton';
+import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 const RecptBooking = () => {
     const route = useRoute();
@@ -17,17 +18,19 @@ const RecptBooking = () => {
     const [loading, setLoading] = useState(false);
     const [totalAmount, setTotalAmount] = useState(0);
     console.log(saloonId, selectedDate, selectedTime);
-  
+  const navigation = useNavigation();
     const handleBooking = async (mainServiceId, subServiceId) => {
       console.log("pressed with mainServiceId:", mainServiceId, "and subServiceId:", subServiceId);
-     
+      setLoading(true);
       try {
         
         // Pass mainServiceId and subServiceId to bookingConfirm function
         await bookingConfirm({ saloonId, selectedDate, selectedTime, mainServiceId, subServiceId,mainServiceIds, subServiceIds,totalAmount });
       } catch (error) {
         console.error('Error confirming booking:', error);
+        setLoading(false);
       }finally{
+        setLoading(false);
        Alert.alert("Booking Confirmed")
       }
     }
@@ -79,7 +82,7 @@ const RecptBooking = () => {
     if (loading) {
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <ActivityIndicator size="large" color={colors.primary} />
+          <ActivityIndicator size="large" color={colors.headerbackground} />
         </View>
       );
     }
@@ -108,7 +111,7 @@ const RecptBooking = () => {
       <TouchableOpacity
           style={styles.backButton}
         >
-          <BackButton onPress={()=> navigation.navigate('Schedule')}/>
+          <BackButton onPress={()=> navigation.navigate('ServiceProvider')}/>
         </TouchableOpacity>
         <Text style={styles.loginText}>Receipt</Text> 
         </View>

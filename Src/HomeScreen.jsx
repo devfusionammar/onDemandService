@@ -11,6 +11,7 @@ import UserInfo from './Userinfo/UserInfo';
 import PopularServiceProvider from './popularServiceProvider/popularServiceProvider';
 import { getUser } from '../services/getuserdetails';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import fetchUserData from '../contexprovider/fetchusetdata';
 import {
   responsiveHeight as Rh,
   responsiveScreenWidth as Rw,
@@ -21,25 +22,21 @@ export default function HomeScreen({ navigation }) {
 
   const isFocused = useIsFocused();
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserdata = async () => {
       try {
         const user = await getUser();
         setUserData(user);
-        console.log(user);
-        const userDataString = await AsyncStorage.getItem('userData');
-
-    // Parse the JSON string back to an object
-    const userData = JSON.parse(userDataString);
+        console.log('++++++',user);
+        const userDataString = await AsyncStorage.setItem('userData', JSON.stringify(user?.userData));
       } catch (error) {
-        console.error('Error fetching user data:', error);
         Alert.alert('Error', 'Failed to fetch user data. Please try again.');
       }
     };
 
-    if (isFocused && !userData) {
-      fetchUserData();
-    }
-  }, [isFocused]);
+  
+      fetchUserdata();
+    
+  }, []);
 
   return (
     <ScreenWrapper>

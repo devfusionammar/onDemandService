@@ -1,41 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { colors } from '../../theme';
 import { sendOTP } from '../../services/OtpService';
 import { verifyOTP } from '../../services/OtpService';
-
+import { useNavigation } from '@react-navigation/native';
 const OtpVerification = () => {
+  const navigation = useNavigation();
   const [otp, setOtp] = useState('');
+  const [sendingOTP, setSendingOTP] = useState(false);
+  const [verifyingOTP, setVerifyingOTP] = useState(false);
+
   const handleResendOTP = () => {
-   return new Promise((resolve, reject) => {
-      sendOTP()
-        .then(response => {
-          // Handle success response if needed
-          Alert.alert('Otp Sent Successfully on Your Email Address');
-          console.log('OTP sent successfully:', response);
-          resolve(response);
-        })
-        .catch(error => {
-          // Handle error response
-          Alert.alert('Network Eroor');
-          console.error('Error sending OTP:', error);
-          reject(error);
-        });
-    });
-  
+    setSendingOTP(true);
+    sendOTP()
+      .then(response => {
+        Alert.alert('Otp Sent Successfully on Your Email Address');
+        console.log('OTP sent successfully:', response);
+      })
+      .catch(error => {
+        Alert.alert('Network Error');
+        console.error('Error sending OTP:', error);
+      })
+      .finally(() => setSendingOTP(false));
   };
 
   const handleVerifyOTP = () => {
+    setVerifyingOTP(true);
     verifyOTP(otp)
       .then(response => {
         navigation.navigate('BottomNavigation');
         console.log('OTP verification successful:', response);
       })
       .catch(error => {
-        // Handle error response
         console.error('Error verifying OTP:', error);
         Alert.alert('Error', 'Failed to verify OTP. Please try again.');
-      });
+      })
+      .finally(() => setVerifyingOTP(false));
   };
 
   return (
@@ -46,11 +46,19 @@ const OtpVerification = () => {
         placeholder="Please enter OTP"
         onChangeText={setOtp}
       />
-      <TouchableOpacity style={styles.button} onPress={handleResendOTP}>
-        <Text style={styles.buttonText}>Resend OTP</Text>
+      <TouchableOpacity style={styles.button} onPress={handleResendOTP} disabled={sendingOTP}>
+        {sendingOTP ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text style={styles.buttonText}>Resend OTP</Text>
+        )}
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.button, styles.secondaryButton]} onPress={handleVerifyOTP}>
-        <Text style={[styles.buttonText, styles.secondaryButtonText]}>Verify OTP</Text>
+      <TouchableOpacity style={[styles.button, styles.secondaryButton]} onPress={handleVerifyOTP} disabled={verifyingOTP}>
+        {verifyingOTP ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text style={[styles.buttonText, styles.secondaryButtonText]}>Verify OTP</Text>
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -77,7 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 15,
     marginBottom: 20,
-    color:colors.font1,
+    color: colors.font1,
   },
   button: {
     width: '100%',
@@ -92,7 +100,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
-    
   },
   secondaryButton: {
     backgroundColor: '#28a745',

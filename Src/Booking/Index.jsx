@@ -93,7 +93,7 @@ const ServiceListShow = () => {
       <TouchableOpacity
           style={styles.backButton}
         >
-          <BackButton onPress={()=> navigation.navigate('Profile')}/>
+          <BackButton onPress={()=> navigation.navigate('ServiceProvider')}/>
         </TouchableOpacity>
         <Text style={styles.loginText}>Select Service</Text> 
         </View>

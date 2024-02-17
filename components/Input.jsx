@@ -7,7 +7,7 @@ import {
   responsiveScreenWidth as Rw,
   responsiveScreenFontSize as fo,
 } from 'react-native-responsive-dimensions';
-const Input = ({ imgsrc, placeholder, is_password, onChangeText,right }) => {
+const Input = ({  placeholder, is_password, onChangeText,right }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {

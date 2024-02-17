@@ -1,12 +1,10 @@
-import { View, Text, StyleSheet, Image, PermissionsAndroid } from 'react-native';
+import { View, Text, StyleSheet, Image, PermissionsAndroid,TouchableOpacity, Platform } from 'react-native';
 import React, { useEffect } from 'react';
 import ScreenWrapper from '../components/ScreenWrapper';
 import BackButton from '../components/backbutton';
 import { colors } from '../theme';
 import { responsiveHeight as Rh, responsiveScreenWidth as Rw, responsiveScreenFontSize as fo } from 'react-native-responsive-dimensions';
 import Buttons from '../components/Buttons';
-import { request, PERMISSIONS } from '@react-native-community/permissions';
-
 export default function Location({ navigation }) {
   useEffect(() => {
     requestLocationPermission();
@@ -36,13 +34,15 @@ export default function Location({ navigation }) {
 
   return (
     <ScreenWrapper bgcolor={colors.background}>
-      <View style={styles.contentContainer}>
-        <BackButton marginRight1={0} marginLeft1={20} onpress={() => navigation.navigate('BottomNavigation')} />
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>Enable Location</Text>
+      <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'? 0: Rh(1.3)}}>
+      <TouchableOpacity
+          style={styles.backButton}
+        >
+          <BackButton onPress={()=> navigation.navigate('BottomNavigation')}/>
+        </TouchableOpacity>
+        <Text style={styles.loginText}>Locationes</Text> 
         </View>
-      </View>
-      <View style={{ marginLeft: Rw(12), marginTop: Rh(10) }}>
+      <View style={{ marginLeft: Rw(12), marginTop:Platform.OS='android'?Rh(3) :Rh(10) }}>
         <Image style={{ height: Rh(40), width: Rw(70) }} source={require('../assets/Location/location.png')} />
       </View>
       <View style={styles.textEnablelocation}>
@@ -78,5 +78,20 @@ const styles = StyleSheet.create({
     fontSize: fo(2.3),
     marginTop: Rh(3),
     color: colors.font1
+  },
+  loginText: {
+    fontSize: fo(3),
+    marginTop: Rw(1),
+    fontWeight: 'bold',   
+    textAlign: 'center',
+    color: 'white',
+  },
+  backButton: {
+    position: 'absolute',
+    top: Rh(0.5),
+    left: Rw(0.2),
+    zIndex: 1,
+    marginTop:Rh(2),
+    marginLeft:Rw(4)
   },
 });

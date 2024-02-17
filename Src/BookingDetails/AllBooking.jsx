@@ -20,6 +20,7 @@ import Ionicons from 'react-native-vector-icons/Entypo';
 import { PopularItems } from '../../assets/popularServiceProvider/PopularServiceProvider';
 import { getAllBooking } from '../../services/bookingconfrm';
 import { useNavigation } from '@react-navigation/native';
+import { baseUrl } from '../../services/supabase';
 export default function AllBooking() {
     const navigation=useNavigation();
     const [bannerData, setBannerData] = useState([]);
@@ -77,7 +78,7 @@ export default function AllBooking() {
             {item?.Beautician?.ProfiePhoto ? (
                 <Image
                     style={styles.bannerImage}
-                    source={{ uri: `data:image/png;base64,${item.Beautician?.ProfiePhoto}` }}
+                    source={{ uri: `${baseUrl}/${item.Beautician?.ProfiePhoto.replace(/\\/g, '/')}` }}
                 />
             ) : (
                 <Image
@@ -171,7 +172,7 @@ const styles = StyleSheet.create({
         fontSize: fo(1.9),
     },
     Phone: {
-        color: `${colors.fontSubheadin}`,
+        color: `${colors.font1}`,
         marginLeft: Rw(2),
         marginTop: Rh(0.7),
     }

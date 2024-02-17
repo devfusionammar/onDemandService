@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     paddingBottom: Rh(16), // Space for the "Book Now" button
+    marginTop:Platform.OS=='android'? Rh(0):Rh(1)
   },
   backButton: {
     position: 'absolute',

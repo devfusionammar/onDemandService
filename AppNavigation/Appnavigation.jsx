@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../Src/HomeScreen';
@@ -32,7 +34,7 @@ const Stack = createNativeStackNavigator();
 export default function Appnavigation() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="RecptComplete" screenOptions={{animationEnabled:true}}>
+      <Stack.Navigator initialRouteName="Login" screenOptions={{animationEnabled:true}}>
         <Stack.Screen options={{headerShown:false}} name="Login" component={Login}  />
         <Stack.Screen options={{headerShown:false}} name="Profile" component={Profile}  />
         <Stack.Screen options={{headerShown:false}} name="Signup" component={Signup}  />

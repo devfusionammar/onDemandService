@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     FlatList,
     Animated,
-    ActivityIndicator
+    ActivityIndicator,
+    Platform
 } from 'react-native';
 import React, { useRef, useEffect, useState } from 'react';
 import { colors } from '../../theme';
@@ -21,6 +22,8 @@ import { useNavigation } from '@react-navigation/native';
 import { beautationCategories } from '../../services/beautacions'
 import ScreenWrapper from '../../components/ScreenWrapper';
 import { useRoute } from '@react-navigation/native';
+import { baseUrl } from '../../services/supabase';
+import BackButton from '../../components/backbutton';
 export default function CategoreySaloon() {
     const route = useRoute();
     const navigation = useNavigation();
@@ -62,12 +65,14 @@ export default function CategoreySaloon() {
     }
  return (
         <ScreenWrapper>
-              <View  style={{height:Rh(11),width:Rw(100),marginTop:-12 ,backgroundColor:colors.headerbackground}}>
-                <View style={{marginTop:Rh(5.4),marginLeft:Rw(6)}}>
-               <Text style={{fontSize:fo(2.4),fontFamily:colors.fontfaimly_heding}}>Hair Cut</Text>
-                <Text style={{fontSize:fo(2),fontFamily:colors.fontfaimly_text,color:colors.fontSubheadin}}>Our 4 Salons</Text>
-                </View>
-               </View>
+            <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'? 0: Rh(1.3)}}>
+      <TouchableOpacity
+          style={styles.backButton}
+        >
+          <BackButton onPress={()=> navigation.navigate('BottomNavigation')}/>
+        </TouchableOpacity>
+        <Text style={styles.loginText}>Our Saloons</Text> 
+        </View>
         <View clasName="" style={styles.container}>
           
             
@@ -88,7 +93,7 @@ export default function CategoreySaloon() {
                                 {item.profilePhoto ? (
                                     <Image
                                         style={styles.bannerImage}
-                                        source={{ uri: `data:image/png;base64,${item.profilePhoto}` }}
+                                        source={{ uri: `${baseUrl}/${item.profilePhoto.replace(/\\/g, '/')}` }}
                                     />
                                 ) : (
                                     <Image
@@ -115,8 +120,8 @@ export default function CategoreySaloon() {
                                             color='#F4C01E'
                                         />
 
-                                        <Text style={{ color: colors.font1 }} className="ml-1">{item.totalReviews}</Text>
-                                        <Text style={{ color: colors.fontSubheadin }}>({item.averageRating})</Text>
+                                        <Text style={{ color: colors.font1,fontSize:fo(1.3) }} className="ml-1">{item.totalReviews}</Text>
+                                        <Text style={{ color: colors.fontSubheadin ,fontSize:fo(1.3)}}>({item.averageRating})</Text>
 
                                     </View>
                                 </View>
@@ -193,12 +198,28 @@ const styles = StyleSheet.create({
     },
     Phone: {
         color: `${colors.fontSubheadin}`,
-        marginLeft: Rw(1.3),
+        marginLeft: Rw(2),
         marginTop: Rh(0.7),
-    }
+        fontSize:fo(1.3)
+      }
     ,
     ratingContainer: {
         marginLeft: Rw(0.1),
-    }
+    },
+    loginText: {
+        fontSize: fo(3),
+        marginTop: Rw(0),
+        fontWeight: 'bold',   
+        textAlign: 'center',
+        color: 'white',
+      },
+    backButton: {
+        position: 'absolute',
+        top: Rh(0.5),
+        left: Rw(0.2),
+        zIndex: 1,
+        marginTop:Rh(2),
+        marginLeft:Rw(4)
+      },
 
 });

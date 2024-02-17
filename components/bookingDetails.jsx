@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native';
 import { colors } from '../theme';
 import {
   responsiveHeight as Rh,
@@ -24,13 +24,13 @@ const styles = StyleSheet.create({
    
     height: Rh(4),
     width: Rw(20),
-    margin:Rw(2.3)
-    
+    margin:Rw(2.3),
+    borderRadius:Rw(1),
   },
   buttonText: {
-    marginTop:Rh(1.3),
+    marginTop: Platform.OS === 'android' ? Rh(0.3) : Rh(1),
     textAlign: 'center',
-    color: 'white',
+    color: 'black',
     fontSize: Rf(1.6),
   },
 });
