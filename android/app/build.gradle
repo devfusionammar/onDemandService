@@ -75,7 +75,7 @@ android {
 
     namespace "com.expenseapp"
     defaultConfig {
-        applicationId "com.expenseapp"
+        applicationId "com.OnDemand"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

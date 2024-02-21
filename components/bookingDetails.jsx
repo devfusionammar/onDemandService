@@ -28,10 +28,10 @@ const styles = StyleSheet.create({
     borderRadius:Rw(1),
   },
   buttonText: {
-    marginTop: Platform.OS === 'android' ? Rh(0.3) : Rh(1),
+    marginTop: Platform.OS === 'android' ? Rh(0.8) : Rh(1),
     textAlign: 'center',
     color: 'black',
-    fontSize: Rf(1.6),
+    fontSize: Rf(1.5),
   },
 });
 export default BookingDetails;

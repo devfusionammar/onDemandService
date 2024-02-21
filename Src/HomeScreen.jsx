@@ -11,7 +11,6 @@ import UserInfo from './Userinfo/UserInfo';
 import PopularServiceProvider from './popularServiceProvider/popularServiceProvider';
 import { getUser } from '../services/getuserdetails';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import fetchUserData from '../contexprovider/fetchusetdata';
 import {
   responsiveHeight as Rh,
   responsiveScreenWidth as Rw,
@@ -26,7 +25,6 @@ export default function HomeScreen({ navigation }) {
       try {
         const user = await getUser();
         setUserData(user);
-        console.log('++++++',user);
         const userDataString = await AsyncStorage.setItem('userData', JSON.stringify(user?.userData));
       } catch (error) {
         Alert.alert('Error', 'Failed to fetch user data. Please try again.');

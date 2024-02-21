@@ -4,15 +4,22 @@ import {React,useState,useEffect} from 'react';
 import { colors } from '../../theme';
 import fetchUserData from '../../contexprovider/fetchusetdata';
 import { responsiveHeight,responsiveScreenWidth,responsiveFontSize, } from 'react-native-responsive-dimensions';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function UserInfo() {
+  const navigation=useNavigation();
   const [userData, setUserData] = useState({});
+  const [address,setAddress]=useState('');
   const username = `${userData?.FirstName ?? ''} ${userData?.LastName ?? ''}`;
-console.log('=======++', username);
+
 
   useEffect(() => {
-    
+    console.log('Use Effect Chlla=======++', username);
     const getUserData = async () => {
       try {
+        const address = await AsyncStorage.getItem('address');
+        setAddress(address);
+         console.log('address', address)
         console.log('chlla')
         const userData = await fetchUserData();
         setUserData(userData);
@@ -23,7 +30,7 @@ console.log('=======++', username);
     };
 
     getUserData();
-  }, []);
+  }, [1]);
 
   return (
     <View className= {"flex-row justify-left items-center p-0 "} style={{backgroundColor:colors.topbackground,marginBottom:responsiveHeight(0)}}>
@@ -33,14 +40,19 @@ console.log('=======++', username);
         source={require("../../assets/Icons/User.png")}/>
         
         <View className="flex-1 justify-center m-1">
+        <TouchableOpacity
+        onPress={()=>{navigation.navigate('Profile')}}
+        >
         <Text className={` text-bold pl-2 pt-0`}
         style={{color:`${colors.font1}`,marginLeft:responsiveScreenWidth(2),marginTop:responsiveHeight(0),fontSize:responsiveFontSize(2.3)}}
         >{username}</Text>
         
         <Text className={` text-bold pl-2 pt-0`}
         style={{color:`${colors.fontWhite}`,marginLeft:responsiveScreenWidth(2),marginTop:responsiveHeight(0),fontSize:responsiveFontSize(1.5)}}
-        >6km Raiwind Rd, Dubai Town</Text>
+        >{address}</Text>
+        </TouchableOpacity>
        </View>
+       
        <View className='p-3 bg-white rounded-full border border-opacity-10 h-12 w-12 m-3'>
         <TouchableOpacity>
        <Ionicons 

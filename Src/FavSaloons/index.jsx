@@ -21,12 +21,14 @@ import ScreenWrapper from '../../components/ScreenWrapper';
 import { useRoute } from '@react-navigation/native';
 import { favSaloonsList } from '../../services/favorutSaloon';
 import BackButton from '../../components/backbutton';
+import { baseUrl } from '../../services/supabase';
 export default function FavSaloons() {
     const route = useRoute();
     const navigation = useNavigation();
     
     const [bannerData, setBannerData] = useState('');
-    console.log(bannerData)
+    console.log("+++++++",bannerData)
+  
     const scrollX = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {console.log('chllla')
@@ -81,17 +83,17 @@ export default function FavSaloons() {
                     horizontal={false}
                     pagingEnabled
                     
-                    keyExtractor={(item) => item?.beauticianId?.toString()}
+                    keyExtractor={(item) => item?._id?.toString()}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item }) => (
-                        <TouchableOpacity key={item?.id} value
+                        <TouchableOpacity key={item?._id} 
                             onPress={() => navigation.navigate('ServiceProvider')}
                         >
                             <View style={styles.bannerContainer} >
                                 {item.profilePhoto ? (
                                     <Image
                                         style={styles.bannerImage}
-                                        source={{ uri: `data:image/png;base64,${item.profilePhoto}` }}
+                                        source={{ uri:  `${baseUrl}/${item.profilePhoto.replace(/\\/g, '/')}` }}
                                     />
                                 ) : (
                                     <Image
@@ -118,8 +120,8 @@ export default function FavSaloons() {
                                             color='#F4C01E'
                                         />
 
-                                        <Text style={{ color: colors.font1 }} className="ml-1">{item.totalReviews}</Text>
-                                        <Text style={{ color: colors.fontSubheadin }}>({item.averageRating})</Text>
+                                        <Text style={{ color: colors.font1, fontSize:fo(1.3)  }} className="ml-1">{item.totalReviews}</Text>
+                                        <Text style={{ color: colors.fontSubheadin, fontSize:fo(1.3) }}>({item.averageRating})</Text>
 
                                     </View>
                                 </View>
@@ -196,9 +198,10 @@ const styles = StyleSheet.create({
     },
     Phone: {
         color: `${colors.fontSubheadin}`,
-        marginLeft: Rw(1.3),
+        marginLeft: Rw(2),
         marginTop: Rh(0.7),
-    }
+        fontSize:fo(1.3)
+      }
     ,
     ratingContainer: {
         marginLeft: Rw(0.1),

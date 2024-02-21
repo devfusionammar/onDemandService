@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import ScreenWrapper from '../../components/ScreenWrapper';
 import { colors } from '../../theme';
@@ -10,7 +10,10 @@ import {
 } from 'react-native-responsive-dimensions';
 import Input from '../../components/Input';
 import BackButton from '../../components/backbutton';
+import { useRoute } from '@react-navigation/native';
 export default function Changepass() {
+  const route = useRoute();
+  const { userData } = route.params;
   const navigation = useNavigation(); 
   const showbottom = () => {
     navigation.navigate('BottomNavigation');
@@ -28,7 +31,7 @@ export default function Changepass() {
         </View>
       <View style={{ marginTop: Rh(0), paddingVertical: Rh(2), backgroundColor: colors.headerbackground, justifyContent: 'center', alignItems: 'center' }}>
         <Image style={{ width: Rw(30), height: Rw(30) }} source={require('../../assets/profile.png')} />
-        <Text style={{ fontSize: fo(1.7), fontWeight: 'bold', color: 'white', marginLeft: Rw(10), marginTop: -Rh(1) }}> Viren Radadiya {'\n'} ibnerieadazz@gmail.com </Text>
+        <Text style={{ fontSize: fo(1.7), fontWeight: 'bold', color: 'white', marginLeft: Rw(7), marginTop: -Rh(1) }}>       {userData?.FirstName}{'\n'}{userData?.Email} </Text>
       </View>
  
       

@@ -22,7 +22,7 @@ const RecptComplete = () => {
             const data = await bookingReciptDetails('65c3b531bc603a62db454a69');
            
             setReciptBooking(data);
-       
+        console.log(data);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -116,8 +116,8 @@ const RecptComplete = () => {
       {/* Add other rows here for Subtotal, Coupon Discount, and Total */}
 
       {/* Rebook and Review Buttons */}
-      <View style={{ marginTop: Rh(2), fontFamily: colors.fontfaimly_heding }}>
-        <RecptButton titlenext={'ReBook'} titleback={'ReView'} backgroundColor1={colors.background} backgroundColor2={colors.ServiceProvider_buttonBackground} fontcolor={colors.ServiceProvider_buttonBackground} fontcolor1={colors.background} />
+      <View style={{ marginTop: Rh(5) }}>
+        <RecptButton titlenext={'Rebook'} titleback={'Review'} backgroundColor1={colors.background} backgroundColor2={colors.ServiceProvider_buttonBackground} fontcolor={colors.ServiceProvider_buttonBackground} fontcolor1={colors.background} />
       </View>
     </ScreenWrapper>
   );

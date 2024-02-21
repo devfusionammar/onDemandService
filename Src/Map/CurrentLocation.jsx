@@ -1,5 +1,5 @@
-// Import necessary components and libraries
 import React, { useState, useEffect } from 'react';
+import { responsiveHeight as Rh, responsiveScreenWidth as Rw,responsiveFontSize as Rf } from 'react-native-responsive-dimensions';
 import {
   SafeAreaView,
   View,
@@ -9,16 +9,22 @@ import {
   PermissionsAndroid,
   Platform,
   Button,
+  TouchableOpacity,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from '@react-native-community/geolocation';
 import MapView, { Marker } from 'react-native-maps';
-
+import ScreenWrapper from '../../components/ScreenWrapper';
+import { colors } from '../../theme';
+import BookingButtons from '../../components/bookingButton';
+import { useNavigation } from '@react-navigation/native';
 const CurrentLocation = () => {
+  const navigation = useNavigation();
   const [currentLongitude, setCurrentLongitude] = useState('...');
   const [currentLatitude, setCurrentLatitude] = useState('...');
   const [locationStatus, setLocationStatus] = useState('');
   const [region, setRegion] = useState(null);
+  const [formattedAddress, setFormattedAddress] = useState('');
 
   useEffect(() => {
     const requestLocationPermission = async () => {
@@ -35,8 +41,19 @@ const CurrentLocation = () => {
             },
           );
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            getOneTimeLocation();
-            subscribeLocationLocation();
+            Geolocation.getCurrentPosition(
+              position => {
+                const { latitude, longitude } = position.coords;
+                setCurrentLatitude(latitude);
+                setCurrentLongitude(longitude);
+                console.log('Current location:', latitude, longitude);
+              // Save to AsyncStorage
+                reverseGeocode(latitude, longitude);
+                saveLocationToStorage(latitude, longitude,formattedAddress);
+              },
+              error => console.error('Error getting location:', error),
+              { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+            );
           } else {
             setLocationStatus('Permission Denied');
           }
@@ -47,212 +64,87 @@ const CurrentLocation = () => {
     };
     requestLocationPermission();
     return () => {
-      Geolocation.clearWatch(watchID);
+      Geolocation?.clearWatch();
     };
   }, []);
 
-  const getOneTimeLocation = () => {
-    setLocationStatus('Getting Location ...');
-    Geolocation.getCurrentPosition(
-      (position) => {
-        setLocationStatus('You are Here');
-        setCurrentLongitude(JSON.stringify(position.coords.longitude));
-        setCurrentLatitude(JSON.stringify(position.coords.latitude));
-        setRegion({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        });
-        saveLocationToStorage(currentLatitude, currentLongitude);
-      },
-      (error) => {
-        setLocationStatus(error.message);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 10000
-      },
-    );
-  };
-
-  const subscribeLocationLocation = () => {
-    watchID = Geolocation.watchPosition(
-      (position) => {
-        setLocationStatus('You are Here');
-        setCurrentLongitude(JSON.stringify(position.coords.longitude));
-        setCurrentLatitude(JSON.stringify(position.coords.latitude));
-        setRegion({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        });
-        saveLocationToStorage(currentLatitude, currentLongitude);
-      },
-      (error) => {
-        setLocationStatus(error.message);
-      },
-      {
-        enableHighAccuracy: true,
-        maximumAge: 10000,
-        distanceFilter: 10
-      },
-    );
-  };
-
-  const saveLocationToStorage = async (latitude, longitude) => {
+  const reverseGeocode = async (latitude, longitude) => {
     try {
-      await AsyncStorage.setItem('latitude', latitude);
-      await AsyncStorage.setItem('longitude', longitude);
+      const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyClfzkwSl2ucy9GQ6XQcvRAbV4LFFqwloM`);
+      const data = await response.json();
+      if (data.status === 'OK') {
+        const formattedAddress = data.results[0].formatted_address;
+      const parts = formattedAddress.split(',');
+      const englishAddress = parts.slice(1).join(',').trim();
+      console.log('English address:', englishAddress);
+      setFormattedAddress(englishAddress);
+      await AsyncStorage.setItem('address', englishAddress.toString());
+      } else {
+        console.error('Reverse geocoding failed:', data.status);
+      }
+    } catch (error) {
+      console.error('Error during reverse geocoding:', error);
+    }
+  };
+
+  const saveLocationToStorage = async (latitude, longitude,formattedAddress) => {
+    try {
+      await AsyncStorage.setItem('latitude', latitude.toString());
+      await AsyncStorage.setItem('longitude', longitude.toString());
+      
       console.log('Updated location');
     } catch (error) {
       console.error('Error saving location to AsyncStorage:', error);
     }
   };
-
+const handlenavigation=()=>{
+  navigation.navigate('BottomNavigation');
+}
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <ScreenWrapper>
       <View style={styles.container}>
+    
+        <MapView style={styles.map} showsUserLocation={true} />
+        <View style={styles.absolutebox1}>
+          <Text style={{textAlign:'center',color:colors.font1,fontSize:Rf(2),marginTop:Rh(1)}}>{formattedAddress}</Text>
           
-        <View style={styles.container}>
-          <Image
-            source={{
-              uri:
-                'https://raw.githubusercontent.com/AboutReact/sampleresource/master/location.png',
-            }}
-            style={{ width: 100, height: 100 }}
-          />
-          <Text style={styles.boldText}>
-            {locationStatus}
-          </Text>
-          <Text style={styles.locationText}>
-            Longitude: {currentLongitude}
-          </Text>
-          <Text style={styles.locationText}>
-            Latitude: {currentLatitude}
-          </Text>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Refresh Location"
-              onPress={getOneTimeLocation}
-            />
-          </View>
         </View>
-        <Text style={styles.footerText}>
-          React Native Geolocation
-        </Text>
-        <Text style={styles.footerText}>
-          www.aboutreact.com
-        </Text>
+        <View style={styles.absolutebox}>
+          <BookingButtons backgroundColor={colors.ServiceProvider_buttonBackground} titlenext={'Confirm'} pressnext={handlenavigation} />
+          
+        </View>
       </View>
-    </SafeAreaView>
+    </ScreenWrapper>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-     
     padding: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
   map: {
+    flex: 1,
     ...StyleSheet.absoluteFillObject,
   },
-  boldText: {
-    fontSize: 25,
-    color: 'red',
-    marginVertical: 16,
-    textAlign: 'center'
+  absolutebox: {
+    marginLeft: Rw(0),
+    width: '100%',
+    alignItems: 'center',
+    marginTop: Rh(80),
   },
-  locationText: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginTop: 16,
-    color:'black',
-  },
-  buttonContainer: {
-    marginTop: 20,
-  },
-  footerText: {
-    fontSize: 16,
-    textAlign: 'center',
-    color: 'grey',
-    marginTop: 10,
+  absolutebox1: {
+    marginLeft: Rw(0),
+    width: '100%',
+    alignItems: 'center',
+    marginTop: Rh(2),
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    height: Rh(5),
+    width: Rw(70),
+    borderRadius:5,
   },
 });
 
 export default CurrentLocation;
-
-
-// import { View, Text, StyleSheet,Image,Platform } from 'react-native';
-// import React from 'react';
-// import ScreenWrapper from '../../components/ScreenWrapper';
-// import BackButton from '../../components/backbutton';
-// import { colors } from '../../theme';
-// import {
-//   responsiveHeight as Rh,
-//   responsiveScreenWidth as Rw,
-//   responsiveScreenFontSize as fo,
-// } from 'react-native-responsive-dimensions';
-// import Buttons from '../../components/Buttons';
-// import SearchBar from './MapSearchBar';
-// export default function CurrentLocation({navigation}) {
-//   return (
-//     <ScreenWrapper bgcolor={colors.background} >
-      
-//       <View style={styles.contentContainer}>
-//         <BackButton marginRight1={2} marginLeft1={8}  onpress={()=>navigation.navigate('BottomNavigation')}/>
-//         <View style={styles.textContainer}>
-//           <SearchBar/>
-//         </View>
-       
-//       </View>
-//       <View  style={{height:Rh(4),width:Rw(4),marginLeft:Rw(9),marginTop:Rh(5)}}>
-//       <Image style={{height:Rh(60),width:Rw(80)}} source={require('../../assets/Location/currentlocation.png')}/>
-//       </View>
-     
-//         <View style={styles.buttoncontainer}>
-//         <Buttons titlenext={"Countinue"}backgroundColor1={colors.headerbackground} pressnext={()=>navigation.navigate('BottomNavigation')} />
-        
-
-//         </View>
-//     </ScreenWrapper>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-  
-//   contentContainer: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     alignItems: 'center',
-//     ...Platform.OS === 'android' ? { marginTop: Rh(5) } : {}
-    
-//   },
-//   textContainer: {
-//     marginRight: 150,
-    
-//   },
-//   text: {
-//     textAlign: 'center',
-//     fontSize: fo(2.3),
-//     color:colors.fontSubheadin
-//   },
-//   textEnablelocation: {
-//     textAlign: 'center',
-//     fontSize: fo(2.3),
-//     marginTop:Rh(35),
-//     fontFamily:colors.fontfaimly_heding,
-//     color:colors.font1
-//   },
-// buttoncontainer:{
-//     marginTop:Rh(64),
-//     marginLeft:Rw(25),
-//     marginRight:Rw(25),
-   
-// }
-// });

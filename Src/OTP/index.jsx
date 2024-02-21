@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginBottom: 20,
     color: colors.font1,
+    textAlign:'center'
   },
   button: {
     width: '100%',

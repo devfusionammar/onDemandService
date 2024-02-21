@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image,StyleSheet, Platform } from 'react-native';
 import ScreenWrapper from '../components/ScreenWrapper';
 import { colors } from '../theme';
@@ -11,16 +11,34 @@ import {
 } from 'react-native-responsive-dimensions';
 import Icones from '../components/icones';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUser } from '../services/getuserdetails';
 
 const iconSize = Math.min(Rw(60), 60);
 
 export default function Profile() {
+  const [userData, setUserData] = useState("");
+  useEffect(() => {
+    const fetchUserdata = async () => {
+      try {
+        const user = await getUser();
+        setUserData(user?.userData);
+        const userDataString = await AsyncStorage.setItem('userData', JSON.stringify(user?.userData));
+      } catch (error) {
+        Alert.alert('Error', 'Failed to fetch user data. Please try again.');
+      }
+    };
+
+  
+      fetchUserdata();
+    
+  }, []);
+
   const navigation = useNavigation(); 
   const updatePass = () => {
-    navigation.navigate('Changepass');
+    navigation.navigate('Changepass',{userData:userData});
   };
   const updateProfile = () => {
-    navigation.navigate('UProfile');
+    navigation.navigate('UProfile',{userData:userData});
   };
   const handlelogout = async () => {
     try {
@@ -61,7 +79,7 @@ export default function Profile() {
 
       <View style={{ marginTop: Rh(0), paddingVertical: Rh(2), backgroundColor: colors.headerbackground, justifyContent: 'center', alignItems: 'center' }}>
         <Image style={{ width: Rw(30), height: Rw(30) }} source={require('../assets/profile.png')} />
-        <Text style={{ fontSize: fo(1.7), fontWeight: 'bold', color: 'white', marginLeft: Rw(10), marginTop: -Rh(1) }}> Viren Radadiya {'\n'} ibnerieadazz@gmail.com </Text>
+        <Text style={{ fontSize: fo(1.7), fontWeight: 'bold', color: 'white', marginLeft: Rw(7), marginTop: -Rh(1) }}>       {userData?.FirstName}{'\n'}{userData?.Email} </Text>
       </View>
       <View style={{marginTop:Rh(0)}}>
       {[

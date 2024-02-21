@@ -24,7 +24,7 @@ export default function PopularServiceProvider() {
   const [bannerData, setBannerData] = useState([ ]);
     console.log(bannerData)
   const scrollX = useRef(new Animated.Value(0)).current;
-  
+ 
 
   useEffect(() => {
     async function fetchData() {

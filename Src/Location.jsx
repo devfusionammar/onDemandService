@@ -5,7 +5,9 @@ import BackButton from '../components/backbutton';
 import { colors } from '../theme';
 import { responsiveHeight as Rh, responsiveScreenWidth as Rw, responsiveScreenFontSize as fo } from 'react-native-responsive-dimensions';
 import Buttons from '../components/Buttons';
-export default function Location({ navigation }) {
+import { useNavigation } from '@react-navigation/native';
+export default function Location() {
+  const navigation = useNavigation();
   useEffect(() => {
     requestLocationPermission();
   }, []);
@@ -34,12 +36,8 @@ export default function Location({ navigation }) {
 
   return (
     <ScreenWrapper bgcolor={colors.background}>
-      <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'? 0: Rh(1.3)}}>
-      <TouchableOpacity
-          style={styles.backButton}
-        >
-          <BackButton onPress={()=> navigation.navigate('BottomNavigation')}/>
-        </TouchableOpacity>
+      <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'?Rh(0) : Rh(1.3)}}>
+     
         <Text style={styles.loginText}>Locationes</Text> 
         </View>
       <View style={{ marginLeft: Rw(12), marginTop:Platform.OS='android'?Rh(3) :Rh(10) }}>
@@ -50,10 +48,10 @@ export default function Location({ navigation }) {
         <Text style={{ color: colors.fontSubheadin, textAlign: 'center', fontSize: fo(1.7) }}>Turn on location services so we can show {'\n'} you what’s nearby</Text>
       </View>
       <View style={{ marginTop: Rh(10), flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Buttons titlenext={"Allow Location Access"} backgroundColor1={colors.headerbackground} pressnext={() => navigation.navigate('CurrentLocation')} />
-        <View style={{ marginTop: 10 }}>
+        <Buttons titlenext={"Allow Location Access"} backgroundColor1={colors.headerbackground} fontcolor={colors.font1} pressnext={() => navigation.navigate('CurrentLocation')} />
+        {/* <View style={{ marginTop: 10 }}>
           <Buttons titlenext={"Allow Location Access"} backgroundColor1={"#E0E0E0"} />
-        </View>
+        </View> */}
       </View>
     </ScreenWrapper>
   );

@@ -6,86 +6,43 @@ import {
     TouchableOpacity,
     FlatList,
     Animated,
-    ActivityIndicator,
-    Platform
-} from 'react-native';
-import React, { useRef, useEffect, useState } from 'react';
-import { colors } from '../../theme';
-import {
+  } from 'react-native';
+  import React, { useRef, useEffect, useState } from 'react';
+  import { colors } from '../../theme';
+  import {
     responsiveHeight as Rh,
     responsiveScreenWidth as Rw,
     responsiveScreenFontSize as fo,
-} from 'react-native-responsive-dimensions';
-import Ionicons from 'react-native-vector-icons/Entypo';
-import { useNavigation } from '@react-navigation/native';
-import { beautationCategories } from '../../services/beautacions'
-import ScreenWrapper from '../../components/ScreenWrapper';
-import { useRoute } from '@react-navigation/native';
-import { baseUrl } from '../../services/supabase';
-import BackButton from '../../components/backbutton';
-export default function CategoreySaloon() {
-    const route = useRoute();
+  } from 'react-native-responsive-dimensions';
+  import Ionicons from 'react-native-vector-icons/Entypo';
+  import { useNavigation  } from '@react-navigation/native';
+  import { baseUrl } from '../../services/supabase';
+  export default function SearchBeautician({ data }) {
     const navigation = useNavigation();
-    const { categoryId } = route.params;
-    console.log("this is id at salloon side", categoryId);
-    const [bannerData, setBannerData] = useState('');
-    const scrollX = useRef(new Animated.Value(0)).current;
-
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const data = await beautationCategories(categoryId);
-                console.log('Fetched data:', data);
-                setBannerData(data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        }
-        fetchData();
-    }, [categoryId]);
-
-    useEffect(() => {
-        Animated.loop(
-            Animated.timing(scrollX, {
-                toValue: 1,
-                duration: 3000,
-                useNativeDriver: false,
-            }),
-        ).start();
-    }, []);
-
-    // Render loading state if bannerData is still null or empty
-    if (!bannerData || !bannerData.data || bannerData.data.length === 0) {
-        return (
-            <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color={colors.primary} />
-            </View>
-        );
+    const [bannerData, setBannerData] = useState([]);
+  console.log('++++++++===============',bannerData)
+  useEffect(() => {
+    if (data && data.data) {
+      setBannerData(data.data);
     }
- return (
-        <ScreenWrapper>
-            <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'? 0: Rh(1.3)}}>
-      <TouchableOpacity
-          style={styles.backButton}
-        >
-          <BackButton onPress={()=> navigation.navigate('BottomNavigation')}/>
-        </TouchableOpacity>
-        <Text style={styles.loginText}>Beautician</Text> 
-        </View>
+  }, [data]);
+    return (
+       <View>
+          
         <View clasName="" style={styles.container}>
           
-            
+         
             {/* Popular Saloons  */}
             <View >
                 <FlatList
-                    data={bannerData.data}
+                    data={bannerData}
                     horizontal={false}
                     pagingEnabled
                     
-                    keyExtractor={(item) => item?._id?.toString()}
+                    keyExtractor={(item) => item?._id.toString()}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item }) => (
-                        <TouchableOpacity key={item?.id} value
+                        <TouchableOpacity key={item?._id} 
                             onPress={() => navigation.navigate('ServiceProvider')}
                         >
                             <View style={styles.bannerContainer} >
@@ -119,8 +76,8 @@ export default function CategoreySaloon() {
                                             color='#F4C01E'
                                         />
 
-                                        <Text style={{ color: colors.font1,fontSize:fo(1.3) }} className="ml-1">{item.totalReviews}</Text>
-                                        <Text style={{ color: colors.fontSubheadin ,fontSize:fo(1.3)}}>({item.averageRating})</Text>
+                                        <Text style={{ color: colors.font1 }} className="ml-1">{item.totalReviews}</Text>
+                                        <Text style={{ color: colors.fontSubheadin }}>({item.averageRating})</Text>
 
                                     </View>
                                 </View>
@@ -134,7 +91,7 @@ export default function CategoreySaloon() {
                 />
             </View>
         </View>
-        </ScreenWrapper>
+        </View>
     );
 }
 const styles = StyleSheet.create({
@@ -197,10 +154,9 @@ const styles = StyleSheet.create({
     },
     Phone: {
         color: `${colors.fontSubheadin}`,
-        marginLeft: Rw(2),
+        marginLeft: Rw(1.3),
         marginTop: Rh(0.7),
-        fontSize:fo(1.3)
-      }
+    }
     ,
     ratingContainer: {
         marginLeft: Rw(0.1),
@@ -212,13 +168,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: 'white',
       },
-    backButton: {
+      backButton: {
         position: 'absolute',
-        top: Rh(0.5),
-        left: Rw(0.2),
+        top: 10,
+        left: 10,
         zIndex: 1,
-        marginTop:Rh(2),
-        marginLeft:Rw(4)
+        marginTop:Rh(1.3),
+        marginRight:Rw(2)
       },
-
 });

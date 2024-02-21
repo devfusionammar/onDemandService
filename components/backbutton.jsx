@@ -16,7 +16,7 @@ export default function BackButton({ marginRight1, marginLeft1, onPress }) {
         backgroundColor: 'black',
         borderRadius: 50,
         height: Rh(3),
-        width: Rw(6.2),
+        width: Rh(3),
         justifyContent: 'center',
         alignItems: 'center',
         marginRight,
@@ -24,7 +24,9 @@ export default function BackButton({ marginRight1, marginLeft1, onPress }) {
       }}
       onPress={onPress}
     >
-      <Icon name={'arrow-back'} size={29} color={'white'} />
+    
+      <Icon name={'arrow-back'} size={25} color={'white'} />
+
     </TouchableOpacity>
   );
 }

@@ -1,29 +1,32 @@
-import React from 'react';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
-import { responsiveHeight as Rh, responsiveScreenWidth as Rw } from 'react-native-responsive-dimensions';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { responsiveHeight as Rh, responsiveScreenWidth as Rw ,responsiveFontSize as Rf} from 'react-native-responsive-dimensions';
 import { colors } from '../theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { searchBeauticians } from '../services/searchapi';
+import { useNavigation } from '@react-navigation/native';
 export default function SearchBar() {
+const navigation = useNavigation()
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={()=>navigation.navigate('SearchBarResult')}>
       <View style={styles.searchBar}>
+        
       <Ionicons
               name="search-sharp"
               size={25}
               color={`${colors.font1}`}
             />
-        <TextInput 
-          className="text-lg tracking-wide"
-          placeholder="Search..."
-          style={styles.input}
-          placeholderTextColor={colors.placeholderText}
-        />
+         
+       <Text style={{textAlign:"center",marginLeft:Rw(15),paddingRight:Rw(21),fontSize:Rf(2)}}>Search...</Text>
           <Ionicons
               name="filter-circle-sharp"
               size={30}
               color={`${colors.font1}`}
             />
+            
       </View>
+      </TouchableOpacity>
     </View>
   );
 }

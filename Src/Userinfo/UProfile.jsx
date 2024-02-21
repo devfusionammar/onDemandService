@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Image,StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Image, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import ScreenWrapper from '../../components/ScreenWrapper';
 import { colors } from '../../theme';
 import { useNavigation } from '@react-navigation/native';
@@ -10,45 +10,72 @@ import {
 } from 'react-native-responsive-dimensions';
 import Input from '../../components/Input';
 import BackButton from '../../components/backbutton';
+import updateUser from '../../services/getuserdetails';
+import { useRoute } from '@react-navigation/native';
 export default function UProfile() {
+  const route = useRoute();
+  const { userData } = route.params;
+  console.log(userData);
   const navigation = useNavigation(); 
-  const showbottom = () => {
-    navigation.navigate('BottomNavigation');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [isLoading, setIsLoading] = useState(false); 
+  const handleUpdates = async () => {
+    try {
+      setIsLoading(true); // Show activity indicator
+      
+      const response = await updateUser({firstName,lastName, email, phoneNumber });;
+      if (!response.success) {
+        throw new Error('Failed to update user details');
+      }
+      Alert.alert('User Profile Updated Successfully');
+      setIsLoading(false); 
+    } catch (error) {
+      console.error('Error handling updatesxxxx:', error);
+      setIsLoading(false); 
+    }
   };
- 
+  
   return (
     <ScreenWrapper>
-      <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center', backgroundColor:colors.topbackground,height:Rh(8),width:'100%',marginTop:Platform.OS=='android'? 0: Rh(1.3)}}>
-      <TouchableOpacity
+      <View style={{ flexDirection:'row', justifyContent:'center', alignItems:'center', backgroundColor:colors.topbackground, height:Rh(8), width:'100%', marginTop:Platform.OS=='android'? 0: Rh(1.3) }}>
+        <TouchableOpacity
           style={styles.backButton}
         >
           <BackButton onPress={()=> navigation.navigate('Profile')}/>
         </TouchableOpacity>
         <Text style={styles.loginText}>Update Profile</Text> 
-        </View>
+      </View>
 
       <View style={[{ marginTop: Rh(0), paddingVertical: Rh(2), backgroundColor: colors.headerbackground, justifyContent: 'center', alignItems: 'center' }]}>
         <Image style={{ width: Rw(30), height: Rw(30) }} source={require('../../assets/profile.png')} />
-        <Text style={{ fontSize: fo(1.7), fontWeight: 'bold', color: 'white', marginLeft: Rw(10), marginTop: -Rh(1) }}>       Viren Radadiya {'\n'}ibnerieadazz@gmail.com </Text>
+        <Text style={{ fontSize: fo(1.7), fontWeight: 'bold', color: 'white', marginLeft: Rw(7), marginTop: -Rh(1) }}>       {userData?.FirstName}{'\n'}{userData?.Email} </Text>
       </View>
  
+      <Text style={[styles.EmailText,{ fontSize: fo(1.9), fontWeight: 'bold', color:colors.font1, paddingHorizontal: Rw(10), marginTop: Rh(6) }]}>First Name</Text>
+      <Input placeholder={'Enter First Name'} value={firstName} onChangeText={setFirstName} />
+      <Text style={[styles.EmailText,{ fontSize: fo(1.9), fontWeight: 'bold', color:colors.font1, paddingHorizontal: Rw(10), marginTop: Rh(2) }]}>Last Name</Text>
+      <Input placeholder={'Enter Last Name'} value={lastName} onChangeText={setLastName} />
+      <Text style={[styles.EmailText,{ fontSize: fo(1.9), fontWeight: 'bold', color:colors.font1, paddingHorizontal: Rw(10), marginTop: Rh(2) }]}>Email</Text>
+      <Input placeholder={'Enter Email'} value={email} onChangeText={setEmail} />
+      <Text style={[styles.EmailText,{ fontSize: fo(1.9), fontWeight: 'bold', color:colors.font1, paddingHorizontal: Rw(10), marginTop: Rh(2) }]}>Phone Number</Text>
+      <Input placeholder={'Enter Phone Number'} value={phoneNumber} onChangeText={setPhoneNumber} />
       
-      <Text style={[styles.EmailText,{fontSize: fo(1.9), fontWeight: 'bold', color:colors.font1, paddingHorizontal: Rw(10), marginTop: Rh(6) }]}>First Name</Text>
-        <Input placeholder={'Enter First Name'}/>
-        <Text style={[styles.EmailText,{fontSize: fo(1.9), fontWeight: 'bold', color:colors.font1, paddingHorizontal: Rw(10), marginTop: Rh(2) }]}>Last Name</Text>
-        <Input placeholder={'Enter Last Name'}/>
-        <Text style={[styles.EmailText,{fontSize: fo(1.9), fontWeight: 'bold', color:colors.font1, paddingHorizontal: Rw(10), marginTop: Rh(2) }]}>Email</Text>
-        <Input placeholder={'Enter Email'} />
-        <Text style={[styles.EmailText,{fontSize: fo(1.9), fontWeight: 'bold', color:colors.font1, paddingHorizontal: Rw(10), marginTop: Rh(2) }]}>Phone Number</Text>
-        <Input placeholder={'Enter Phone Number'} />  
-        <TouchableOpacity onPress={showbottom} style={{ width: Rh(30),marginLeft:Rw(20), backgroundColor: colors.headerbackground, padding: Rw(4), borderRadius: Rw(4), alignItems: 'center', marginTop: Rh(6) }}>
-        <Text style={{ fontSize:fo(2),color: colors.background, fontWeight: 'bold' }}>Update</Text>
-        </TouchableOpacity>    
+      <TouchableOpacity onPress={handleUpdates} style={{ width: Rh(30),marginLeft:Rw(20), backgroundColor: colors.headerbackground, padding: Rw(4), borderRadius: Rw(4), alignItems: 'center', marginTop: Rh(6) }}>
+        {/* Conditionally render activity indicator based on isLoading state */}
+        {isLoading ? (
+          <ActivityIndicator color={colors.background} />
+        ) : (
+          <Text style={{ fontSize:fo(2),color: colors.background, fontWeight: 'bold' }}>Update</Text>
+        )}
+      </TouchableOpacity>    
     </ScreenWrapper>
   );
 }
-const styles = StyleSheet.create({
 
+const styles = StyleSheet.create({
   loginText: {
     fontSize: fo(3),
     marginTop: Rw(0),
@@ -56,7 +83,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
   },
-
   EmailText: {
     fontSize: fo(1.3),
     color: colors.font1,

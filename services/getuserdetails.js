@@ -35,3 +35,39 @@ export async function getUser() {
     throw error;
   }
 }
+///Update User Data
+const updateUser = async ({firstName,  lastName, email, phoneNumber }) => {
+  console.log(firstName,lastName, email, phoneNumber);
+  try {
+    const token = await AsyncStorage.getItem('AuthToken');
+    if (!token) {
+      throw new Error('Token not found in AsyncStorage');
+    }
+
+    const response = await fetch(`${baseUrl}/api/userAuth/UpdateUser`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': token, // Use token directly without string interpolation
+      },
+      body: JSON.stringify({
+        FirstName: firstName,
+        LastName: lastName,
+        Email: email, // Correct capitalization
+        PhoneNo: phoneNumber, // Correct property name
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update user data');
+    }
+
+    const data = await response.json();
+    console.log(data)
+    return data;
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw error;
+  }
+};
+export default updateUser;

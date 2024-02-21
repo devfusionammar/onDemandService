@@ -30,6 +30,7 @@ import AboutUs from '../Src/AboutUs&PrivicyPolicy/AboutUs';
 import FavSaloons from '../Src/FavSaloons';
 import PaymentPage from '../Src/PaymentMethod';
 import PhotosGallrey from '../Src/ServiceProviderInfo/Gallrey';
+import SearchBarResult from '../Src/Search';
 const Stack = createNativeStackNavigator();
 export default function Appnavigation() {
   return (
@@ -62,6 +63,7 @@ export default function Appnavigation() {
         <Stack.Screen options={{headerShown:false}} name="FavSaloons" component={FavSaloons} />
         <Stack.Screen options={{headerShown:false}} name="PaymentPage" component={PaymentPage} />
         <Stack.Screen options={{headerShown:false}} name="PhotosGallrey" component={PhotosGallrey} />
+        <Stack.Screen options={{headerShown:false}} name="SearchBarResult" component={SearchBarResult} />
       </Stack.Navigator>
     </NavigationContainer>
   );
